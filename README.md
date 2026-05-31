@@ -22,6 +22,8 @@ Current artifact:
 - [Current focus](docs/strategy/current-focus.md)
 - [FRED-MD Macro Lab foundation mission](docs/missions/fred-md-macro-lab-foundation.md)
 - [FRED FX/rate lab checkpoint](docs/runs/20260531-fred-fx-rate-lab-checkpoint.md)
+- [Shareable FRED FX/rate artifacts](artifacts/fred-fx-rate-lab/20260531-161930-fx-rate-diff/)
+- [Svelte visualization app](apps/web/)
 - [Historical MikeOSS proposal](docs/proposals/mission-proposal.md)
 - [Mobile-friendly PDF](output/pdf/emf-mission-proposal.pdf)
 
@@ -47,3 +49,35 @@ Run the FRED FX/rate differential lab:
 Generated source data and backtest runs live under ignored `data/` and
 `backtests/runs/` paths. Commit checkpoint summaries under `docs/runs/`, not
 large generated data files.
+
+Export compact GitHub-shareable artifacts from a generated run:
+
+```sh
+python3 tools/export_share_artifacts.py \
+  backtests/runs/20260531-161930-fx-rate-diff \
+  data/derived/fred_fx_rates \
+  artifacts/fred-fx-rate-lab/20260531-161930-fx-rate-diff
+```
+
+## Visualization
+
+The visualization app is a small Svelte/Vite static frontend over committed
+artifact JSON:
+
+```sh
+cd apps/web
+npm install
+npm run dev -- --port 5177
+```
+
+Open `http://127.0.0.1:5177/`.
+
+Build:
+
+```sh
+npm run build
+```
+
+Why Svelte: it keeps the frontend source small and reviewable while still
+producing a standard static web app. Finance/data-engineering users can ignore
+the frontend and consume the committed JSON/CSV artifacts directly.

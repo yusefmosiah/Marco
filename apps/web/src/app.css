@@ -1,0 +1,304 @@
+:root {
+  color: #17202f;
+  background: #f6f7f4;
+  font-family:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+}
+
+button,
+select {
+  font: inherit;
+}
+
+.shell {
+  width: min(1180px, calc(100vw - 32px));
+  margin: 0 auto;
+  padding: 28px 0 40px;
+}
+
+.topbar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #d9ded6;
+}
+
+.eyebrow {
+  margin: 0 0 6px;
+  color: #667085;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+h1,
+h2,
+p {
+  margin: 0;
+}
+
+h1 {
+  font-size: clamp(30px, 4vw, 52px);
+  line-height: 1.02;
+}
+
+h2 {
+  font-size: 18px;
+}
+
+.repo-link {
+  color: #ffffff;
+  background: #1c2d45;
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.metric,
+.callout,
+.panel,
+.notice {
+  background: #ffffff;
+  border: 1px solid #d9ded6;
+  border-radius: 8px;
+  box-shadow: 0 1px 2px rgb(23 32 47 / 6%);
+}
+
+.metric {
+  min-height: 96px;
+  padding: 16px;
+}
+
+.metric span {
+  display: block;
+  color: #667085;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.metric strong {
+  display: block;
+  margin-top: 10px;
+  font-size: 24px;
+  line-height: 1.1;
+  text-transform: capitalize;
+}
+
+.callout {
+  padding: 18px;
+  margin-bottom: 20px;
+  border-left: 5px solid #2f6f73;
+}
+
+.callout p {
+  margin-top: 8px;
+  max-width: 900px;
+  color: #344054;
+  line-height: 1.55;
+}
+
+.caution {
+  font-weight: 700;
+}
+
+.controls {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+label {
+  display: grid;
+  gap: 6px;
+  color: #475467;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+select {
+  width: 180px;
+  color: #17202f;
+  background: #ffffff;
+  border: 1px solid #c8d0c5;
+  border-radius: 6px;
+  padding: 9px 10px;
+}
+
+.panel {
+  padding: 18px;
+  margin-top: 14px;
+}
+
+.panel-title {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.panel-title span {
+  color: #667085;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.bars {
+  display: grid;
+  gap: 10px;
+}
+
+.bar-row {
+  display: grid;
+  grid-template-columns: 150px minmax(100px, 1fr) 78px;
+  align-items: center;
+  gap: 10px;
+}
+
+.bar-label {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.bar-track {
+  height: 20px;
+  overflow: hidden;
+  background: #e8ece4;
+  border-radius: 4px;
+}
+
+.bar {
+  height: 100%;
+  background: #8c9aa5;
+}
+
+.bar.selected {
+  background: #2f6f73;
+}
+
+.bar-value {
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  font-size: 13px;
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  min-width: 720px;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+th,
+td {
+  padding: 10px 8px;
+  border-bottom: 1px solid #edf0ea;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+th:first-child,
+td:first-child,
+th:nth-child(3),
+td:nth-child(3) {
+  text-align: left;
+}
+
+th {
+  color: #667085;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.good {
+  color: #147a47;
+  font-weight: 800;
+}
+
+.bad {
+  color: #9f2f2f;
+  font-weight: 800;
+}
+
+.flat {
+  color: #667085;
+  font-weight: 800;
+}
+
+footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 18px;
+  color: #667085;
+  font-size: 12px;
+}
+
+.notice {
+  padding: 24px;
+}
+
+@media (max-width: 780px) {
+  .shell {
+    width: min(100vw - 20px, 680px);
+    padding-top: 18px;
+  }
+
+  .topbar,
+  .panel-title,
+  footer {
+    display: grid;
+  }
+
+  .summary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .metric.wide {
+    grid-column: 1 / -1;
+  }
+
+  .controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  select {
+    width: 100%;
+  }
+
+  .bar-row {
+    grid-template-columns: 1fr;
+    gap: 5px;
+  }
+
+  .bar-value {
+    text-align: left;
+  }
+}
