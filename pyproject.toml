@@ -12,6 +12,7 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["pytest>=8.0"]
+xgboost = ["xgboost>=3.0"]
 
 [project.scripts]
 emf-macro = "emf_macro.cli:main"

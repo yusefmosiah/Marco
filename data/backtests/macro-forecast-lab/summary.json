@@ -1,0 +1,170 @@
+{
+  "chronos2_zero_shot": {
+    "model_id": "chronos2_zero_shot",
+    "status": "not_requested"
+  },
+  "evaluation_start": "2006-01",
+  "fred_md_path": "/Users/macbox/Library/CloudStorage/Dropbox/PhD/Research/code/Marco/data/fred-fx-rate-lab/raw/5d1b4008d3b4d5cb14883c395e8d1d80750b8b0a4f301e24c91f3f6710621663.csv",
+  "horizon_months": 6,
+  "lookahead_status": "not_real_time_vintage_safe",
+  "metrics": [
+    {
+      "directional_accuracy": 0.5172413793103449,
+      "mae": 3.342541739388515,
+      "model_id": "linear_top5",
+      "n": 232,
+      "r_squared": -0.5371176894373881,
+      "rmse": 5.582424071598088,
+      "target": "growth_proxy_yoy"
+    },
+    {
+      "directional_accuracy": 0.0,
+      "mae": 2.895239327400815,
+      "model_id": "no_change",
+      "n": 236,
+      "r_squared": -0.01816925239897782,
+      "rmse": 4.8235382894017915,
+      "target": "growth_proxy_yoy"
+    },
+    {
+      "directional_accuracy": 0.4194915254237288,
+      "mae": 3.8062633784540076,
+      "model_id": "rolling_mean_12",
+      "n": 236,
+      "r_squared": -0.6308497447809305,
+      "rmse": 6.104677368504522,
+      "target": "growth_proxy_yoy"
+    },
+    {
+      "directional_accuracy": 0.5805084745762712,
+      "mae": 2.90250248383763,
+      "model_id": "var",
+      "n": 236,
+      "r_squared": 0.047227235118503685,
+      "rmse": 4.666060962868977,
+      "target": "growth_proxy_yoy"
+    },
+    {
+      "directional_accuracy": 0.5689655172413793,
+      "mae": 2.9940229863519017,
+      "model_id": "xgboost_top5",
+      "n": 232,
+      "r_squared": 0.07869761296648181,
+      "rmse": 4.321856698652935,
+      "target": "growth_proxy_yoy"
+    },
+    {
+      "directional_accuracy": 0.6293103448275862,
+      "mae": 1.5690796811430658,
+      "model_id": "linear_top5",
+      "n": 232,
+      "r_squared": -0.3688117699729818,
+      "rmse": 2.1781593604189857,
+      "target": "inflation_yoy"
+    },
+    {
+      "directional_accuracy": 0.0,
+      "mae": 1.0935815988330733,
+      "model_id": "no_change",
+      "n": 236,
+      "r_squared": 0.3186639438333846,
+      "rmse": 1.5335812871398424,
+      "target": "inflation_yoy"
+    },
+    {
+      "directional_accuracy": 0.538135593220339,
+      "mae": 1.4131574318878182,
+      "model_id": "rolling_mean_12",
+      "n": 236,
+      "r_squared": -0.07463031444392287,
+      "rmse": 1.9259972300881631,
+      "target": "inflation_yoy"
+    },
+    {
+      "directional_accuracy": 0.4745762711864407,
+      "mae": 1.1369821393849973,
+      "model_id": "var",
+      "n": 236,
+      "r_squared": 0.22614008568003907,
+      "rmse": 1.6343959969124464,
+      "target": "inflation_yoy"
+    },
+    {
+      "directional_accuracy": 0.6077586206896551,
+      "mae": 1.3948954974390684,
+      "model_id": "xgboost_top5",
+      "n": 232,
+      "r_squared": -0.159847711048976,
+      "rmse": 2.0050179741372647,
+      "target": "inflation_yoy"
+    },
+    {
+      "directional_accuracy": 0.6067961165048543,
+      "mae": 0.4731690126947947,
+      "model_id": "linear_top5",
+      "n": 232,
+      "r_squared": 0.8670201847919281,
+      "rmse": 0.712538550898589,
+      "target": "interest_rate"
+    },
+    {
+      "directional_accuracy": 0.0,
+      "mae": 0.44572033898305086,
+      "model_id": "no_change",
+      "n": 236,
+      "r_squared": 0.8338473607531554,
+      "rmse": 0.7959103624685043,
+      "target": "interest_rate"
+    },
+    {
+      "directional_accuracy": 0.3047619047619048,
+      "mae": 0.8387782485875706,
+      "model_id": "rolling_mean_12",
+      "n": 236,
+      "r_squared": 0.5465860126812366,
+      "rmse": 1.3147948483216907,
+      "target": "interest_rate"
+    },
+    {
+      "directional_accuracy": 0.6333333333333333,
+      "mae": 0.7538308812320339,
+      "model_id": "var",
+      "n": 236,
+      "r_squared": 0.7347415337101646,
+      "rmse": 1.0056460777808711,
+      "target": "interest_rate"
+    },
+    {
+      "directional_accuracy": 0.6456310679611651,
+      "mae": 0.5746176934293632,
+      "model_id": "xgboost_top5",
+      "n": 232,
+      "r_squared": 0.8515637674849816,
+      "rmse": 0.7528101485123063,
+      "target": "interest_rate"
+    }
+  ],
+  "models": [
+    "linear_top5",
+    "no_change",
+    "rolling_mean_12",
+    "var",
+    "xgboost_top5"
+  ],
+  "output_dir": "/Users/macbox/Library/CloudStorage/Dropbox/PhD/Research/code/Marco/data/backtests/macro-forecast-lab",
+  "plots": {
+    "growth_proxy_yoy": "/Users/macbox/Library/CloudStorage/Dropbox/PhD/Research/code/Marco/data/backtests/macro-forecast-lab/plots/growth_proxy_yoy.svg",
+    "inflation_yoy": "/Users/macbox/Library/CloudStorage/Dropbox/PhD/Research/code/Marco/data/backtests/macro-forecast-lab/plots/inflation_yoy.svg",
+    "interest_rate": "/Users/macbox/Library/CloudStorage/Dropbox/PhD/Research/code/Marco/data/backtests/macro-forecast-lab/plots/interest_rate.svg"
+  },
+  "prediction_rows": 3516,
+  "schema_version": "marco.macro_forecast_lab.v1",
+  "targets": {
+    "growth_proxy_yoy": "100 * log(INDPRO / INDPRO[t-12]); monthly proxy, not quarterly GDP",
+    "inflation_yoy": "100 * log(CPIAUCSL / CPIAUCSL[t-12])",
+    "interest_rate": "FEDFUNDS level"
+  },
+  "train_min_months": 120,
+  "var_lags": 6,
+  "vintage_policy": "latest_revised_snapshot"
+}

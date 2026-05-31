@@ -9,6 +9,7 @@ from urllib.parse import parse_qs, urlparse
 
 from .agent_store import ArtifactNotFoundError, ArtifactStore
 from .datasets import DatasetRegistry
+from .economic_model_agent import run_economic_model_agent
 from .experiments import build_experiment_plan, suggest_hypotheses
 from .global_panel import load_global_macro_summary
 from .model_registry import list_model_specs
@@ -117,6 +118,15 @@ def route_get(
     if path == "/v1/global-panel":
         haul_id = first(query, "haul_id", "global_macro_starter_20260531")
         return load_global_macro_summary(store.root, haul_id=haul_id), HTTPStatus.OK, "application/json"
+
+    if path == "/v1/economic-model-agent":
+        return run_economic_model_agent(
+            store.root,
+            horizon_months=optional_int(first(query, "horizon_months") or first(query, "horizon")) or 6,
+            target=first(query, "target"),
+            model_id=first(query, "model_id"),
+            refresh=(first(query, "refresh", "false") or "false").lower() in {"1", "true", "yes"},
+        ), HTTPStatus.OK, "application/json"
 
     parts = path.strip("/").split("/")
     if len(parts) >= 3 and parts[0] == "v1" and parts[1] == "runs":

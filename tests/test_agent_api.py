@@ -69,3 +69,41 @@ def test_agent_api_route_global_panel(tmp_path: Path) -> None:
     assert status == HTTPStatus.OK
     assert content_type == "application/json"
     assert payload["panel_rows"] == 4
+
+
+def test_agent_api_route_economic_model_agent(tmp_path: Path) -> None:
+    store = ArtifactStore(tmp_path)
+    output_dir = tmp_path / "data" / "backtests" / "macro-forecast-lab"
+    output_dir.mkdir(parents=True)
+    (output_dir / "summary.json").write_text(
+        """
+        {
+          "schema_version": "marco.macro_forecast_lab.v1",
+          "horizon_months": 6,
+          "vintage_policy": "latest_revised_snapshot",
+          "lookahead_status": "not_real_time_vintage_safe",
+          "targets": {"interest_rate": "FEDFUNDS level"},
+          "models": ["xgboost_top5"],
+          "output_dir": "__OUTPUT_DIR__",
+          "plots": {},
+          "metrics": [{"target":"interest_rate","model_id":"xgboost_top5","n":2,"rmse":0.2,"r_squared":0.9}]
+        }
+        """.replace("__OUTPUT_DIR__", str(output_dir)),
+        encoding="utf-8",
+    )
+    (output_dir / "predictions.jsonl").write_text(
+        '{"target":"interest_rate","model_id":"xgboost_top5","forecast_origin":"2026-02","target_period":"2026-08","actual":4.0,"prediction":4.2,"error":0.2}\n',
+        encoding="utf-8",
+    )
+
+    payload, status, content_type = route_get(
+        store,
+        "/v1/economic-model-agent",
+        {"target": ["interest_rate"], "model_id": ["xgboost_top5"]},
+        public_base_url=None,
+    )
+
+    assert status == HTTPStatus.OK
+    assert content_type == "application/json"
+    assert payload["schema_version"] == "marco.economic_model_agent.v1"
+    assert payload["metrics"][0]["model_id"] == "xgboost_top5"
