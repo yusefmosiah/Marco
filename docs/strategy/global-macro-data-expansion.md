@@ -2,7 +2,7 @@
 
 Date: 2026-05-31
 
-Status: source-expansion plan
+Status: source-expansion plan with first ECB adapter
 
 ## Direction
 
@@ -73,7 +73,8 @@ Build adapters in this order:
 
 1. Generic source catalog loader.
 2. Generic SDMX client wrapper.
-3. ECB adapter using the SDMX wrapper.
+3. ECB adapter using the SDMX wrapper. The first ECB CSV smoke adapter now
+   exists for `EXR/M.USD.EUR.SP00.A`.
 4. IMF adapter using the SDMX wrapper.
 5. World Bank Indicators REST adapter.
 6. RBI DBIE discovery/downloader.
@@ -200,6 +201,9 @@ Current CLI support:
 emf-macro sources list --root . --priority p0
 emf-macro sources list --root . --region IN
 emf-macro sources inspect imf_data_sdmx --root .
+emf-macro source-fetch ecb_sdmx --root . --flow EXR --series M.USD.EUR.SP00.A --start-period 2024-01 --end-period 2024-03
+emf-macro source-observations ecb_sdmx --root . --series M.USD.EUR.SP00.A --limit 5
 ```
 
-This is catalog access only. It does not yet fetch remote data.
+ECB is the first source with remote fetch support. The other catalog entries are
+still catalog/discovery entries until their adapters land.

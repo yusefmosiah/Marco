@@ -108,11 +108,11 @@
       "regions": ["EA", "EU"],
       "access_pattern": "sdmx_2_1",
       "priority": "p0",
-      "status": "candidate",
+      "status": "active",
       "official_url": "https://data.ecb.europa.eu/",
       "docs_url": "https://data.ecb.europa.eu/help/api/overview",
       "auth": "none_or_public",
-      "notes": "Good first non-FRED structured central-bank adapter; includes exchange-rate and yield examples."
+      "notes": "First non-FRED structured central-bank adapter; current smoke path supports ECB EXR CSV data such as M.USD.EUR.SP00.A."
     },
     {
       "id": "bundesbank_sdmx",

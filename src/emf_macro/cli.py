@@ -7,6 +7,7 @@ from pathlib import Path
 from .agent_api import run_server
 from .agent_store import ArtifactStore
 from .datasets import DatasetRegistry
+from .ecb import fetch_ecb_series, load_ecb_observations
 from .experiments import build_experiment_plan, suggest_hypotheses
 from .model_registry import list_model_specs
 from .runner import RunnerConfig, run_experiment_plan
@@ -98,6 +99,22 @@ def main() -> None:
     sources_inspect.add_argument("source_id")
     sources_inspect.add_argument("--root", default=".", help="repo root")
     sources_inspect.add_argument("--compact", action="store_true", help="emit compact JSON")
+
+    source_fetch = sub.add_parser("source-fetch", help="fetch a supported official macro source series")
+    source_fetch.add_argument("source_id", choices=["ecb_sdmx"])
+    source_fetch.add_argument("--root", default=".", help="repo root")
+    source_fetch.add_argument("--flow", default="EXR")
+    source_fetch.add_argument("--series", required=True, help="provider series key, e.g. M.USD.EUR.SP00.A")
+    source_fetch.add_argument("--start-period")
+    source_fetch.add_argument("--end-period")
+    source_fetch.add_argument("--compact", action="store_true", help="emit compact JSON")
+
+    source_obs = sub.add_parser("source-observations", help="read normalized observations from a fetched source")
+    source_obs.add_argument("source_id", choices=["ecb_sdmx"])
+    source_obs.add_argument("--root", default=".", help="repo root")
+    source_obs.add_argument("--series", help="provider series key filter")
+    source_obs.add_argument("--limit", type=int, default=10)
+    source_obs.add_argument("--compact", action="store_true", help="emit compact JSON")
 
     hypotheses = sub.add_parser("suggest-hypotheses", help="suggest next testable macro/backtest hypotheses")
     hypotheses.add_argument("--root", default=".", help="repo root")
@@ -198,6 +215,32 @@ def main() -> None:
             )
         elif args.sources_command == "inspect":
             print_json(catalog.inspect(args.source_id), compact=args.compact)
+    elif args.command == "source-fetch":
+        if args.source_id == "ecb_sdmx":
+            print_json(
+                fetch_ecb_series(
+                    Path(args.root).resolve(),
+                    args.series,
+                    flow=args.flow,
+                    start_period=args.start_period,
+                    end_period=args.end_period,
+                ),
+                compact=args.compact,
+            )
+    elif args.command == "source-observations":
+        if args.source_id == "ecb_sdmx":
+            print_json(
+                {
+                    "schema_version": "marco.source_observations.v1",
+                    "source_id": args.source_id,
+                    "observations": load_ecb_observations(
+                        Path(args.root).resolve(),
+                        series_key=args.series,
+                        limit=args.limit,
+                    ),
+                },
+                compact=args.compact,
+            )
     elif args.command == "suggest-hypotheses":
         print_json(suggest_hypotheses(Path(args.root).resolve(), args.run_id), compact=args.compact)
     elif args.command == "plan-experiments":

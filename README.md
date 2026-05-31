@@ -23,12 +23,14 @@ Current artifact:
 - [Current focus](docs/strategy/current-focus.md)
 - [Coherent platform plan](docs/strategy/coherent-platform-plan.md)
 - [Global macro data expansion](docs/strategy/global-macro-data-expansion.md)
+- [ECB SDMX source adapter](docs/sources/ecb-sdmx.md)
 - [Dataset, hypothesis, and parallel backtesting foundation](docs/strategy/datasets-hypotheses-parallel-backtesting.md)
 - [Agent API and CLI](docs/agents/api-and-cli.md)
 - [Repo-local Marco agent API skill](skills/marco-agent-api/SKILL.md)
 - [FRED-MD Macro Lab foundation mission](docs/missions/fred-md-macro-lab-foundation.md)
 - [Experiment ledger continuation mission](docs/missions/marco-experiment-ledger-continuation.md)
 - [FRED FX/rate lab checkpoint](docs/runs/20260531-fred-fx-rate-lab-checkpoint.md)
+- [ECB SDMX smoke checkpoint](docs/runs/20260531-ecb-sdmx-smoke-checkpoint.md)
 - [FinRobot/MikeOSS platform evaluation](docs/strategy/finrobot-mikeoss-platform-evaluation.md)
 - [Node A static preview deployment](docs/deployment/node-a-static-preview.md)
 - [GitHub Actions CI and Node A deploy](docs/deployment/github-actions.md)
@@ -117,6 +119,19 @@ emf-macro suggest-hypotheses --root . --run-id latest
 emf-macro plan-experiments --root . --pair USD_CAD --horizon 6
 emf-macro sources list --root . --priority p0
 emf-macro sources inspect rbi_dbie --root .
+```
+
+Fetch the first non-FRED official central-bank source:
+
+```sh
+emf-macro source-fetch ecb_sdmx \
+  --root . \
+  --flow EXR \
+  --series M.USD.EUR.SP00.A \
+  --start-period 2024-01 \
+  --end-period 2024-03
+
+emf-macro source-observations ecb_sdmx --root . --series M.USD.EUR.SP00.A --limit 5
 ```
 
 Execute a bounded experiment plan into an ignored local run ledger:
