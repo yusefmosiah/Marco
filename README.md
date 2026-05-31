@@ -27,6 +27,7 @@ Current artifact:
 - [World Bank Indicators source adapter](docs/sources/world-bank-indicators.md)
 - [Dataset, hypothesis, and parallel backtesting foundation](docs/strategy/datasets-hypotheses-parallel-backtesting.md)
 - [Agent API and CLI](docs/agents/api-and-cli.md)
+- [Analyst Codex SDK CLI](apps/analyst-cli/)
 - [Repo-local Marco agent API skill](skills/marco-agent-api/SKILL.md)
 - [FRED-MD Macro Lab foundation mission](docs/missions/fred-md-macro-lab-foundation.md)
 - [Experiment ledger continuation mission](docs/missions/marco-experiment-ledger-continuation.md)
@@ -263,6 +264,16 @@ emf-macro serve-agent-api --root . --host 127.0.0.1 --port 8765
 ```
 
 See [Agent API and CLI](docs/agents/api-and-cli.md).
+
+Run the Analyst agent as an agentic RAG CLI through the Codex SDK:
+
+```sh
+cd apps/analyst-cli
+npm install
+node ./bin/analyst-rag.js run-ingestion \
+  --root ../.. \
+  --output output/analyst/financial-news-ingestion-latest.json
+```
 
 Dataset and experiment-planning foundation:
 

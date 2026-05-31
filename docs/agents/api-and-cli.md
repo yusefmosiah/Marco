@@ -73,6 +73,38 @@ emf-macro report --root . --run-id latest
 Use `--compact` on JSON commands when another agent or shell pipeline will parse
 the output.
 
+## Analyst Agentic RAG CLI
+
+The Analyst agent can also run as a Codex SDK-powered CLI under
+`apps/analyst-cli`. This is the portable path for a personal server.
+
+```sh
+cd apps/analyst-cli
+npm install
+node ./bin/analyst-rag.js retrieve "financial news ingestion macro fed"
+node ./bin/analyst-rag.js run-ingestion \
+  --root ../.. \
+  --output output/analyst/financial-news-ingestion-latest.json
+```
+
+What this wrapper does:
+
+- loads `OPENAI_API_KEY` from the environment or repo root `.env.local`;
+- retrieves local context from `agents/analyst.toml`, Marco docs, artifacts, and
+  previous Analyst outputs;
+- starts a Codex SDK thread in the repo root;
+- passes the Analyst JSON schema for `run-ingestion`;
+- validates approved source domains, stable IDs, and excerpt length before
+  writing output;
+- writes a one-page Markdown summary report with an audit section next to the
+  JSON output, or at `--report-output` when supplied.
+
+The Codex SDK package wraps the `codex` CLI and exchanges JSONL events with it,
+so the server needs Node 18+ and the SDK installed with
+`npm install @openai/codex-sdk`, following
+<https://developers.openai.com/codex/sdk>. The Codex CLI also needs a writable
+home directory for local state.
+
 ## HTTP API
 
 Start the local read-only API:
