@@ -425,14 +425,6 @@
       on:submit|preventDefault={sendPrompt}
       aria-label="Prompt Marco agents"
     >
-      <label class="route-select">
-        <span>Route</span>
-        <select bind:value={route}>
-          {#each promptRoutes as item}
-            <option value={item.id}>{item.label}</option>
-          {/each}
-        </select>
-      </label>
       <textarea
         bind:value={promptText}
         rows="2"
