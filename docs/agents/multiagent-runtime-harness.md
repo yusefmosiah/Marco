@@ -19,25 +19,77 @@ four roles:
 4. `ui_chatbot_agent` answers user questions from the latest markdown files and
    can request future runs from the other agents.
 
-The agents communicate through markdown handoff files with machine-readable
-frontmatter. The HTTP/UI layer consumes those files first. Direct agent calls
-are a control path, not the primary evidence surface.
+Each specialist agent should have its own API. The chatbot agent should also
+have an API, plus the public GUI entry point. The common data plane remains
+markdown handoff files with machine-readable frontmatter: specialist APIs write
+reports over time, the chatbot consumes those reports by default, and the
+chatbot can call specialist APIs when the user asks for a custom response or
+fresh run.
 
 ## Runtime Principles
 
 - Markdown is the shared working memory because humans, agents, and the UI can
   inspect it without special tools.
+- Agent APIs are the action surface; markdown reports are the evidence surface.
 - Raw datasets, model outputs, and news rows stay in structured artifacts.
   Markdown summarizes and cites those artifacts; it does not replace them.
 - Every agent run writes an immutable run folder and then atomically updates a
   latest pointer.
-- The UI chatbot can request or parameterize a future run, but it must not edit
-  another agent's completed output.
+- The UI chatbot can request or parameterize a future specialist-agent run, but
+  it must not edit another agent's completed output.
 - Agent outputs must separate observations, interpretations, claims, caveats,
   and next-run instructions.
 - Any LLM synthesis routes through the Node A go-choir gateway, defaulting to
   Fireworks `accounts/fireworks/models/deepseek-v4-flash` with medium
   reasoning.
+
+## API Topology
+
+The hackathon architecture has four services:
+
+```text
+public website
+  -> chatbot GUI
+      -> chatbot_agent API
+          -> reads data/agents/latest/*.md
+          -> calls specialist public APIs for custom responses or queued runs
+
+economic_modeling_agent API
+  -> writes data/agents/latest/economic_modeling_agent.md
+
+news_agent API
+  -> writes data/agents/latest/news_agent.md
+
+analyst_agent API
+  -> writes data/agents/latest/analyst_agent.md
+```
+
+The three specialist APIs expose their latest reports and accept bounded run
+requests. The chatbot API exposes conversational answers and orchestrates calls
+to the specialist APIs.
+
+Minimum specialist API shape:
+
+```text
+GET  /health
+GET  /v1/report/latest
+GET  /v1/runs
+GET  /v1/runs/{run_id}
+POST /v1/runs
+```
+
+Minimum chatbot API shape:
+
+```text
+GET  /health
+POST /v1/chat
+GET  /v1/context
+POST /v1/requests/{agent_id}
+```
+
+`POST /v1/runs` and `POST /v1/requests/{agent_id}` should create request files
+or queued run records. They should not synchronously perform long backtests,
+large fetches, or multi-agent synthesis inside the HTTP request.
 
 ## Filesystem Contract
 

@@ -15,6 +15,21 @@ has two stable machine surfaces over committed artifacts:
 The planned multiagent runtime contract is documented in
 `docs/agents/multiagent-runtime-harness.md`.
 
+The intended public shape is not one giant agent endpoint. Marco should expose
+three specialist agent APIs plus a chatbot API/GUI:
+
+```text
+economic_modeling_agent API
+news_agent API
+analyst_agent API
+ui_chatbot_agent API + website chat interface
+```
+
+The chatbot reads the latest markdown reports from the three specialist agents
+by default. When a user asks for a custom answer, the chatbot may call a
+specialist API to create a bounded run request, then consume that agent's next
+report.
+
 The first surface is read-only over committed artifact bundles. Running new
 backtests remains an explicit CLI operation until there is authentication, job
 isolation, and a run queue.
