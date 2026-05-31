@@ -105,6 +105,69 @@ Carry and real-rate differential baselines did not generally beat no-change on
 RMSE. That is a useful platform result: the harness compared against hard
 baselines and did not manufacture a false signal.
 
+## What Happened
+
+The mission started from a docs-only repo and produced a first working macro
+lab foundation. The implementation stayed narrow: instead of trying to build a
+generic macro dashboard, it tested one economic wedge - whether nominal/real
+interest-rate differentials and related macro features carry signal for FX
+returns.
+
+The live pipeline pulled the current FRED-MD monthly dataset plus selected FRED
+series for five FX pairs:
+
+- `EUR_USD`
+- `GBP_USD`
+- `USD_CAD`
+- `USD_JPY`
+- `USD_MXN`
+
+It then normalized the observations, built a monthly panel, generated
+rate/inflation/yield/FX features, constructed 1M/3M/6M forward FX-return
+targets, and ran walk-forward backtests. The important result is methodological:
+the system produced a complete source-to-backtest path and made random-walk /
+no-change baselines first-class, so weak models are visible immediately.
+
+The current run should be read as a foundation proof, not as an economic claim.
+It is latest-revised-snapshot evidence that the data/model harness works; it is
+not yet real-time trading or nowcasting evidence.
+
+## Backtest Timescale Decision
+
+The first completed run used:
+
+```text
+evaluation_start = 2006-01
+horizons = 1M, 3M, 6M
+training = expanding window
+```
+
+That was chosen because the common feature coverage across the initial basket is
+much better from 2006 onward, and the window still spans multiple regimes:
+
+- global financial crisis;
+- euro crisis;
+- zero-rate period;
+- COVID shock;
+- inflation and rate-hike cycle.
+
+The next version should add:
+
+```text
+horizons = 1M, 3M, 6M, 12M, 24M
+training windows = expanding and rolling 120M
+evaluation slices = full common sample, 2006-2012, 2013-2019, 2020-present
+```
+
+For long horizons, especially 12M and 24M, report overlapping monthly labels
+and a spaced robustness variant, such as quarterly-spaced or annual-spaced
+forecast origins. This avoids overstating evidence from highly correlated
+forward-return labels.
+
+Use longer history where feature coverage permits, but judge model quality on
+common, regime-aware out-of-sample windows. For the current FRED setup,
+`2006-present` remains the pragmatic first common benchmark.
+
 ## Limitations
 
 - This is a latest-revised-snapshot run, not a real-time vintage-safe backtest.
