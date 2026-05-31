@@ -33,6 +33,10 @@ Node A worker VMs without collapsing all of them into one immediate mission.
 | Consumption | CLI, read-only API, repo-local skill, Svelte preview | Hosted uploads, agent workflows, custom frontend | Keep public mutation deferred until auth/storage/job isolation exist |
 | Execution substrate | Local CLI and GitHub Actions CI | Node A service, `vmctl` worker VMs, Choir orchestration | CI is the verifier; VMs are a scale/isolation backend after the ledger exists |
 
+The global source expansion lane is tracked in
+[Global Macro Data Expansion](global-macro-data-expansion.md), with a
+machine-readable catalog at `configs/macro_sources.json`.
+
 ## What Belongs Now
 
 The next implementation work should strengthen the path from data to credible
