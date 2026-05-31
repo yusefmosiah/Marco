@@ -53,7 +53,7 @@ The repo was mixing two different products:
 - document/table extraction over financial filings;
 - macro data panels and economic-model backtesting.
 
-Both can eventually belong under EMF, but the near-term work needs one center of
+Both can eventually belong under Marco, but the near-term work needs one center of
 gravity. The active center is:
 
 ```text

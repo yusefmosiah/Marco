@@ -1,4 +1,4 @@
-# EMF FX/Rate Lab Web
+# Marco FX/Rate Lab Web
 
 Svelte/Vite static frontend for the committed FRED FX/rate lab artifacts.
 

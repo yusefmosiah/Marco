@@ -1,6 +1,6 @@
-# emf
+# Marco
 
-Emerging Markets Financials.
+Macro research and backtesting lab.
 
 This repo is currently focused on macro data ingestion and backtesting.
 

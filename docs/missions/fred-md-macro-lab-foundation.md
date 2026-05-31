@@ -41,7 +41,7 @@ toward vintage-safe India/EM expansion.
 
 ## Mission Thesis
 
-Build the first EMF macro modeling foundation around a concrete economic
+Build the first Marco macro modeling foundation around a concrete economic
 hypothesis:
 
 ```text
@@ -58,7 +58,7 @@ FRED-MD remains useful as the macro-panel reference shape, but this mission
 should not stop at reproducing FRED-MD. It should build a model-ready panel for
 rates and FX, run baseline models, and produce an honest report.
 
-The long-term EMF macro product is:
+The long-term Marco macro product is:
 
 ```text
 official macro sources

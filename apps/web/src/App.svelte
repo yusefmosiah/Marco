@@ -72,17 +72,17 @@
 {:else if !data}
   <main class="shell">
     <section class="notice">
-      <h1>Loading EMF FX/Rate Lab</h1>
+      <h1>Loading Marco FX/Rate Lab</h1>
     </section>
   </main>
 {:else}
   <main class="shell">
     <header class="topbar">
       <div>
-        <p class="eyebrow">EMF Macro Lab</p>
+        <p class="eyebrow">Marco Macro Lab</p>
         <h1>FX/Rate Differential Backtest</h1>
       </div>
-      <a class="repo-link" href="https://github.com/yusefmosiah/emf">GitHub</a>
+      <a class="repo-link" href="https://github.com/yusefmosiah/Marco">GitHub</a>
     </header>
 
     <section class="summary-grid">
