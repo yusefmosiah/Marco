@@ -1,0 +1,9 @@
+{
+  "agent_id": "analyst_agent",
+  "refs": [
+    "output/analyst/financial-news-ingestion-20260531T205630Z.json",
+    "output/analyst/financial-news-ingestion-20260531T205630Z.validation.md"
+  ],
+  "run_id": "analyst_agent-20260531-220906",
+  "schema_version": "marco.agent_run_artifacts.v1"
+}

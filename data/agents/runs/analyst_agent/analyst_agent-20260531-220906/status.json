@@ -1,0 +1,7 @@
+{
+  "agent_id": "analyst_agent",
+  "generated_at": "2026-05-31T22:09:06Z",
+  "run_id": "analyst_agent-20260531-220906",
+  "schema_version": "marco.agent_run_status.v1",
+  "status": "succeeded"
+}

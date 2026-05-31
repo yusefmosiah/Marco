@@ -77,6 +77,8 @@ def test_news_model_agent_writes_journal_model_and_state(tmp_path: Path) -> None
     assert (tmp_path / "data" / "macro-news" / "model.md").exists()
     assert (tmp_path / result["journal_path"]).exists()
     assert (tmp_path / "data" / "macro-news" / "model_state.json").exists()
+    assert (tmp_path / "data" / "agents" / "latest" / "news_agent.md").exists()
+    assert result["handoff"]["latest_path"] == "data/agents/latest/news_agent.md"
     model = (tmp_path / "data" / "macro-news" / "model.md").read_text(encoding="utf-8")
     journal = (tmp_path / result["journal_path"]).read_text(encoding="utf-8")
     assert "Marco Macro News Model" in model

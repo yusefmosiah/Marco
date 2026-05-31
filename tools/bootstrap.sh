@@ -21,6 +21,10 @@ uv sync --extra dev
 cd "$ROOT/apps/web"
 npm ci
 
+cd "$ROOT/apps/analyst-cli"
+npm ci
+
 echo "Marco setup complete."
 echo "Python CLI: .venv/bin/emf-macro list-runs --root ."
 echo "Web build:  cd apps/web && npm run build"
+echo "Analyst CLI: cd apps/analyst-cli && node ./bin/analyst-rag.js retrieve macro"

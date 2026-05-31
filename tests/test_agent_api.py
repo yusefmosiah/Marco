@@ -5,7 +5,9 @@ from pathlib import Path
 
 from emf_macro.agent_api import route_get
 from emf_macro.agent_store import ArtifactStore
+from test_analyst_agent import write_analyst_payload
 from test_news import write_registry
+from test_news_agent import write_news_bundle
 
 from test_agent_store import write_summary
 
@@ -108,6 +110,34 @@ def test_agent_api_route_news_ledger(tmp_path: Path) -> None:
     assert fetches["fetches"][0]["id"] == "fetch-1"
 
 
+def test_agent_api_route_news_agent(tmp_path: Path) -> None:
+    store = ArtifactStore(tmp_path)
+    write_news_bundle(tmp_path)
+
+    payload, status, content_type = route_get(store, "/v1/agents/news-agent", {}, public_base_url=None)
+
+    assert status == HTTPStatus.OK
+    assert content_type == "application/json"
+    assert payload["schema_version"] == "marco.news_agent.v1"
+    assert payload["agent_id"] == "news_agent"
+    assert payload["summary"]["item_count"] == 3
+    assert not (tmp_path / "data" / "agents" / "latest" / "news_agent.md").exists()
+
+
+def test_agent_api_route_analyst_agent(tmp_path: Path) -> None:
+    store = ArtifactStore(tmp_path)
+    write_analyst_payload(tmp_path)
+
+    payload, status, content_type = route_get(store, "/v1/agents/analyst-agent", {}, public_base_url=None)
+
+    assert status == HTTPStatus.OK
+    assert content_type == "application/json"
+    assert payload["schema_version"] == "marco.analyst_agent.v1"
+    assert payload["agent_id"] == "analyst_agent"
+    assert payload["summary"]["article_count"] == 1
+    assert "handoff" not in payload
+
+
 def test_agent_api_route_economic_model_agent(tmp_path: Path) -> None:
     store = ArtifactStore(tmp_path)
     output_dir = tmp_path / "data" / "backtests" / "macro-forecast-lab"
@@ -147,3 +177,12 @@ def test_agent_api_route_economic_model_agent(tmp_path: Path) -> None:
     assert payload["metrics"][0]["model_id"] == "xgboost_top5"
     assert "handoff" not in payload
     assert not (tmp_path / "data" / "agents" / "latest" / "economic_modeling_agent.md").exists()
+
+    alias, alias_status, _ = route_get(
+        store,
+        "/v1/agents/economic-modeling-agent",
+        {"target": ["interest_rate"], "model_id": ["xgboost_top5"]},
+        public_base_url=None,
+    )
+    assert alias_status == HTTPStatus.OK
+    assert alias["agent_id"] == "economic_modeling_agent"

@@ -396,6 +396,8 @@ emf-macro list-runs --root .
 emf-macro metrics --root . --run-id latest --pair USD_CAD --horizon 6
 emf-macro agent-context --root . --run-id latest
 emf-macro economic-model-agent --root .
+emf-macro news-agent-run --root . --no-fetch
+emf-macro analyst-agent --root .
 emf-macro serve-agent-api --root . --host 127.0.0.1 --port 8765
 ```
 
@@ -405,10 +407,27 @@ Run the Analyst agent as an agentic RAG CLI through the Codex SDK:
 
 ```sh
 cd apps/analyst-cli
-npm install
+npm ci
 node ./bin/analyst-rag.js run-ingestion \
   --root ../.. \
+  --model "$MARCO_CODEX_MODEL" \
+  --model-reasoning-effort medium \
   --output output/analyst/financial-news-ingestion-latest.json
+```
+
+The Python wrapper exposes the same specialist through Marco's agent API:
+
+```sh
+emf-macro analyst-agent --root . --write-handoff
+curl -s 'http://127.0.0.1:8765/v1/agents/analyst-agent' | jq
+```
+
+Current specialist handoffs:
+
+```text
+data/agents/latest/economic_modeling_agent.md
+data/agents/latest/news_agent.md
+data/agents/latest/analyst_agent.md
 ```
 
 Dataset and experiment-planning foundation:

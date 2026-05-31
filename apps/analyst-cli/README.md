@@ -52,12 +52,20 @@ Useful options:
 ```text
 --topK 12
 --model gpt-5.3-codex
+--model-reasoning-effort medium
 --network true
 --webSearch true
 --approvalPolicy never
 --report-output output/analyst/financial-news-ingestion-latest.summary.md
 --threadId <existing-codex-thread-id>
 --corpus agents/analyst.toml,docs/agents,output/analyst
+```
+
+The same defaults can be supplied with environment variables:
+
+```sh
+export MARCO_CODEX_MODEL=gpt-5.4-mini
+export MARCO_CODEX_REASONING_EFFORT=medium
 ```
 
 For personal server deployment, install Node 18+, run `npm install` in this

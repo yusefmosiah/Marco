@@ -6,6 +6,7 @@ from pathlib import Path
 
 from .agent_api import run_server
 from .agent_store import ArtifactStore
+from .analyst_agent import run_analyst_agent
 from .datasets import DatasetRegistry
 from .ecb import fetch_ecb_series, load_ecb_observations
 from .economic_model_agent import run_economic_model_agent
@@ -182,7 +183,18 @@ def main() -> None:
     news_agent.add_argument("--max-model-tokens", type=int, default=80000)
     news_agent.add_argument("--prune-target-tokens", type=int, default=50000)
     news_agent.add_argument("--max-items-in-update", type=int, default=80)
+    news_agent.add_argument("--no-handoff", action="store_true", help="do not update data/agents/latest/news_agent.md")
     news_agent.add_argument("--compact", action="store_true", help="emit compact JSON")
+
+    analyst_agent = sub.add_parser("analyst-agent", help="emit or run the analyst Codex SDK agent packet")
+    analyst_agent.add_argument("--root", default=".", help="repo root")
+    analyst_agent.add_argument("--run-codex", action="store_true", help="invoke the Codex SDK analyst CLI before reading the packet")
+    analyst_agent.add_argument("--prompt")
+    analyst_agent.add_argument("--model", help="Codex model override; can also use MARCO_CODEX_MODEL")
+    analyst_agent.add_argument("--model-reasoning-effort", default="medium")
+    analyst_agent.add_argument("--write-handoff", action="store_true", help="write data/agents/latest/analyst_agent.md")
+    analyst_agent.add_argument("--timeout-seconds", type=int, default=900)
+    analyst_agent.add_argument("--compact", action="store_true", help="emit compact JSON")
 
     macro_forecast = sub.add_parser("run-macro-forecast-lab", help="forecast FRED-MD interest, inflation, and growth proxy targets")
     macro_forecast.add_argument("--root", default=".", help="repo root")
@@ -419,6 +431,20 @@ def main() -> None:
                 max_model_tokens=args.max_model_tokens,
                 prune_target_tokens=args.prune_target_tokens,
                 max_items_in_update=args.max_items_in_update,
+                write_handoff=not args.no_handoff,
+            ),
+            compact=args.compact,
+        )
+    elif args.command == "analyst-agent":
+        print_json(
+            run_analyst_agent(
+                Path(args.root).resolve(),
+                run_codex=args.run_codex,
+                prompt=args.prompt,
+                model=args.model,
+                model_reasoning_effort=args.model_reasoning_effort,
+                write_handoff=args.write_handoff,
+                timeout_seconds=args.timeout_seconds,
             ),
             compact=args.compact,
         )

@@ -8,12 +8,14 @@ from typing import Any
 from urllib.parse import parse_qs, urlparse
 
 from .agent_store import ArtifactNotFoundError, ArtifactStore
+from .analyst_agent import run_analyst_agent
 from .datasets import DatasetRegistry
 from .economic_model_agent import run_economic_model_agent
 from .experiments import build_experiment_plan, suggest_hypotheses
 from .global_panel import load_global_macro_summary
 from .model_registry import list_model_specs
 from .news import list_news_sources, load_news_fetches, load_news_items, load_news_summary
+from .news_agent import read_news_agent_packet, run_news_model_agent
 
 
 def run_server(root: Path, host: str, port: int, public_base_url: str | None = None) -> None:
@@ -53,6 +55,8 @@ def make_handler(store: ArtifactStore, public_base_url: str | None = None) -> ty
                 if include_body:
                     self.wfile.write(body)
             except ArtifactNotFoundError as error:
+                self.write_error(HTTPStatus.NOT_FOUND, str(error), include_body=include_body)
+            except FileNotFoundError as error:
                 self.write_error(HTTPStatus.NOT_FOUND, str(error), include_body=include_body)
             except ValueError as error:
                 self.write_error(HTTPStatus.BAD_REQUEST, str(error), include_body=include_body)
@@ -151,14 +155,36 @@ def route_get(
             ),
         }, HTTPStatus.OK, "application/json"
 
-    if path == "/v1/economic-model-agent":
+    if path in {"/v1/news-agent", "/v1/agents/news-agent"}:
+        if truthy(first(query, "run", "false")):
+            return run_news_model_agent(
+                store.root,
+                source_ids=query.get("source_id"),
+                do_fetch=truthy(first(query, "fetch", "false")),
+                max_items_in_update=optional_int(first(query, "max_items_in_update")) or 80,
+                write_handoff=truthy(first(query, "write_handoff", "false")),
+            ), HTTPStatus.OK, "application/json"
+        return read_news_agent_packet(store.root), HTTPStatus.OK, "application/json"
+
+    if path in {"/v1/analyst-agent", "/v1/agents/analyst-agent"}:
+        return run_analyst_agent(
+            store.root,
+            run_codex=truthy(first(query, "run", "false")),
+            prompt=first(query, "prompt"),
+            model=first(query, "model"),
+            model_reasoning_effort=first(query, "model_reasoning_effort") or first(query, "reasoning_effort") or "medium",
+            write_handoff=truthy(first(query, "write_handoff", "false")),
+            timeout_seconds=optional_int(first(query, "timeout_seconds")) or 900,
+        ), HTTPStatus.OK, "application/json"
+
+    if path in {"/v1/economic-model-agent", "/v1/agents/economic-modeling-agent"}:
         return run_economic_model_agent(
             store.root,
             horizon_months=optional_int(first(query, "horizon_months") or first(query, "horizon")) or 6,
             target=first(query, "target"),
             model_id=first(query, "model_id"),
-            refresh=(first(query, "refresh", "false") or "false").lower() in {"1", "true", "yes"},
-            write_handoff=(first(query, "write_handoff", "false") or "false").lower() in {"1", "true", "yes"},
+            refresh=truthy(first(query, "refresh", "false")),
+            write_handoff=truthy(first(query, "write_handoff", "false")),
         ), HTTPStatus.OK, "application/json"
 
     parts = path.strip("/").split("/")
@@ -202,6 +228,10 @@ def optional_int(value: str | None) -> int | None:
     if value is None or value == "":
         return None
     return int(value)
+
+
+def truthy(value: str | None) -> bool:
+    return (value or "false").lower() in {"1", "true", "yes"}
 
 
 def optional_int_list(values: list[str] | None) -> list[int] | None:

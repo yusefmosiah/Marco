@@ -1,6 +1,6 @@
 # Marco Macro News Model
 
-Last updated: 2026-05-31T21:15:46.477634+00:00
+Last updated: 2026-05-31T22:09:32.219635+00:00
 
 This is the news agent's bounded working model over Marco's official macro news source ledger.
 It records marginal changes by fetch run and prunes older update sections when the file approaches the token budget.
@@ -77,6 +77,22 @@ Top verticals:
 
 ## Marginal Updates
 <!-- NEWS_AGENT_UPDATES_START -->
+
+### Fetch Run 20260531-220932-news-model
+
+- Generated at: 2026-05-31T22:09:32.219635+00:00
+- Ledger items after fetch: 493
+- New marginal items: 0
+- Fetch audit rows: 17
+- Fetch status counts: {'200': 17}
+
+New items by source:
+
+New items by region:
+
+New items by vertical:
+
+Marginal item sample:
 
 ### Fetch Run 20260531-211546-news-model
 

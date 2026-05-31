@@ -40,6 +40,9 @@ uv sync --extra dev
 
 cd apps/web
 npm ci
+
+cd ../analyst-cli
+npm ci
 ```
 
 ## Common Commands
@@ -96,6 +99,13 @@ Run the macro forecast lab and update the economic modeling agent handoff:
 ```sh
 .venv/bin/emf-macro run-macro-forecast-lab --root .
 .venv/bin/emf-macro economic-model-agent --root .
+```
+
+Update the other specialist handoffs:
+
+```sh
+.venv/bin/emf-macro news-agent-run --root . --no-fetch
+.venv/bin/emf-macro analyst-agent --root . --write-handoff
 ```
 
 Serve the read-only local agent API:

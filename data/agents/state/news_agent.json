@@ -1,0 +1,7 @@
+{
+  "agent_id": "news_agent",
+  "last_run_id": "20260531-220932-news-model",
+  "latest_path": "data/agents/latest/news_agent.md",
+  "schema_version": "marco.agent_state.v1",
+  "updated_at": "2026-05-31T22:09:32.219635+00:00"
+}

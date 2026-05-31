@@ -34,6 +34,21 @@ The first surface is read-only over committed artifact bundles. Running new
 backtests remains an explicit CLI operation until there is authentication, job
 isolation, and a run queue.
 
+Implemented specialist endpoints:
+
+```text
+GET /v1/agents/economic-modeling-agent
+GET /v1/agents/news-agent
+GET /v1/agents/analyst-agent
+```
+
+All three return a JSON packet on their own. By default these endpoints are
+read-only and do not replace `data/agents/latest/*.md`. Pass
+`write_handoff=true` only for controlled local runs that should update the
+shared markdown handoff files. For `news-agent`, pass `run=true` to run the
+deterministic news model wrapper and `fetch=true` to fetch feeds. For
+`analyst-agent`, pass `run=true` to invoke the Codex SDK CLI.
+
 ## Install
 
 From the repo:
@@ -205,6 +220,20 @@ artifacts and writes the shared multiagent handoff at
 `data/agents/latest/economic_modeling_agent.md`, plus immutable run files under
 `data/agents/runs/economic_modeling_agent/`.
 
+Analyst agent commands:
+
+```sh
+emf-macro analyst-agent --root .
+emf-macro analyst-agent --root . --write-handoff
+emf-macro analyst-agent --root . --run-codex --model "$MARCO_CODEX_MODEL" --model-reasoning-effort medium --write-handoff
+```
+
+The Analyst agent is the Codex SDK-backed specialist. The Python command reads
+the latest Analyst JSON artifact by default, and can invoke
+`apps/analyst-cli/bin/analyst-rag.js` when `--run-codex` is passed. Configure
+the live Codex run with `MARCO_CODEX_MODEL` and
+`MARCO_CODEX_REASONING_EFFORT=medium`, or with the CLI flags shown above.
+
 Macro news API:
 
 ```sh
@@ -216,11 +245,14 @@ Economic modeling API:
 
 ```sh
 curl -s 'http://127.0.0.1:8765/v1/economic-model-agent?target=interest_rate&model_id=var' | jq
+curl -s 'http://127.0.0.1:8765/v1/agents/economic-modeling-agent?target=interest_rate&model_id=var' | jq
+curl -s 'http://127.0.0.1:8765/v1/agents/news-agent' | jq
+curl -s 'http://127.0.0.1:8765/v1/agents/analyst-agent' | jq
 ```
 
 The API is read-only by default. Use the CLI when updating committed handoff
 files; pass `write_handoff=true` only for controlled local runs that should
-replace `data/agents/latest/economic_modeling_agent.md`.
+replace `data/agents/latest/*.md`.
 
 ## LLM Gateway
 

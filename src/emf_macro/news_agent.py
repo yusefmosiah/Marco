@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 import re
 from collections import Counter
 from datetime import UTC, datetime
@@ -16,6 +17,9 @@ STATE_PATH = NEWS_DATA_BUNDLE / "model_state.json"
 JOURNAL_DIR = NEWS_DATA_BUNDLE / "fetch-journal"
 UPDATES_START = "<!-- NEWS_AGENT_UPDATES_START -->"
 UPDATES_END = "<!-- NEWS_AGENT_UPDATES_END -->"
+AGENT_ID = "news_agent"
+AGENT_SCHEMA = "marco.news_agent.v1"
+HANDOFF_SCHEMA = "marco.agent_handoff.v1"
 
 
 def run_news_model_agent(
@@ -26,14 +30,16 @@ def run_news_model_agent(
     max_model_tokens: int = 80000,
     prune_target_tokens: int = 50000,
     max_items_in_update: int = 80,
+    write_handoff: bool = True,
 ) -> dict[str, Any]:
     if do_fetch:
         fetch_result = fetch_news(root, source_ids=source_ids)
     else:
+        existing_summary = load_news_summary(root)
         fetch_result = {
             "schema_version": "marco.news_fetch.v1",
             "source_id": "macro_news",
-            "source_count": 0,
+            "source_count": existing_summary.get("source_count", 0),
             "successful_source_count": 0,
             "item_count": len(load_news_items(root)),
             "fetch_count": len(load_news_fetches(root)),
@@ -82,8 +88,9 @@ def run_news_model_agent(
     }
     write_json(root / STATE_PATH, state_payload)
 
-    return {
+    result = {
         "schema_version": "marco.news_model_agent_run.v1",
+        "agent_id": AGENT_ID,
         "run_id": run_id,
         "generated_at": generated_at,
         "fetched": do_fetch,
@@ -95,6 +102,80 @@ def run_news_model_agent(
         "state_path": str(STATE_PATH),
         "model_estimated_tokens": estimate_tokens(model_md),
         "pruned_update_sections": prune_result["pruned_update_sections"],
+    }
+    if write_handoff:
+        packet = build_news_agent_packet(
+            root,
+            run_id=run_id,
+            generated_at=generated_at,
+            fetched=do_fetch,
+            fetch_result=fetch_result,
+            new_item_count=len(new_items),
+            model_estimated_tokens=estimate_tokens(model_md),
+        )
+        result["handoff"] = write_news_handoff(root, packet)
+    return result
+
+
+def read_news_agent_packet(root: Path) -> dict[str, Any]:
+    return build_news_agent_packet(
+        root,
+        run_id=f"{AGENT_ID}-{datetime.now(UTC).strftime('%Y%m%d-%H%M%S')}",
+        generated_at=utc_now_iso(),
+        fetched=False,
+        fetch_result=None,
+        new_item_count=0,
+        model_estimated_tokens=estimate_tokens((root / MODEL_PATH).read_text(encoding="utf-8")) if (root / MODEL_PATH).exists() else 0,
+    )
+
+
+def build_news_agent_packet(
+    root: Path,
+    *,
+    run_id: str,
+    generated_at: str,
+    fetched: bool,
+    fetch_result: dict[str, Any] | None,
+    new_item_count: int,
+    model_estimated_tokens: int,
+) -> dict[str, Any]:
+    items = load_news_items(root)
+    fetches = load_news_fetches(root)
+    summary = load_news_summary(root)
+    return {
+        "schema_version": AGENT_SCHEMA,
+        "agent_id": AGENT_ID,
+        "run_id": run_id,
+        "generated_at": generated_at,
+        "name": "Marco News Agent",
+        "purpose": "Maintain the official macro news ledger and produce cited briefings from source rows.",
+        "inputs": {
+            "summary_path": str(NEWS_DATA_BUNDLE / "summary.json"),
+            "items_path": str(NEWS_DATA_BUNDLE / "news_items.jsonl"),
+            "fetches_path": str(NEWS_DATA_BUNDLE / "fetches.jsonl"),
+            "model_path": str(MODEL_PATH),
+            "fetched": fetched,
+        },
+        "summary": {
+            "item_count": summary.get("item_count", len(items)),
+            "source_count": summary.get("source_count"),
+            "fetch_count": len(fetches),
+            "new_item_count": new_item_count,
+            "first_published_at": summary.get("first_published_at"),
+            "last_published_at": summary.get("last_published_at"),
+            "region_counts": summary.get("region_counts", {}),
+            "vertical_counts": summary.get("vertical_counts", {}),
+            "source_counts": summary.get("source_counts", {}),
+            "model_estimated_tokens": model_estimated_tokens,
+        },
+        "latest_items": items[:12],
+        "latest_fetches": fetches[:12],
+        "fetch_result": fetch_result,
+        "caveats": [
+            "News rows are source evidence, not model predictions.",
+            "The agent should cite exact news_item.id values in downstream synthesis.",
+            "Publication timestamps are source-publication snapshots, not macro data vintages.",
+        ],
     }
 
 
@@ -259,6 +340,119 @@ def render_journal(
     )
 
 
+def write_news_handoff(root: Path, packet: dict[str, Any]) -> dict[str, str]:
+    run_dir = root / "data" / "agents" / "runs" / AGENT_ID / packet["run_id"]
+    latest_path = root / "data" / "agents" / "latest" / f"{AGENT_ID}.md"
+    state_path = root / "data" / "agents" / "state" / f"{AGENT_ID}.json"
+    run_dir.mkdir(parents=True, exist_ok=True)
+    latest_path.parent.mkdir(parents=True, exist_ok=True)
+    state_path.parent.mkdir(parents=True, exist_ok=True)
+    output_md = render_news_handoff(packet, output_path=(run_dir / "output.md").relative_to(root))
+    write_text_atomic(run_dir / "input.md", "# News Agent Input\n\n" + fenced_json(packet["inputs"]) + "\n")
+    write_text_atomic(run_dir / "output.md", output_md)
+    write_json_atomic(
+        run_dir / "status.json",
+        {
+            "schema_version": "marco.agent_run_status.v1",
+            "agent_id": AGENT_ID,
+            "run_id": packet["run_id"],
+            "status": "succeeded",
+            "generated_at": packet["generated_at"],
+        },
+    )
+    write_json_atomic(
+        run_dir / "artifacts.json",
+        {
+            "schema_version": "marco.agent_run_artifacts.v1",
+            "agent_id": AGENT_ID,
+            "run_id": packet["run_id"],
+            "refs": [
+                packet["inputs"]["summary_path"],
+                packet["inputs"]["items_path"],
+                packet["inputs"]["fetches_path"],
+                packet["inputs"]["model_path"],
+            ],
+        },
+    )
+    write_text_atomic(run_dir / "logs.jsonl", json.dumps({"event": "completed", "run_id": packet["run_id"]}, sort_keys=True) + "\n")
+    write_text_atomic(latest_path, output_md)
+    write_json_atomic(
+        state_path,
+        {
+            "schema_version": "marco.agent_state.v1",
+            "agent_id": AGENT_ID,
+            "last_run_id": packet["run_id"],
+            "updated_at": packet["generated_at"],
+            "latest_path": str(latest_path.relative_to(root)),
+        },
+    )
+    return {
+        "run_dir": str(run_dir.relative_to(root)),
+        "latest_path": str(latest_path.relative_to(root)),
+        "state_path": str(state_path.relative_to(root)),
+    }
+
+
+def render_news_handoff(packet: dict[str, Any], *, output_path: Path) -> str:
+    summary = packet["summary"]
+    items = packet["latest_items"][:10]
+    return "\n".join(
+        [
+            "---",
+            f"schema_version: {HANDOFF_SCHEMA}",
+            f"agent_id: {AGENT_ID}",
+            f"run_id: {packet['run_id']}",
+            f"generated_at: {packet['generated_at']}",
+            "status: succeeded",
+            "input_refs:",
+            f"  - {packet['inputs']['items_path']}",
+            "output_refs:",
+            f"  - {output_path}",
+            f"  - {packet['inputs']['model_path']}",
+            "evidence_refs:",
+            f"  - {packet['inputs']['items_path']}",
+            "next_run_requests: []",
+            "---",
+            "",
+            "# News Agent Handoff",
+            "",
+            "## Current Answer",
+            "",
+            f"Marco's macro news ledger has {summary['item_count']} items from {summary.get('source_count')} sources, with latest publication timestamp `{summary.get('last_published_at')}`.",
+            "",
+            "## Evidence",
+            "",
+            f"- Items: `{packet['inputs']['items_path']}`",
+            f"- Fetches: `{packet['inputs']['fetches_path']}`",
+            f"- Model: `{packet['inputs']['model_path']}`",
+            f"- Region counts: `{summary.get('region_counts', {})}`",
+            f"- Vertical counts: `{summary.get('vertical_counts', {})}`",
+            "",
+            "Latest item sample:",
+            *[format_item_bullet(item) for item in items],
+            "",
+            "## Changes Since Previous Run",
+            "",
+            f"- New marginal items in this run: {summary['new_item_count']}",
+            "",
+            "## Caveats",
+            "",
+            *[f"- {caveat}" for caveat in packet["caveats"]],
+            "",
+            "## Open Questions",
+            "",
+            "- Which news IDs should the analyst or synthesis agent inspect next?",
+            "- Which official feeds should be promoted into higher-frequency fetch schedules?",
+            "",
+            "## Suggested Next Runs",
+            "",
+            "- Run the analyst agent over the latest high-signal macro policy news.",
+            "- Ask the economic modeling agent to test whether recent central-bank communications align with rate-model misses.",
+            "",
+        ]
+    )
+
+
 def format_fetch_bullet(fetch: dict[str, Any]) -> str:
     return (
         f"- `{fetch.get('source_id')}` status={fetch.get('status_code')} "
@@ -321,3 +515,13 @@ def model_run_id() -> str:
 
 def utc_now_iso() -> str:
     return datetime.now(UTC).isoformat()
+
+
+def write_text_atomic(path: Path, text: str) -> None:
+    tmp = path.with_suffix(path.suffix + ".tmp")
+    tmp.write_text(text, encoding="utf-8")
+    os.replace(tmp, path)
+
+
+def write_json_atomic(path: Path, payload: Any) -> None:
+    write_text_atomic(path, json.dumps(payload, indent=2, sort_keys=True) + "\n")

@@ -10,6 +10,8 @@ const MAX_FILE_BYTES = 260_000;
 const DEFAULT_TOP_K = 8;
 const DEFAULT_CHUNK_CHARS = 3_000;
 const CHUNK_OVERLAP_CHARS = 350;
+const DEFAULT_CODEX_MODEL = process.env.MARCO_CODEX_MODEL;
+const DEFAULT_CODEX_REASONING_EFFORT = process.env.MARCO_CODEX_REASONING_EFFORT ?? "medium";
 
 const APPROVED_SOURCES = [
   "reuters.com",
@@ -324,8 +326,13 @@ async function main(argv = process.argv.slice(2)) {
     webSearchEnabled: args.webSearch === "true" ? true : args.webSearch === "false" ? false : undefined,
     approvalPolicy: args.approvalPolicy,
   };
-  if (args.model) {
-    threadOptions.model = args.model;
+  const model = args.model ?? DEFAULT_CODEX_MODEL;
+  const modelReasoningEffort = args.modelReasoningEffort ?? args["model-reasoning-effort"] ?? args.reasoningEffort ?? args["reasoning-effort"] ?? DEFAULT_CODEX_REASONING_EFFORT;
+  if (model) {
+    threadOptions.model = model;
+  }
+  if (modelReasoningEffort) {
+    threadOptions.modelReasoningEffort = modelReasoningEffort;
   }
   const thread = args.threadId ? codex.resumeThread(args.threadId, threadOptions) : codex.startThread(threadOptions);
   const turnOptions = command === "run-ingestion" ? { outputSchema: ANALYST_OUTPUT_SCHEMA } : {};
@@ -506,6 +513,7 @@ Options:
   --agent <path>          Analyst TOML path, default agents/analyst.toml
   --corpus <a,b,c>        Comma-separated corpus roots/files
   --model <model>         Codex model override; defaults to Codex CLI config
+  --model-reasoning-effort <effort> Reasoning effort, default ${DEFAULT_CODEX_REASONING_EFFORT}
   --network <true|false>  Enable Codex CLI network access, default true
   --webSearch <true|false> Enable or disable Codex web search
   --approvalPolicy <mode> Codex approval policy override

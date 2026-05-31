@@ -1,0 +1,7 @@
+{
+  "agent_id": "news_agent",
+  "generated_at": "2026-05-31T22:09:32.219635+00:00",
+  "run_id": "20260531-220932-news-model",
+  "schema_version": "marco.agent_run_status.v1",
+  "status": "succeeded"
+}
