@@ -19,6 +19,7 @@ priority.
 
 Current artifact:
 
+- [Setup](docs/setup.md)
 - [Current focus](docs/strategy/current-focus.md)
 - [Agent API and CLI](docs/agents/api-and-cli.md)
 - [Repo-local Marco agent API skill](skills/marco-agent-api/SKILL.md)
@@ -36,14 +37,18 @@ The custom frontend, MikeOSS integration, EM financial-statement extraction, and
 deployment are intentionally out of scope until the FRED/backtesting foundation
 is stronger.
 
-## Macro Lab Quickstart
+## Quickstart
 
-Install locally:
+Install everything needed for local tests, CLI, API, and frontend work:
 
 ```sh
-uv venv .venv
-uv pip install --python .venv/bin/python -e '.[dev]'
+tools/bootstrap.sh
+make ci
 ```
+
+See [Setup](docs/setup.md) for required tools and manual installation.
+
+## Macro Lab
 
 Run the FRED FX/rate differential lab:
 
@@ -71,7 +76,7 @@ artifact JSON:
 
 ```sh
 cd apps/web
-npm install
+npm ci
 npm run dev -- --port 5177
 ```
 
