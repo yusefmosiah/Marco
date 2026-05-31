@@ -12,6 +12,9 @@ has two stable machine surfaces over committed artifacts:
 - CLI commands through `emf-macro`;
 - a dependency-free local HTTP JSON API.
 
+The planned multiagent runtime contract is documented in
+`docs/agents/multiagent-runtime-harness.md`.
+
 The first surface is read-only over committed artifact bundles. Running new
 backtests remains an explicit CLI operation until there is authentication, job
 isolation, and a run queue.
