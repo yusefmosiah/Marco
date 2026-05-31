@@ -1,7 +1,7 @@
 {
-  "byte_size": 96348,
-  "created_at": "2026-05-31T21:00:31.660856+00:00",
-  "dataset_id": "macro_news-8e4d301c2201",
+  "byte_size": 666525,
+  "created_at": "2026-05-31T21:10:05.865099+00:00",
+  "dataset_id": "macro_news-88b6f4c87bf3",
   "format": "jsonl",
   "kind": "news_event_ledger",
   "name": "Marco official macro news source ledger",
@@ -36,7 +36,7 @@
     ],
     "sample_row_count": 5
   },
-  "sha256": "8e4d301c2201cbb64a0f16e76b22095b3eb87cac5cee505005ad3a81b7ed4d2c",
+  "sha256": "88b6f4c87bf3a83d76224ffd4afdc5758e8c8bf234d13070909dbe2a2c46b468",
   "source_type": "official_public_feeds",
   "source_uri": "configs/news_sources.json",
   "stored_path": "data/derived/macro_news/news_items.jsonl",

@@ -161,8 +161,9 @@ lookahead_status=not_real_time_vintage_safe
 Random-walk/no-change baselines won nearly everywhere on RMSE in this snapshot;
 ridge only slightly improved `USD_CAD` at `6M`.
 
-The macro news source ledger currently contains 100 official-feed items from
-Federal Reserve Board, ECB, and BIS feeds.
+The macro news source ledger currently contains 493 official-feed items from 17
+Federal Reserve Board, SEC, BEA, ECB, BIS, RBI, Bank of England, and Bank of
+Japan feeds.
 
 ## Deployment Notes
 

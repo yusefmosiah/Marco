@@ -36,20 +36,45 @@ committed JSONL/artifacts and CLI first, with the agent/API layer coming next.
 
 ## Current Source Scope
 
-The first source haul is official public central-bank and financial-stability
-RSS/RDF feeds:
+The current source haul is official public central-bank, financial-regulatory,
+and economic-release RSS/RDF feeds:
 
-| Source ID | Provider | Feed | Region |
-| --- | --- | --- | --- |
-| `federal_reserve_press_all` | Federal Reserve Board | All press releases | US |
-| `federal_reserve_speeches` | Federal Reserve Board | Speeches | US |
-| `ecb_press` | European Central Bank | Press, speeches, interviews | EA/EU |
-| `bis_press_releases` | Bank for International Settlements | Press releases | global |
-| `bis_central_bank_speeches` | Bank for International Settlements | Central bank speeches | global |
+| Source ID | Provider | Region | Poll interval |
+| --- | --- | --- | ---: |
+| `federal_reserve_press_all` | Federal Reserve Board | US | 5m |
+| `federal_reserve_monetary_policy` | Federal Reserve Board | US | 5m |
+| `federal_reserve_banking_reg_policy` | Federal Reserve Board | US | 10m |
+| `federal_reserve_speeches` | Federal Reserve Board | US | 15m |
+| `sec_press_releases` | U.S. Securities and Exchange Commission | US | 10m |
+| `bea_news_releases` | U.S. Bureau of Economic Analysis | US | 15m |
+| `ecb_press` | European Central Bank | EA/EU | 5m |
+| `bis_press_releases` | Bank for International Settlements | global | 15m |
+| `bis_central_bank_speeches` | Bank for International Settlements | global | 30m |
+| `rbi_press_releases` | Reserve Bank of India | IN | 5m |
+| `rbi_notifications` | Reserve Bank of India | IN | 15m |
+| `rbi_speeches` | Reserve Bank of India | IN | 30m |
+| `bank_of_england_news` | Bank of England | GB | 10m |
+| `bank_of_england_publications` | Bank of England | GB | 15m |
+| `bank_of_england_speeches` | Bank of England | GB | 30m |
+| `bank_of_japan_whats_new_en` | Bank of Japan | JP | 15m |
+| `bank_of_japan_statistics_en` | Bank of Japan | JP | 30m |
 
-This is a macro-policy news foundation, not broad market news. It is suitable
-for the first news agent because the sources are official, policy-relevant, and
-low-risk to poll politely.
+This is a macro-policy and official financial/economic news foundation, not
+broad market journalism. It is suitable for the first news agent because the
+sources are official, policy-relevant, and low-risk to poll politely.
+
+Configured polling density, if a scheduler is enabled:
+
+| Interval | Sources |
+| --- | ---: |
+| 5 minutes | 4 |
+| 10 minutes | 3 |
+| 15 minutes | 6 |
+| 30 minutes | 4 |
+
+That averages 98 source polls per hour, or 24.5 source polls per 15-minute
+window. Marco currently performs this fetch on demand through `news-fetch`; the
+daemon/scheduler remains the next step.
 
 ## Schemas
 

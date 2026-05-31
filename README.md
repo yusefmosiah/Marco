@@ -198,13 +198,27 @@ Macro news source ledger:
 
 | Source | Provider | Observations |
 | --- | --- | ---: |
+| `bank_of_england_news` | Bank of England | 50 |
+| `bank_of_england_publications` | Bank of England | 50 |
+| `bank_of_england_speeches` | Bank of England | 50 |
+| `bank_of_japan_statistics_en` | Bank of Japan | 60 |
+| `bank_of_japan_whats_new_en` | Bank of Japan | 53 |
+| `bea_news_releases` | U.S. Bureau of Economic Analysis | 45 |
+| `bis_central_bank_speeches` | Bank for International Settlements | 25 |
+| `bis_press_releases` | Bank for International Settlements | 25 |
+| `ecb_press` | European Central Bank | 15 |
+| `federal_reserve_banking_reg_policy` | Federal Reserve Board | 15 |
+| `federal_reserve_monetary_policy` | Federal Reserve Board | 15 |
 | `federal_reserve_press_all` | Federal Reserve Board | 20 |
 | `federal_reserve_speeches` | Federal Reserve Board | 15 |
-| `ecb_press` | European Central Bank | 15 |
-| `bis_press_releases` | Bank for International Settlements | 25 |
-| `bis_central_bank_speeches` | Bank for International Settlements | 25 |
+| `rbi_notifications` | Reserve Bank of India | 10 |
+| `rbi_press_releases` | Reserve Bank of India | 10 |
+| `rbi_speeches` | Reserve Bank of India | 10 |
+| `sec_press_releases` | U.S. Securities and Exchange Commission | 25 |
 
-Total current macro news haul: 100 normalized official-feed items.
+Total current macro news haul: 493 normalized official-feed items from 17
+feeds. Configured intervals range from 5 to 30 minutes; there is no persistent
+scheduler yet, so `news-fetch` runs the haul on demand.
 
 The news ledger is event/publication data, not numeric macro time series. It is
 committed as a shareable repo-root data bundle under:

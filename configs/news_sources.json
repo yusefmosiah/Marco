@@ -11,7 +11,7 @@
         "en"
       ],
       "name": "Federal Reserve Board - All Press Releases",
-      "poll_interval_seconds": 900,
+      "poll_interval_seconds": 300,
       "provider": "Federal Reserve Board",
       "rate_limit": "polite_polling",
       "regions": [
@@ -39,7 +39,7 @@
         "en"
       ],
       "name": "Federal Reserve Board - Speeches",
-      "poll_interval_seconds": 1800,
+      "poll_interval_seconds": 900,
       "provider": "Federal Reserve Board",
       "rate_limit": "polite_polling",
       "regions": [
@@ -67,7 +67,7 @@
         "en"
       ],
       "name": "European Central Bank - Press, Speeches, Interviews",
-      "poll_interval_seconds": 900,
+      "poll_interval_seconds": 300,
       "provider": "European Central Bank",
       "rate_limit": "polite_polling",
       "regions": [
@@ -96,7 +96,7 @@
         "en"
       ],
       "name": "Bank for International Settlements - Press Releases",
-      "poll_interval_seconds": 1800,
+      "poll_interval_seconds": 900,
       "provider": "Bank for International Settlements",
       "rate_limit": "polite_polling",
       "regions": [
@@ -124,7 +124,7 @@
         "en"
       ],
       "name": "Bank for International Settlements - Central Bank Speeches",
-      "poll_interval_seconds": 3600,
+      "poll_interval_seconds": 1800,
       "provider": "Bank for International Settlements",
       "rate_limit": "polite_polling",
       "regions": [
@@ -141,6 +141,359 @@
         "central_bank",
         "monetary_policy",
         "central_bank_speech"
+      ]
+    },
+    {
+      "auth_policy": "none",
+      "conditional_request_mode": "etag_last_modified",
+      "enabled": true,
+      "id": "federal_reserve_monetary_policy",
+      "languages": [
+        "en"
+      ],
+      "name": "Federal Reserve Board - Monetary Policy Press Releases",
+      "poll_interval_seconds": 300,
+      "provider": "Federal Reserve Board",
+      "rate_limit": "polite_polling",
+      "regions": [
+        "US"
+      ],
+      "retention_days": 3650,
+      "robots_policy": "official_public_feed",
+      "store_body_policy": "metadata_and_summary",
+      "summary_max_chars": 2000,
+      "tier": "T1a",
+      "tos_class": "official_public_feed",
+      "type": "rss",
+      "url": "https://www.federalreserve.gov/feeds/press_monetary.xml",
+      "verticals": [
+        "central_bank",
+        "monetary_policy",
+        "rate_decision"
+      ]
+    },
+    {
+      "auth_policy": "none",
+      "conditional_request_mode": "etag_last_modified",
+      "enabled": true,
+      "id": "federal_reserve_banking_reg_policy",
+      "languages": [
+        "en"
+      ],
+      "name": "Federal Reserve Board - Banking and Consumer Regulatory Policy",
+      "poll_interval_seconds": 600,
+      "provider": "Federal Reserve Board",
+      "rate_limit": "polite_polling",
+      "regions": [
+        "US"
+      ],
+      "retention_days": 3650,
+      "robots_policy": "official_public_feed",
+      "store_body_policy": "metadata_and_summary",
+      "summary_max_chars": 2000,
+      "tier": "T1a",
+      "tos_class": "official_public_feed",
+      "type": "rss",
+      "url": "https://www.federalreserve.gov/feeds/press_bcreg.xml",
+      "verticals": [
+        "central_bank",
+        "financial_regulation",
+        "banking_supervision"
+      ]
+    },
+    {
+      "auth_policy": "none",
+      "conditional_request_mode": "etag_last_modified",
+      "enabled": true,
+      "id": "sec_press_releases",
+      "languages": [
+        "en"
+      ],
+      "name": "U.S. Securities and Exchange Commission - Press Releases",
+      "poll_interval_seconds": 600,
+      "provider": "U.S. Securities and Exchange Commission",
+      "rate_limit": "polite_polling",
+      "regions": [
+        "US"
+      ],
+      "retention_days": 3650,
+      "robots_policy": "official_public_feed",
+      "store_body_policy": "metadata_and_summary",
+      "summary_max_chars": 2000,
+      "tier": "T1a",
+      "tos_class": "official_public_feed",
+      "type": "rss",
+      "url": "https://www.sec.gov/news/pressreleases.rss",
+      "verticals": [
+        "financial_regulation",
+        "capital_markets",
+        "securities"
+      ]
+    },
+    {
+      "auth_policy": "none",
+      "conditional_request_mode": "etag_last_modified",
+      "enabled": true,
+      "id": "bea_news_releases",
+      "languages": [
+        "en"
+      ],
+      "name": "U.S. Bureau of Economic Analysis - News Releases",
+      "poll_interval_seconds": 900,
+      "provider": "U.S. Bureau of Economic Analysis",
+      "rate_limit": "polite_polling",
+      "regions": [
+        "US"
+      ],
+      "retention_days": 3650,
+      "robots_policy": "official_public_feed",
+      "store_body_policy": "metadata_and_summary",
+      "summary_max_chars": 2000,
+      "tier": "T1a",
+      "tos_class": "official_public_feed",
+      "type": "rss",
+      "url": "https://apps.bea.gov/rss/rss.xml",
+      "verticals": [
+        "economic_data_release",
+        "growth",
+        "inflation",
+        "trade"
+      ]
+    },
+    {
+      "auth_policy": "none",
+      "conditional_request_mode": "etag_last_modified",
+      "enabled": true,
+      "id": "rbi_press_releases",
+      "languages": [
+        "en"
+      ],
+      "name": "Reserve Bank of India - Press Releases",
+      "poll_interval_seconds": 300,
+      "provider": "Reserve Bank of India",
+      "rate_limit": "polite_polling",
+      "regions": [
+        "IN"
+      ],
+      "retention_days": 3650,
+      "robots_policy": "official_public_feed",
+      "store_body_policy": "metadata_and_summary",
+      "summary_max_chars": 2000,
+      "tier": "T1a",
+      "tos_class": "official_public_feed",
+      "type": "rss",
+      "url": "https://rbi.org.in/pressreleases_rss.xml",
+      "verticals": [
+        "central_bank",
+        "monetary_policy",
+        "india",
+        "emerging_markets"
+      ]
+    },
+    {
+      "auth_policy": "none",
+      "conditional_request_mode": "etag_last_modified",
+      "enabled": true,
+      "id": "rbi_notifications",
+      "languages": [
+        "en"
+      ],
+      "name": "Reserve Bank of India - Notifications",
+      "poll_interval_seconds": 900,
+      "provider": "Reserve Bank of India",
+      "rate_limit": "polite_polling",
+      "regions": [
+        "IN"
+      ],
+      "retention_days": 3650,
+      "robots_policy": "official_public_feed",
+      "store_body_policy": "metadata_and_summary",
+      "summary_max_chars": 2000,
+      "tier": "T1a",
+      "tos_class": "official_public_feed",
+      "type": "rss",
+      "url": "https://rbi.org.in/notifications_rss.xml",
+      "verticals": [
+        "central_bank",
+        "financial_regulation",
+        "india",
+        "emerging_markets"
+      ]
+    },
+    {
+      "auth_policy": "none",
+      "conditional_request_mode": "etag_last_modified",
+      "enabled": true,
+      "id": "rbi_speeches",
+      "languages": [
+        "en"
+      ],
+      "name": "Reserve Bank of India - Speeches",
+      "poll_interval_seconds": 1800,
+      "provider": "Reserve Bank of India",
+      "rate_limit": "polite_polling",
+      "regions": [
+        "IN"
+      ],
+      "retention_days": 3650,
+      "robots_policy": "official_public_feed",
+      "store_body_policy": "metadata_and_summary",
+      "summary_max_chars": 2000,
+      "tier": "T1a",
+      "tos_class": "official_public_feed",
+      "type": "rss",
+      "url": "https://rbi.org.in/speeches_rss.xml",
+      "verticals": [
+        "central_bank",
+        "monetary_policy",
+        "india",
+        "emerging_markets",
+        "central_bank_speech"
+      ]
+    },
+    {
+      "auth_policy": "none",
+      "conditional_request_mode": "etag_last_modified",
+      "enabled": true,
+      "id": "bank_of_england_news",
+      "languages": [
+        "en"
+      ],
+      "name": "Bank of England - News",
+      "poll_interval_seconds": 600,
+      "provider": "Bank of England",
+      "rate_limit": "polite_polling",
+      "regions": [
+        "GB"
+      ],
+      "retention_days": 3650,
+      "robots_policy": "official_public_feed",
+      "store_body_policy": "metadata_and_summary",
+      "summary_max_chars": 2000,
+      "tier": "T1a",
+      "tos_class": "official_public_feed",
+      "type": "rss",
+      "url": "https://www.bankofengland.co.uk/rss/news",
+      "verticals": [
+        "central_bank",
+        "monetary_policy",
+        "financial_stability"
+      ]
+    },
+    {
+      "auth_policy": "none",
+      "conditional_request_mode": "etag_last_modified",
+      "enabled": true,
+      "id": "bank_of_england_speeches",
+      "languages": [
+        "en"
+      ],
+      "name": "Bank of England - Speeches",
+      "poll_interval_seconds": 1800,
+      "provider": "Bank of England",
+      "rate_limit": "polite_polling",
+      "regions": [
+        "GB"
+      ],
+      "retention_days": 3650,
+      "robots_policy": "official_public_feed",
+      "store_body_policy": "metadata_and_summary",
+      "summary_max_chars": 2000,
+      "tier": "T1a",
+      "tos_class": "official_public_feed",
+      "type": "rss",
+      "url": "https://www.bankofengland.co.uk/rss/speeches",
+      "verticals": [
+        "central_bank",
+        "monetary_policy",
+        "central_bank_speech"
+      ]
+    },
+    {
+      "auth_policy": "none",
+      "conditional_request_mode": "etag_last_modified",
+      "enabled": true,
+      "id": "bank_of_england_publications",
+      "languages": [
+        "en"
+      ],
+      "name": "Bank of England - Publications",
+      "poll_interval_seconds": 900,
+      "provider": "Bank of England",
+      "rate_limit": "polite_polling",
+      "regions": [
+        "GB"
+      ],
+      "retention_days": 3650,
+      "robots_policy": "official_public_feed",
+      "store_body_policy": "metadata_and_summary",
+      "summary_max_chars": 2000,
+      "tier": "T1a",
+      "tos_class": "official_public_feed",
+      "type": "rss",
+      "url": "https://www.bankofengland.co.uk/rss/publications",
+      "verticals": [
+        "central_bank",
+        "financial_stability",
+        "economic_research"
+      ]
+    },
+    {
+      "auth_policy": "none",
+      "conditional_request_mode": "etag_last_modified",
+      "enabled": true,
+      "id": "bank_of_japan_whats_new_en",
+      "languages": [
+        "en"
+      ],
+      "name": "Bank of Japan - What's New",
+      "poll_interval_seconds": 900,
+      "provider": "Bank of Japan",
+      "rate_limit": "polite_polling",
+      "regions": [
+        "JP"
+      ],
+      "retention_days": 3650,
+      "robots_policy": "official_public_feed",
+      "store_body_policy": "metadata_and_summary",
+      "summary_max_chars": 2000,
+      "tier": "T1a",
+      "tos_class": "official_public_feed",
+      "type": "rss",
+      "url": "https://www.boj.or.jp/en/rss/whatsnew.xml",
+      "verticals": [
+        "central_bank",
+        "monetary_policy",
+        "japan"
+      ]
+    },
+    {
+      "auth_policy": "none",
+      "conditional_request_mode": "etag_last_modified",
+      "enabled": true,
+      "id": "bank_of_japan_statistics_en",
+      "languages": [
+        "en"
+      ],
+      "name": "Bank of Japan - Statistics Updates",
+      "poll_interval_seconds": 1800,
+      "provider": "Bank of Japan",
+      "rate_limit": "polite_polling",
+      "regions": [
+        "JP"
+      ],
+      "retention_days": 3650,
+      "robots_policy": "official_public_feed",
+      "store_body_policy": "metadata_and_summary",
+      "summary_max_chars": 2000,
+      "tier": "T1a",
+      "tos_class": "official_public_feed",
+      "type": "rss",
+      "url": "https://www.boj.or.jp/en/rss/statistics.xml",
+      "verticals": [
+        "central_bank",
+        "economic_data_release",
+        "japan"
       ]
     }
   ]

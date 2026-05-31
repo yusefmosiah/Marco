@@ -21,6 +21,7 @@ NEWS_CONFIG_PATH = Path("configs") / "news_sources.json"
 NEWS_DATA_BUNDLE = Path("data") / "macro-news"
 NEWS_ARTIFACT_DIR = Path("artifacts") / "macro-news"
 NEWS_WEB_ARTIFACT = Path("apps") / "web" / "public" / "artifacts" / "macro-news-summary.json"
+DEFAULT_SUMMARY_MAX_CHARS = 2000
 
 
 @dataclass(frozen=True)
@@ -344,7 +345,10 @@ def build_news_item(
 ) -> dict[str, Any]:
     canonical_original_id = normalize_space(original_id) or stable_original_id(source["id"], title, index)
     item_id = f"news-{sha256_text(source['id'] + '|' + canonical_original_id)[:24]}"
-    clean_summary = strip_html(normalize_space(summary))
+    clean_summary = truncate_text(
+        strip_html(normalize_space(summary)),
+        int(source.get("summary_max_chars", DEFAULT_SUMMARY_MAX_CHARS)),
+    )
     return {
         "schema_version": "marco.news_item.v1",
         "id": item_id,
@@ -376,6 +380,7 @@ def build_news_item(
             "tier": source.get("tier"),
             "store_body_policy": source.get("store_body_policy"),
             "conditional_request_mode": source.get("conditional_request_mode"),
+            "summary_truncated": len(strip_html(normalize_space(summary))) > len(clean_summary),
         },
     }
 
@@ -531,6 +536,12 @@ def strip_ns(tag: str) -> str:
 
 def strip_html(value: str) -> str:
     return normalize_space(html.unescape(re.sub(r"<[^>]+>", " ", value)))
+
+
+def truncate_text(value: str, max_chars: int) -> str:
+    if max_chars <= 0 or len(value) <= max_chars:
+        return value
+    return normalize_space(value[: max_chars - 1]) + "..."
 
 
 def normalize_space(value: str | None) -> str:
