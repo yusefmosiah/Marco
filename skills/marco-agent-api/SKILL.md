@@ -61,11 +61,21 @@ python skills/marco-agent-api/scripts/marco_client.py metrics --repo-root . --pa
 python skills/marco-agent-api/scripts/marco_client.py public-summary
 ```
 
+For dataset and experiment planning, prefer the CLI:
+
+```sh
+PYTHONPATH=src python3 -m emf_macro.cli list-datasets --root . --compact
+PYTHONPATH=src python3 -m emf_macro.cli models --compact
+PYTHONPATH=src python3 -m emf_macro.cli suggest-hypotheses --root . --compact
+PYTHONPATH=src python3 -m emf_macro.cli plan-experiments --root . --pair USD_CAD --horizon 6 --compact
+```
+
 ## Decision Rules
 
 - Use CLI when working from a checked-out repo and no persistent service is needed.
 - Use HTTP API when another process, browser, or agent needs repeated structured reads.
 - Use the static public artifact only for share/read-only checks, because it exposes summary data but not the full dynamic API.
+- Keep dataset mutation local (`dataset-add`, `dataset-fetch-url`) until auth/storage policy exists.
 - Start no long-running API server unless the user asked for a service or a deploy task; if started for smoke testing, stop it before finishing.
 - For Node A deployment questions, read `docs/deployment/github-actions.md` and `docs/deployment/node-a-static-preview.md`.
 

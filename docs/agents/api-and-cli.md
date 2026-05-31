@@ -91,6 +91,10 @@ GET /v1/runs/latest
 GET /v1/runs/latest/metrics?pair=USD_CAD&horizon_months=6
 GET /v1/runs/latest/best
 GET /v1/runs/latest/report
+GET /v1/datasets
+GET /v1/models
+GET /v1/hypotheses
+GET /v1/experiment-plan?pair=USD_CAD&horizon_months=6
 GET /v1/agent-context
 ```
 
@@ -123,6 +127,8 @@ agent reads before deciding which specific endpoint or CLI command to call.
 ## Current Guardrails
 
 - The API is read-only.
+- Dataset upload/fetch mutation is local CLI-only for now:
+  `dataset-add` and `dataset-fetch-url`.
 - The current artifact is `latest_revised_snapshot`, not vintage-safe ALFRED
   evidence.
 - Baselines remain first-class outputs; agents should not summarize model
@@ -141,3 +147,26 @@ https://choir-ip.com/marco/artifacts/fred-fx-rate-lab-summary.json
 
 The dynamic local API can be mounted under `/marco/api/` later once Node A has a
 durable service definition for it.
+
+## Dataset And Experiment Planning
+
+Local dataset registry:
+
+```sh
+emf-macro dataset-add sample.csv --root . --name "Sample Dataset"
+emf-macro dataset-fetch-url https://example.com/data.csv --root . --name "External Dataset"
+emf-macro list-datasets --root .
+```
+
+Model ladder and hypotheses:
+
+```sh
+emf-macro models
+emf-macro suggest-hypotheses --root . --run-id latest
+```
+
+Parallel experiment plan:
+
+```sh
+emf-macro plan-experiments --root . --pair USD_CAD --horizon 6 --max-parallelism 4
+```

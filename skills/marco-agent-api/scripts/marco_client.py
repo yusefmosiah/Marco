@@ -17,29 +17,44 @@ PUBLIC_SUMMARY_URL = "https://choir-ip.com/marco/artifacts/fred-fx-rate-lab-summ
 
 
 def main() -> int:
+    common = argparse.ArgumentParser(add_help=False)
+    common.add_argument("--api-base", default=DEFAULT_API_BASE)
+    common.add_argument("--repo-root", default=".")
+    common.add_argument("--pretty", action="store_true")
+
     parser = argparse.ArgumentParser(description="Query Marco agent artifacts.")
     parser.add_argument("--api-base", default=DEFAULT_API_BASE)
     parser.add_argument("--repo-root", default=".")
     parser.add_argument("--pretty", action="store_true")
     sub = parser.add_subparsers(dest="command", required=True)
 
-    sub.add_parser("context", help="get agent context; API first, CLI fallback")
-    sub.add_parser("runs", help="list runs; API first, CLI fallback")
-    run = sub.add_parser("run", help="show run summary")
+    sub.add_parser("context", parents=[common], help="get agent context; API first, CLI fallback")
+    sub.add_parser("runs", parents=[common], help="list runs; API first, CLI fallback")
+    sub.add_parser("datasets", parents=[common], help="list local datasets; API first, CLI fallback")
+    sub.add_parser("models", parents=[common], help="list model ladder specs; API first, CLI fallback")
+    sub.add_parser("hypotheses", parents=[common], help="suggest hypotheses; API first, CLI fallback")
+    run = sub.add_parser("run", parents=[common], help="show run summary")
     run.add_argument("--run-id", default="latest")
 
-    metrics = sub.add_parser("metrics", help="query model metrics")
+    metrics = sub.add_parser("metrics", parents=[common], help="query model metrics")
     metrics.add_argument("--run-id", default="latest")
     metrics.add_argument("--pair")
     metrics.add_argument("--horizon", type=int)
     metrics.add_argument("--model-id")
 
-    best = sub.add_parser("best", help="query best model rows")
+    best = sub.add_parser("best", parents=[common], help="query best model rows")
     best.add_argument("--run-id", default="latest")
     best.add_argument("--pair")
     best.add_argument("--horizon", type=int)
 
-    sub.add_parser("public-summary", help="fetch the live static summary from choir-ip.com")
+    plan = sub.add_parser("plan", parents=[common], help="build an experiment plan; API first, CLI fallback")
+    plan.add_argument("--run-id", default="latest")
+    plan.add_argument("--pair", action="append", dest="pairs")
+    plan.add_argument("--horizon", action="append", type=int, dest="horizons")
+    plan.add_argument("--model-id", action="append", dest="model_ids")
+    plan.add_argument("--dataset-id", action="append", dest="dataset_ids")
+
+    sub.add_parser("public-summary", parents=[common], help="fetch the live static summary from choir-ip.com")
 
     args = parser.parse_args()
     try:
@@ -59,6 +74,12 @@ def dispatch(args: argparse.Namespace) -> Any:
         return api_or_cli(args, "/v1/agent-context", ["agent-context", "--run-id", "latest", "--compact"])
     if args.command == "runs":
         return api_or_cli(args, "/v1/runs", ["list-runs", "--compact"])
+    if args.command == "datasets":
+        return api_or_cli(args, "/v1/datasets", ["list-datasets", "--compact"])
+    if args.command == "models":
+        return api_or_cli(args, "/v1/models", ["models", "--compact"])
+    if args.command == "hypotheses":
+        return api_or_cli(args, "/v1/hypotheses", ["suggest-hypotheses", "--compact"])
     if args.command == "run":
         return api_or_cli(args, f"/v1/runs/{args.run_id}", ["show-run", "--run-id", args.run_id, "--compact"])
     if args.command == "metrics":
@@ -79,6 +100,26 @@ def dispatch(args: argparse.Namespace) -> Any:
         if args.horizon is not None:
             cli.extend(["--horizon", str(args.horizon)])
         return api_or_cli(args, f"/v1/runs/{args.run_id}/best?{query}", cli)
+    if args.command == "plan":
+        query = multi_query(
+            {
+                "run_id": [args.run_id],
+                "pair": args.pairs,
+                "horizon_months": [str(value) for value in args.horizons] if args.horizons else None,
+                "model_id": args.model_ids,
+                "dataset_id": args.dataset_ids,
+            }
+        )
+        cli = ["plan-experiments", "--run-id", args.run_id, "--compact"]
+        for pair in args.pairs or []:
+            cli.extend(["--pair", pair])
+        for horizon in args.horizons or []:
+            cli.extend(["--horizon", str(horizon)])
+        for model_id in args.model_ids or []:
+            cli.extend(["--model-id", model_id])
+        for dataset_id in args.dataset_ids or []:
+            cli.extend(["--dataset-id", dataset_id])
+        return api_or_cli(args, f"/v1/experiment-plan?{query}", cli)
     raise ValueError(f"unknown command: {args.command}")
 
 
@@ -115,6 +156,14 @@ def cli_json(repo_root: Path, args: list[str]) -> Any:
 
 def clean_query(values: dict[str, object]) -> str:
     clean = {key: value for key, value in values.items() if value is not None}
+    return urllib.parse.urlencode(clean)
+
+
+def multi_query(values: dict[str, list[str] | None]) -> str:
+    clean: list[tuple[str, str]] = []
+    for key, items in values.items():
+        for item in items or []:
+            clean.append((key, item))
     return urllib.parse.urlencode(clean)
 
 

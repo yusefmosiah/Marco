@@ -18,6 +18,12 @@ best --run-id latest --pair USD_CAD --horizon 6
 agent-context --run-id latest
 report --run-id latest
 serve-agent-api --host 127.0.0.1 --port 8765
+list-datasets
+dataset-add path/to/data.csv --name "My Dataset"
+dataset-fetch-url https://example.com/data.csv --name "External Dataset"
+models
+suggest-hypotheses
+plan-experiments --pair USD_CAD --horizon 6
 ```
 
 Installed command equivalent:
@@ -43,6 +49,10 @@ GET /v1/runs/latest
 GET /v1/runs/latest/metrics?pair=USD_CAD&horizon_months=6
 GET /v1/runs/latest/best?pair=USD_CAD&horizon_months=6
 GET /v1/runs/latest/report
+GET /v1/datasets
+GET /v1/models
+GET /v1/hypotheses
+GET /v1/experiment-plan?pair=USD_CAD&horizon_months=6
 GET /v1/agent-context
 ```
 

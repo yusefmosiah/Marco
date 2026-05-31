@@ -141,6 +141,9 @@ class ArtifactStore:
                 "emf-macro show-run --root . --run-id latest",
                 "emf-macro metrics --root . --run-id latest --pair USD_CAD --horizon 6",
                 "emf-macro agent-context --root . --run-id latest",
+                "emf-macro list-datasets --root .",
+                "emf-macro suggest-hypotheses --root . --run-id latest",
+                "emf-macro plan-experiments --root . --pair USD_CAD --horizon 6",
                 "emf-macro serve-agent-api --root . --host 127.0.0.1 --port 8765",
             ],
             "api_endpoints": [
@@ -150,6 +153,10 @@ class ArtifactStore:
                 "GET /v1/runs/latest/metrics?pair=USD_CAD&horizon_months=6",
                 "GET /v1/runs/latest/best",
                 "GET /v1/runs/latest/report",
+                "GET /v1/datasets",
+                "GET /v1/models",
+                "GET /v1/hypotheses",
+                "GET /v1/experiment-plan?pair=USD_CAD&horizon_months=6",
                 "GET /v1/agent-context",
             ],
         }

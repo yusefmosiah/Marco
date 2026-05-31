@@ -21,6 +21,7 @@ Current artifact:
 
 - [Setup](docs/setup.md)
 - [Current focus](docs/strategy/current-focus.md)
+- [Dataset, hypothesis, and parallel backtesting foundation](docs/strategy/datasets-hypotheses-parallel-backtesting.md)
 - [Agent API and CLI](docs/agents/api-and-cli.md)
 - [Repo-local Marco agent API skill](skills/marco-agent-api/SKILL.md)
 - [FRED-MD Macro Lab foundation mission](docs/missions/fred-md-macro-lab-foundation.md)
@@ -104,3 +105,11 @@ emf-macro serve-agent-api --root . --host 127.0.0.1 --port 8765
 ```
 
 See [Agent API and CLI](docs/agents/api-and-cli.md).
+
+Dataset and experiment-planning foundation:
+
+```sh
+emf-macro dataset-add path/to/data.csv --root . --name "My Dataset"
+emf-macro suggest-hypotheses --root . --run-id latest
+emf-macro plan-experiments --root . --pair USD_CAD --horizon 6
+```

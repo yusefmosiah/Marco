@@ -8,6 +8,9 @@ from typing import Any
 from urllib.parse import parse_qs, urlparse
 
 from .agent_store import ArtifactNotFoundError, ArtifactStore
+from .datasets import DatasetRegistry
+from .experiments import build_experiment_plan, suggest_hypotheses
+from .model_registry import list_model_specs
 
 
 def run_server(root: Path, host: str, port: int, public_base_url: str | None = None) -> None:
@@ -87,6 +90,29 @@ def route_get(
         run_id = first(query, "run_id", "latest")
         return store.agent_context(run_id, public_base_url=public_base_url), HTTPStatus.OK, "application/json"
 
+    if path == "/v1/datasets":
+        return {"datasets": DatasetRegistry(store.root).list()}, HTTPStatus.OK, "application/json"
+
+    if path == "/v1/models":
+        active_only = first(query, "active_only", "false").lower() in {"1", "true", "yes"}
+        return {"models": list_model_specs(include_planned=not active_only)}, HTTPStatus.OK, "application/json"
+
+    if path == "/v1/hypotheses":
+        run_id = first(query, "run_id", "latest")
+        return suggest_hypotheses(store.root, run_id), HTTPStatus.OK, "application/json"
+
+    if path == "/v1/experiment-plan":
+        run_id = first(query, "run_id", "latest")
+        return build_experiment_plan(
+            store.root,
+            run_id,
+            pairs=query.get("pair"),
+            horizons=optional_int_list(query.get("horizon_months") or query.get("horizon")),
+            model_ids=query.get("model_id"),
+            dataset_ids=query.get("dataset_id"),
+            max_parallelism=optional_int(first(query, "max_parallelism")) or 4,
+        ), HTTPStatus.OK, "application/json"
+
     parts = path.strip("/").split("/")
     if len(parts) >= 3 and parts[0] == "v1" and parts[1] == "runs":
         run_id = parts[2]
@@ -128,3 +154,9 @@ def optional_int(value: str | None) -> int | None:
     if value is None or value == "":
         return None
     return int(value)
+
+
+def optional_int_list(values: list[str] | None) -> list[int] | None:
+    if not values:
+        return None
+    return [int(value) for value in values if value != ""]

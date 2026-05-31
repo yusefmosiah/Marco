@@ -6,6 +6,9 @@ from pathlib import Path
 
 from .agent_api import run_server
 from .agent_store import ArtifactStore
+from .datasets import DatasetRegistry
+from .experiments import build_experiment_plan, suggest_hypotheses
+from .model_registry import list_model_specs
 
 
 def main() -> None:
@@ -57,6 +60,46 @@ def main() -> None:
     serve.add_argument("--port", type=int, default=8765)
     serve.add_argument("--public-base-url")
 
+    datasets = sub.add_parser("list-datasets", help="list locally registered uploaded/fetched datasets")
+    datasets.add_argument("--root", default=".", help="repo root")
+    datasets.add_argument("--compact", action="store_true", help="emit compact JSON")
+
+    dataset_add = sub.add_parser("dataset-add", help="register a local dataset file under data/uploads")
+    dataset_add.add_argument("path")
+    dataset_add.add_argument("--root", default=".", help="repo root")
+    dataset_add.add_argument("--name")
+    dataset_add.add_argument("--kind", default="time_series")
+    dataset_add.add_argument("--tag", action="append", default=[])
+    dataset_add.add_argument("--compact", action="store_true", help="emit compact JSON")
+
+    dataset_fetch = sub.add_parser("dataset-fetch-url", help="fetch and register a dataset URL under data/uploads")
+    dataset_fetch.add_argument("url")
+    dataset_fetch.add_argument("--root", default=".", help="repo root")
+    dataset_fetch.add_argument("--name")
+    dataset_fetch.add_argument("--kind", default="time_series")
+    dataset_fetch.add_argument("--tag", action="append", default=[])
+    dataset_fetch.add_argument("--compact", action="store_true", help="emit compact JSON")
+
+    models = sub.add_parser("models", help="list model ladder specs")
+    models.add_argument("--active-only", action="store_true")
+    models.add_argument("--compact", action="store_true", help="emit compact JSON")
+
+    hypotheses = sub.add_parser("suggest-hypotheses", help="suggest next testable macro/backtest hypotheses")
+    hypotheses.add_argument("--root", default=".", help="repo root")
+    hypotheses.add_argument("--run-id", default="latest")
+    hypotheses.add_argument("--compact", action="store_true", help="emit compact JSON")
+
+    plan = sub.add_parser("plan-experiments", help="emit a parallel backtest experiment plan")
+    plan.add_argument("--root", default=".", help="repo root")
+    plan.add_argument("--run-id", default="latest")
+    plan.add_argument("--pair", action="append", dest="pairs")
+    plan.add_argument("--horizon", action="append", type=int, dest="horizons")
+    plan.add_argument("--model-id", action="append", dest="model_ids")
+    plan.add_argument("--dataset-id", action="append", dest="dataset_ids")
+    plan.add_argument("--max-parallelism", type=int, default=4)
+    plan.add_argument("--output", help="optional path to write the plan JSON")
+    plan.add_argument("--compact", action="store_true", help="emit compact JSON")
+
     args = parser.parse_args()
 
     if args.command == "run-fx-rate-lab":
@@ -102,6 +145,35 @@ def main() -> None:
         print(store.load_report(args.run_id), end="")
     elif args.command == "serve-agent-api":
         run_server(Path(args.root).resolve(), args.host, args.port, public_base_url=args.public_base_url)
+    elif args.command == "list-datasets":
+        registry = DatasetRegistry(Path(args.root).resolve())
+        print_json({"datasets": registry.list()}, compact=args.compact)
+    elif args.command == "dataset-add":
+        registry = DatasetRegistry(Path(args.root).resolve())
+        print_json(
+            registry.add_file(Path(args.path).resolve(), name=args.name, kind=args.kind, tags=args.tag),
+            compact=args.compact,
+        )
+    elif args.command == "dataset-fetch-url":
+        registry = DatasetRegistry(Path(args.root).resolve())
+        print_json(registry.fetch_url(args.url, name=args.name, kind=args.kind, tags=args.tag), compact=args.compact)
+    elif args.command == "models":
+        print_json({"models": list_model_specs(include_planned=not args.active_only)}, compact=args.compact)
+    elif args.command == "suggest-hypotheses":
+        print_json(suggest_hypotheses(Path(args.root).resolve(), args.run_id), compact=args.compact)
+    elif args.command == "plan-experiments":
+        payload = build_experiment_plan(
+            Path(args.root).resolve(),
+            args.run_id,
+            pairs=args.pairs,
+            horizons=args.horizons,
+            model_ids=args.model_ids,
+            dataset_ids=args.dataset_ids,
+            max_parallelism=args.max_parallelism,
+        )
+        if args.output:
+            Path(args.output).write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+        print_json(payload, compact=args.compact)
 
 
 def print_json(payload: object, compact: bool = False) -> None:

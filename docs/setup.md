@@ -80,6 +80,18 @@ Inspect the latest artifact for agents:
 make agent-context
 ```
 
+Create a local dataset registry entry:
+
+```sh
+.venv/bin/emf-macro dataset-add path/to/data.csv --root . --name "My Dataset"
+```
+
+Plan a parallel backtest matrix:
+
+```sh
+.venv/bin/emf-macro plan-experiments --root . --pair USD_CAD --horizon 6
+```
+
 Serve the read-only local agent API:
 
 ```sh
