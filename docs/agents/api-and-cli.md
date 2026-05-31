@@ -95,6 +95,7 @@ GET /v1/datasets
 GET /v1/models
 GET /v1/hypotheses
 GET /v1/experiment-plan?pair=USD_CAD&horizon_months=6
+GET /v1/global-panel
 GET /v1/agent-context
 ```
 
@@ -102,6 +103,21 @@ Example:
 
 ```sh
 curl -s 'http://127.0.0.1:8765/v1/runs/latest/metrics?pair=USD_CAD&horizon_months=6' | jq
+```
+
+Global macro panel summary:
+
+```sh
+emf-macro global-panel-summary --root . --haul-id global_macro_starter_20260531
+curl -s 'http://127.0.0.1:8765/v1/global-panel?haul_id=global_macro_starter_20260531' | jq
+```
+
+Source-haul commands:
+
+```sh
+emf-macro source-hauls --root .
+emf-macro run-source-haul global_macro_starter_20260531 --root .
+emf-macro build-global-panel --root . --haul-id global_macro_starter_20260531
 ```
 
 ## Agent Context Shape
@@ -143,6 +159,7 @@ The current public preview is still static:
 ```text
 https://choir-ip.com/marco/
 https://choir-ip.com/marco/artifacts/fred-fx-rate-lab-summary.json
+https://choir-ip.com/marco/artifacts/global-macro-panel-summary.json
 ```
 
 The dynamic local API can be mounted under `/marco/api/` later once Node A has a

@@ -2,7 +2,7 @@
 
 Date: 2026-05-31
 
-Status: source-expansion plan with ECB and World Bank adapters
+Status: source-expansion plan with ECB, World Bank, and first global panel
 
 ## Direction
 
@@ -103,7 +103,31 @@ must emit the same intermediate shape:
 
 ## First Global Panel
 
-The first global macro panel should be deliberately narrow:
+The first implemented panel is annual and deliberately narrow. It is defined by
+`configs/source_hauls.json` as `global_macro_starter_20260531`.
+
+Current implemented coverage:
+
+```text
+countries: BRA, CHN, IDN, IND, MEX, TUR, USA, ZAF
+years: 2000-2024
+features: current_account_usd, gdp_current_usd, inflation_cpi_annual_pct, population_total
+rows: 200 annual country-year rows
+source policy: latest_revised_snapshot
+```
+
+The committed summary is:
+
+```text
+artifacts/global-macro-panel/global_macro_starter_20260531/summary.json
+```
+
+The next panel should remain compatible with this shape while adding monthly
+or quarterly rates, yields, CPI, and FX through explicit frequency rules.
+
+## Target Global Panel
+
+The next model-ready global macro panel should add:
 
 ```text
 country
@@ -122,7 +146,7 @@ source_snapshot_id
 latest_revised_or_vintage
 ```
 
-Start with:
+Continue toward:
 
 - US from FRED/ALFRED;
 - euro area from ECB;
@@ -206,5 +230,6 @@ emf-macro source-fetch ecb_sdmx --root . --flow EXR --series M.USD.EUR.SP00.A --
 emf-macro source-observations ecb_sdmx --root . --series M.USD.EUR.SP00.A --limit 5
 ```
 
-ECB and World Bank Indicators now have remote fetch support. The other catalog
+ECB and World Bank Indicators now have remote fetch support. A configured
+source haul and annual global panel summary also exist. The other catalog
 entries are still catalog/discovery entries until their adapters land.

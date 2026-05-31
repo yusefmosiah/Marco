@@ -1,0 +1,48 @@
+{
+  "schema": "marco.source_hauls.v1",
+  "hauls": [
+    {
+      "id": "global_macro_starter_20260531",
+      "name": "Global macro starter haul",
+      "vintage_policy": "latest_revised_snapshot",
+      "countries": ["USA", "IND", "BRA", "MEX", "ZAF", "IDN", "TUR", "CHN"],
+      "world_bank": {
+        "start_year": 2000,
+        "end_year": 2024,
+        "indicators": [
+          {
+            "id": "NY.GDP.MKTP.CD",
+            "label": "GDP, current US dollars",
+            "feature_name": "gdp_current_usd"
+          },
+          {
+            "id": "FP.CPI.TOTL.ZG",
+            "label": "Inflation, consumer prices annual percent",
+            "feature_name": "inflation_cpi_annual_pct"
+          },
+          {
+            "id": "BN.CAB.XOKA.CD",
+            "label": "Current account balance, current US dollars",
+            "feature_name": "current_account_usd"
+          },
+          {
+            "id": "SP.POP.TOTL",
+            "label": "Population, total",
+            "feature_name": "population_total"
+          }
+        ]
+      },
+      "ecb": {
+        "series": [
+          {
+            "flow": "EXR",
+            "key": "M.USD.EUR.SP00.A",
+            "label": "ECB USD/EUR reference exchange rate",
+            "start_period": "2024-01",
+            "end_period": "2024-03"
+          }
+        ]
+      }
+    }
+  ]
+}

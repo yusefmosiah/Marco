@@ -33,10 +33,13 @@ Current artifact:
 - [FRED FX/rate lab checkpoint](docs/runs/20260531-fred-fx-rate-lab-checkpoint.md)
 - [ECB SDMX smoke checkpoint](docs/runs/20260531-ecb-sdmx-smoke-checkpoint.md)
 - [World Bank Indicators haul checkpoint](docs/runs/20260531-world-bank-indicators-haul.md)
+- [Global macro panel continuation mission](docs/missions/global-macro-panel-continuation.md)
+- [Global macro panel checkpoint](docs/runs/20260531-global-macro-panel-checkpoint.md)
 - [FinRobot/MikeOSS platform evaluation](docs/strategy/finrobot-mikeoss-platform-evaluation.md)
 - [Node A static preview deployment](docs/deployment/node-a-static-preview.md)
 - [GitHub Actions CI and Node A deploy](docs/deployment/github-actions.md)
 - [Shareable FRED FX/rate artifacts](artifacts/fred-fx-rate-lab/20260531-161930-fx-rate-diff/)
+- [Shareable global macro panel summary](artifacts/global-macro-panel/global_macro_starter_20260531/)
 - [Svelte visualization app](apps/web/)
 - [Historical MikeOSS proposal](docs/proposals/mission-proposal.md)
 - [Mobile-friendly PDF](output/pdf/emf-mission-proposal.pdf)
@@ -144,6 +147,66 @@ Total current World Bank haul: 800 normalized annual observations.
 The source catalog currently tracks 15 official source candidates. Active
 fetch adapters exist for `fred`, `ecb_sdmx`, and `world_bank_indicators`.
 
+### Normalized Global Macro Panel
+
+The first configured source haul is:
+
+```text
+configs/source_hauls.json
+global_macro_starter_20260531
+```
+
+It currently builds a latest-revised annual panel with:
+
+| Item | Value |
+| --- | ---: |
+| Countries | 8 |
+| Years | 2000-2024 |
+| Country-year rows | 200 |
+| World Bank observations | 800 |
+| ECB source observations | 3 |
+| Features | 4 |
+
+Countries: `BRA`, `CHN`, `IDN`, `IND`, `MEX`, `TUR`, `USA`, `ZAF`.
+
+Features:
+
+```text
+current_account_usd
+gdp_current_usd
+inflation_cpi_annual_pct
+population_total
+```
+
+The committed compact summary lives at:
+
+```text
+artifacts/global-macro-panel/global_macro_starter_20260531/summary.json
+apps/web/public/artifacts/global-macro-panel-summary.json
+```
+
+Generated local panel files are ignored:
+
+```text
+data/derived/global_macro_panel/panel_annual.csv
+data/derived/global_macro_panel/panel_annual.jsonl
+data/derived/global_macro_panel/summary.json
+```
+
+List and run configured source hauls:
+
+```sh
+emf-macro source-hauls --root .
+emf-macro run-source-haul global_macro_starter_20260531 --root .
+```
+
+Build and inspect the normalized panel:
+
+```sh
+emf-macro build-global-panel --root . --haul-id global_macro_starter_20260531
+emf-macro global-panel-summary --root . --haul-id global_macro_starter_20260531
+```
+
 ## Macro Lab
 
 Run the FRED FX/rate differential lab:
@@ -209,6 +272,8 @@ emf-macro suggest-hypotheses --root . --run-id latest
 emf-macro plan-experiments --root . --pair USD_CAD --horizon 6
 emf-macro sources list --root . --priority p0
 emf-macro sources inspect rbi_dbie --root .
+emf-macro source-hauls --root .
+emf-macro global-panel-summary --root .
 ```
 
 Fetch the first non-FRED official central-bank source:

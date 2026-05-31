@@ -9,8 +9,10 @@ from .agent_store import ArtifactStore
 from .datasets import DatasetRegistry
 from .ecb import fetch_ecb_series, load_ecb_observations
 from .experiments import build_experiment_plan, suggest_hypotheses
+from .global_panel import build_global_macro_panel, load_global_macro_summary
 from .model_registry import list_model_specs
 from .runner import RunnerConfig, run_experiment_plan
+from .source_hauls import list_source_hauls, run_source_haul
 from .sources import MacroSourceCatalog
 from .world_bank import fetch_world_bank_indicator, load_world_bank_observations
 
@@ -121,6 +123,25 @@ def main() -> None:
     source_obs.add_argument("--indicator", help="World Bank indicator code filter")
     source_obs.add_argument("--limit", type=int, default=10)
     source_obs.add_argument("--compact", action="store_true", help="emit compact JSON")
+
+    hauls = sub.add_parser("source-hauls", help="list configured source hauls")
+    hauls.add_argument("--root", default=".", help="repo root")
+    hauls.add_argument("--compact", action="store_true", help="emit compact JSON")
+
+    run_haul = sub.add_parser("run-source-haul", help="fetch a configured source haul")
+    run_haul.add_argument("haul_id")
+    run_haul.add_argument("--root", default=".", help="repo root")
+    run_haul.add_argument("--compact", action="store_true", help="emit compact JSON")
+
+    global_panel = sub.add_parser("build-global-panel", help="build a normalized global macro panel summary")
+    global_panel.add_argument("--root", default=".", help="repo root")
+    global_panel.add_argument("--haul-id", default="global_macro_starter_20260531")
+    global_panel.add_argument("--compact", action="store_true", help="emit compact JSON")
+
+    global_summary = sub.add_parser("global-panel-summary", help="show the committed/global macro panel summary")
+    global_summary.add_argument("--root", default=".", help="repo root")
+    global_summary.add_argument("--haul-id", default="global_macro_starter_20260531")
+    global_summary.add_argument("--compact", action="store_true", help="emit compact JSON")
 
     hypotheses = sub.add_parser("suggest-hypotheses", help="suggest next testable macro/backtest hypotheses")
     hypotheses.add_argument("--root", default=".", help="repo root")
@@ -276,6 +297,14 @@ def main() -> None:
                 },
                 compact=args.compact,
             )
+    elif args.command == "source-hauls":
+        print_json({"schema_version": "marco.source_hauls.list.v1", "hauls": list_source_hauls(Path(args.root).resolve())}, compact=args.compact)
+    elif args.command == "run-source-haul":
+        print_json(run_source_haul(Path(args.root).resolve(), args.haul_id), compact=args.compact)
+    elif args.command == "build-global-panel":
+        print_json(build_global_macro_panel(Path(args.root).resolve(), haul_id=args.haul_id), compact=args.compact)
+    elif args.command == "global-panel-summary":
+        print_json(load_global_macro_summary(Path(args.root).resolve(), haul_id=args.haul_id), compact=args.compact)
     elif args.command == "suggest-hypotheses":
         print_json(suggest_hypotheses(Path(args.root).resolve(), args.run_id), compact=args.compact)
     elif args.command == "plan-experiments":

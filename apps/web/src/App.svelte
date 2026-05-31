@@ -1,7 +1,9 @@
 <script>
   const artifactUrl = './artifacts/fred-fx-rate-lab-summary.json';
+  const globalPanelUrl = './artifacts/global-macro-panel-summary.json';
 
   let data = null;
+  let globalPanel = null;
   let error = null;
   let selectedPair = 'USD_CAD';
   let selectedHorizon = 6;
@@ -29,6 +31,18 @@
     })
     .catch((err) => {
       error = err.message;
+    });
+
+  fetch(globalPanelUrl)
+    .then((response) => {
+      if (!response.ok) throw new Error(`global panel artifact fetch failed: ${response.status}`);
+      return response.json();
+    })
+    .then((payload) => {
+      globalPanel = payload;
+    })
+    .catch(() => {
+      globalPanel = null;
     });
 
   $: selectedRows = data
@@ -111,6 +125,37 @@
         This is a latest-revised-snapshot backtest, not real-time ALFRED/vintage-safe evidence.
       </p>
     </section>
+
+    {#if globalPanel}
+      <section class="panel">
+        <div class="panel-title">
+          <h2>Global Macro Data Haul</h2>
+          <span>{globalPanel.vintage_policy.replaceAll('_', ' ')}</span>
+        </div>
+        <div class="summary-grid embedded">
+          <div class="metric">
+            <span>Countries</span>
+            <strong>{globalPanel.country_count}</strong>
+          </div>
+          <div class="metric">
+            <span>Years</span>
+            <strong>{globalPanel.year_count}</strong>
+          </div>
+          <div class="metric">
+            <span>Panel Rows</span>
+            <strong>{globalPanel.panel_rows.toLocaleString()}</strong>
+          </div>
+          <div class="metric">
+            <span>WB Obs</span>
+            <strong>{globalPanel.world_bank_observations.toLocaleString()}</strong>
+          </div>
+        </div>
+        <p class="panel-copy">
+          {globalPanel.countries.join(', ')} across {globalPanel.features.join(', ')}.
+          ECB observations: {globalPanel.ecb_observations}.
+        </p>
+      </section>
+    {/if}
 
     <section class="controls">
       <label>

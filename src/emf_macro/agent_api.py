@@ -10,6 +10,7 @@ from urllib.parse import parse_qs, urlparse
 from .agent_store import ArtifactNotFoundError, ArtifactStore
 from .datasets import DatasetRegistry
 from .experiments import build_experiment_plan, suggest_hypotheses
+from .global_panel import load_global_macro_summary
 from .model_registry import list_model_specs
 
 
@@ -112,6 +113,10 @@ def route_get(
             dataset_ids=query.get("dataset_id"),
             max_parallelism=optional_int(first(query, "max_parallelism")) or 4,
         ), HTTPStatus.OK, "application/json"
+
+    if path == "/v1/global-panel":
+        haul_id = first(query, "haul_id", "global_macro_starter_20260531")
+        return load_global_macro_summary(store.root, haul_id=haul_id), HTTPStatus.OK, "application/json"
 
     parts = path.strip("/").split("/")
     if len(parts) >= 3 and parts[0] == "v1" and parts[1] == "runs":

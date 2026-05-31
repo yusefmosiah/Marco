@@ -53,3 +53,19 @@ def test_agent_api_routes_experiment_foundation(tmp_path: Path) -> None:
     )
     assert status == HTTPStatus.OK
     assert plan["job_count"] == 1
+
+
+def test_agent_api_route_global_panel(tmp_path: Path) -> None:
+    store = ArtifactStore(tmp_path)
+    artifact_dir = tmp_path / "artifacts" / "global-macro-panel" / "global_macro_starter_20260531"
+    artifact_dir.mkdir(parents=True)
+    (artifact_dir / "summary.json").write_text(
+        '{"schema_version":"marco.global_macro_panel.v1","panel_rows":4}\n',
+        encoding="utf-8",
+    )
+
+    payload, status, content_type = route_get(store, "/v1/global-panel", {}, public_base_url=None)
+
+    assert status == HTTPStatus.OK
+    assert content_type == "application/json"
+    assert payload["panel_rows"] == 4
