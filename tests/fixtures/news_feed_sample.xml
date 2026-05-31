@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Example Central Bank Feed</title>
+    <link>https://example.test/news</link>
+    <description>Test feed</description>
+    <item>
+      <title>Policy rate held steady</title>
+      <link>https://example.test/news/rate-held</link>
+      <guid>rate-held-2026-05-01</guid>
+      <pubDate>Fri, 01 May 2026 14:00:00 GMT</pubDate>
+      <description><![CDATA[Committee kept rates unchanged and noted inflation risks.]]></description>
+      <category>Monetary policy</category>
+    </item>
+    <item>
+      <title>Financial stability review published</title>
+      <link>https://example.test/news/fsr</link>
+      <guid>fsr-2026-05-02</guid>
+      <pubDate>Sat, 02 May 2026 10:30:00 GMT</pubDate>
+      <description><![CDATA[The review covers banks, credit, and market liquidity.]]></description>
+      <category>Financial stability</category>
+    </item>
+  </channel>
+</rss>

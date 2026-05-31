@@ -24,6 +24,10 @@ dataset-fetch-url https://example.com/data.csv --name "External Dataset"
 models
 suggest-hypotheses
 plan-experiments --pair USD_CAD --horizon 6
+news-sources
+news-summary
+news-items --limit 10
+news-fetches --limit 10
 ```
 
 Installed command equivalent:
@@ -53,6 +57,11 @@ GET /v1/datasets
 GET /v1/models
 GET /v1/hypotheses
 GET /v1/experiment-plan?pair=USD_CAD&horizon_months=6
+GET /v1/global-panel
+GET /v1/news
+GET /v1/news/sources
+GET /v1/news/items?source_id=ecb_press&limit=10
+GET /v1/news/fetches?limit=10
 GET /v1/agent-context
 ```
 
@@ -65,6 +74,8 @@ Node A static preview:
 ```text
 https://choir-ip.com/marco/
 https://choir-ip.com/marco/artifacts/fred-fx-rate-lab-summary.json
+https://choir-ip.com/marco/artifacts/global-macro-panel-summary.json
+https://choir-ip.com/marco/artifacts/macro-news-summary.json
 ```
 
 This is not the dynamic API. It is enough for agents to inspect the current
@@ -108,6 +119,33 @@ n
 target
 ```
 
+Macro news summary:
+
+```text
+schema_version=marco.news_summary.v1
+source_id=macro_news
+item_count
+source_counts
+region_counts
+vertical_counts
+vintage_policy=publication_snapshot
+```
+
+Macro news item rows:
+
+```text
+id
+source_id
+provider
+canonical_uri
+title
+summary
+published_at
+source_snapshot_id
+raw_path
+vintage_policy
+```
+
 ## Current Public Run
 
 As of 2026-05-31, the public static artifact reports:
@@ -122,6 +160,9 @@ lookahead_status=not_real_time_vintage_safe
 
 Random-walk/no-change baselines won nearly everywhere on RMSE in this snapshot;
 ridge only slightly improved `USD_CAD` at `6M`.
+
+The macro news source ledger currently contains 100 official-feed items from
+Federal Reserve Board, ECB, and BIS feeds.
 
 ## Deployment Notes
 

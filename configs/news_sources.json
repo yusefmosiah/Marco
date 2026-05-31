@@ -1,0 +1,147 @@
+{
+  "schema_version": "marco.news_sources.v1",
+  "user_agent": "MarcoNews/0.1 (+https://github.com/yusefmosiah/Marco)",
+  "sources": [
+    {
+      "auth_policy": "none",
+      "conditional_request_mode": "etag_last_modified",
+      "enabled": true,
+      "id": "federal_reserve_press_all",
+      "languages": [
+        "en"
+      ],
+      "name": "Federal Reserve Board - All Press Releases",
+      "poll_interval_seconds": 900,
+      "provider": "Federal Reserve Board",
+      "rate_limit": "polite_polling",
+      "regions": [
+        "US"
+      ],
+      "retention_days": 3650,
+      "robots_policy": "official_public_feed",
+      "store_body_policy": "metadata_and_summary",
+      "tier": "T1a",
+      "tos_class": "official_public_feed",
+      "type": "rss",
+      "url": "https://www.federalreserve.gov/feeds/press_all.xml",
+      "verticals": [
+        "central_bank",
+        "monetary_policy",
+        "financial_stability"
+      ]
+    },
+    {
+      "auth_policy": "none",
+      "conditional_request_mode": "etag_last_modified",
+      "enabled": true,
+      "id": "federal_reserve_speeches",
+      "languages": [
+        "en"
+      ],
+      "name": "Federal Reserve Board - Speeches",
+      "poll_interval_seconds": 1800,
+      "provider": "Federal Reserve Board",
+      "rate_limit": "polite_polling",
+      "regions": [
+        "US"
+      ],
+      "retention_days": 3650,
+      "robots_policy": "official_public_feed",
+      "store_body_policy": "metadata_and_summary",
+      "tier": "T1a",
+      "tos_class": "official_public_feed",
+      "type": "rss",
+      "url": "https://www.federalreserve.gov/feeds/speeches.xml",
+      "verticals": [
+        "central_bank",
+        "monetary_policy",
+        "fed_speech"
+      ]
+    },
+    {
+      "auth_policy": "none",
+      "conditional_request_mode": "etag_last_modified",
+      "enabled": true,
+      "id": "ecb_press",
+      "languages": [
+        "en"
+      ],
+      "name": "European Central Bank - Press, Speeches, Interviews",
+      "poll_interval_seconds": 900,
+      "provider": "European Central Bank",
+      "rate_limit": "polite_polling",
+      "regions": [
+        "EA",
+        "EU"
+      ],
+      "retention_days": 3650,
+      "robots_policy": "official_public_feed",
+      "store_body_policy": "metadata_and_summary",
+      "tier": "T1a",
+      "tos_class": "official_public_feed",
+      "type": "rss",
+      "url": "https://www.ecb.europa.eu/rss/press.html",
+      "verticals": [
+        "central_bank",
+        "monetary_policy",
+        "financial_stability"
+      ]
+    },
+    {
+      "auth_policy": "none",
+      "conditional_request_mode": "etag_last_modified",
+      "enabled": true,
+      "id": "bis_press_releases",
+      "languages": [
+        "en"
+      ],
+      "name": "Bank for International Settlements - Press Releases",
+      "poll_interval_seconds": 1800,
+      "provider": "Bank for International Settlements",
+      "rate_limit": "polite_polling",
+      "regions": [
+        "global"
+      ],
+      "retention_days": 3650,
+      "robots_policy": "official_public_feed",
+      "store_body_policy": "metadata_and_summary",
+      "tier": "T1a",
+      "tos_class": "official_public_feed",
+      "type": "rss",
+      "url": "https://www.bis.org/doclist/all_pressrels.rss",
+      "verticals": [
+        "central_bank",
+        "financial_stability",
+        "banking_supervision"
+      ]
+    },
+    {
+      "auth_policy": "none",
+      "conditional_request_mode": "etag_last_modified",
+      "enabled": true,
+      "id": "bis_central_bank_speeches",
+      "languages": [
+        "en"
+      ],
+      "name": "Bank for International Settlements - Central Bank Speeches",
+      "poll_interval_seconds": 3600,
+      "provider": "Bank for International Settlements",
+      "rate_limit": "polite_polling",
+      "regions": [
+        "global"
+      ],
+      "retention_days": 3650,
+      "robots_policy": "official_public_feed",
+      "store_body_policy": "metadata_and_summary",
+      "tier": "T1a",
+      "tos_class": "official_public_feed",
+      "type": "rss",
+      "url": "https://www.bis.org/doclist/cbspeeches.rss",
+      "verticals": [
+        "central_bank",
+        "monetary_policy",
+        "central_bank_speech"
+      ]
+    }
+  ]
+}

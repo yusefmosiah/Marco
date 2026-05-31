@@ -12,6 +12,7 @@ from .experiments import build_experiment_plan, suggest_hypotheses
 from .fed_communications import fetch_fed_communications, load_fed_communications
 from .global_panel import build_global_macro_panel, load_global_macro_summary
 from .model_registry import list_model_specs
+from .news import fetch_news, list_news_sources, load_news_fetches, load_news_items, load_news_summary
 from .runner import RunnerConfig, run_experiment_plan
 from .source_hauls import list_source_hauls, run_source_haul
 from .sources import MacroSourceCatalog
@@ -144,6 +145,32 @@ def main() -> None:
     global_summary.add_argument("--root", default=".", help="repo root")
     global_summary.add_argument("--haul-id", default="global_macro_starter_20260531")
     global_summary.add_argument("--compact", action="store_true", help="emit compact JSON")
+
+    news_sources = sub.add_parser("news-sources", help="list configured macro news source feeds")
+    news_sources.add_argument("--root", default=".", help="repo root")
+    news_sources.add_argument("--enabled-only", action="store_true")
+    news_sources.add_argument("--compact", action="store_true", help="emit compact JSON")
+
+    news_fetch = sub.add_parser("news-fetch", help="fetch official public macro news feeds")
+    news_fetch.add_argument("--root", default=".", help="repo root")
+    news_fetch.add_argument("--source-id", action="append", dest="source_ids", help="source id to fetch; repeat for multiple")
+    news_fetch.add_argument("--compact", action="store_true", help="emit compact JSON")
+
+    news_items = sub.add_parser("news-items", help="read normalized macro news items")
+    news_items.add_argument("--root", default=".", help="repo root")
+    news_items.add_argument("--source-id")
+    news_items.add_argument("--limit", type=int, default=10)
+    news_items.add_argument("--compact", action="store_true", help="emit compact JSON")
+
+    news_fetches = sub.add_parser("news-fetches", help="read macro news fetch audit records")
+    news_fetches.add_argument("--root", default=".", help="repo root")
+    news_fetches.add_argument("--source-id")
+    news_fetches.add_argument("--limit", type=int, default=10)
+    news_fetches.add_argument("--compact", action="store_true", help="emit compact JSON")
+
+    news_summary = sub.add_parser("news-summary", help="show the macro news source-ledger summary")
+    news_summary.add_argument("--root", default=".", help="repo root")
+    news_summary.add_argument("--compact", action="store_true", help="emit compact JSON")
 
     hypotheses = sub.add_parser("suggest-hypotheses", help="suggest next testable macro/backtest hypotheses")
     hypotheses.add_argument("--root", default=".", help="repo root")
@@ -322,6 +349,36 @@ def main() -> None:
         print_json(build_global_macro_panel(Path(args.root).resolve(), haul_id=args.haul_id), compact=args.compact)
     elif args.command == "global-panel-summary":
         print_json(load_global_macro_summary(Path(args.root).resolve(), haul_id=args.haul_id), compact=args.compact)
+    elif args.command == "news-sources":
+        print_json(
+            {
+                "schema_version": "marco.news_sources.list.v1",
+                "sources": list_news_sources(Path(args.root).resolve(), enabled_only=args.enabled_only),
+            },
+            compact=args.compact,
+        )
+    elif args.command == "news-fetch":
+        print_json(fetch_news(Path(args.root).resolve(), source_ids=args.source_ids), compact=args.compact)
+    elif args.command == "news-items":
+        print_json(
+            {
+                "schema_version": "marco.news_items.list.v1",
+                "source_id": "macro_news",
+                "items": load_news_items(Path(args.root).resolve(), source_id=args.source_id, limit=args.limit),
+            },
+            compact=args.compact,
+        )
+    elif args.command == "news-fetches":
+        print_json(
+            {
+                "schema_version": "marco.news_fetches.list.v1",
+                "source_id": "macro_news",
+                "fetches": load_news_fetches(Path(args.root).resolve(), source_id=args.source_id, limit=args.limit),
+            },
+            compact=args.compact,
+        )
+    elif args.command == "news-summary":
+        print_json(load_news_summary(Path(args.root).resolve()), compact=args.compact)
     elif args.command == "suggest-hypotheses":
         print_json(suggest_hypotheses(Path(args.root).resolve(), args.run_id), compact=args.compact)
     elif args.command == "plan-experiments":

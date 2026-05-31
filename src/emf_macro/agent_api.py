@@ -12,6 +12,7 @@ from .datasets import DatasetRegistry
 from .experiments import build_experiment_plan, suggest_hypotheses
 from .global_panel import load_global_macro_summary
 from .model_registry import list_model_specs
+from .news import list_news_sources, load_news_fetches, load_news_items, load_news_summary
 
 
 def run_server(root: Path, host: str, port: int, public_base_url: str | None = None) -> None:
@@ -117,6 +118,37 @@ def route_get(
     if path == "/v1/global-panel":
         haul_id = first(query, "haul_id", "global_macro_starter_20260531")
         return load_global_macro_summary(store.root, haul_id=haul_id), HTTPStatus.OK, "application/json"
+
+    if path == "/v1/news":
+        return load_news_summary(store.root), HTTPStatus.OK, "application/json"
+
+    if path == "/v1/news/sources":
+        return {
+            "schema_version": "marco.news_sources.list.v1",
+            "sources": list_news_sources(store.root, enabled_only=first(query, "enabled_only", "false").lower() in {"1", "true", "yes"}),
+        }, HTTPStatus.OK, "application/json"
+
+    if path == "/v1/news/items":
+        return {
+            "schema_version": "marco.news_items.list.v1",
+            "source_id": "macro_news",
+            "items": load_news_items(
+                store.root,
+                source_id=first(query, "source_id"),
+                limit=optional_int(first(query, "limit")) or 50,
+            ),
+        }, HTTPStatus.OK, "application/json"
+
+    if path == "/v1/news/fetches":
+        return {
+            "schema_version": "marco.news_fetches.list.v1",
+            "source_id": "macro_news",
+            "fetches": load_news_fetches(
+                store.root,
+                source_id=first(query, "source_id"),
+                limit=optional_int(first(query, "limit")) or 50,
+            ),
+        }, HTTPStatus.OK, "application/json"
 
     parts = path.strip("/").split("/")
     if len(parts) >= 3 and parts[0] == "v1" and parts[1] == "runs":

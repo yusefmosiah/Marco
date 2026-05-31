@@ -96,6 +96,10 @@ GET /v1/models
 GET /v1/hypotheses
 GET /v1/experiment-plan?pair=USD_CAD&horizon_months=6
 GET /v1/global-panel
+GET /v1/news
+GET /v1/news/sources
+GET /v1/news/items?source_id=ecb_press&limit=10
+GET /v1/news/fetches?limit=10
 GET /v1/agent-context
 ```
 
@@ -118,6 +122,26 @@ Source-haul commands:
 emf-macro source-hauls --root .
 emf-macro run-source-haul global_macro_starter_20260531 --root .
 emf-macro build-global-panel --root . --haul-id global_macro_starter_20260531
+```
+
+Macro news source-ledger commands:
+
+```sh
+emf-macro news-sources --root .
+emf-macro news-fetch --root .
+emf-macro news-summary --root .
+emf-macro news-items --root . --limit 10
+emf-macro news-fetches --root . --limit 10
+```
+
+The news CLI is the first interface for the future news agent. It should cite
+exact `news_item.id` values from `news-items`, not inferred recent feed rows.
+
+Macro news API:
+
+```sh
+curl -s 'http://127.0.0.1:8765/v1/news' | jq
+curl -s 'http://127.0.0.1:8765/v1/news/items?limit=5' | jq
 ```
 
 ## Agent Context Shape
@@ -160,6 +184,7 @@ The current public preview is still static:
 https://choir-ip.com/marco/
 https://choir-ip.com/marco/artifacts/fred-fx-rate-lab-summary.json
 https://choir-ip.com/marco/artifacts/global-macro-panel-summary.json
+https://choir-ip.com/marco/artifacts/macro-news-summary.json
 ```
 
 The dynamic local API can be mounted under `/marco/api/` later once Node A has a

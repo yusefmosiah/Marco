@@ -1,6 +1,6 @@
 ---
 name: marco-agent-api
-description: Use when an agent needs to inspect or consume Marco macro/backtest artifacts, query the Marco agent CLI or HTTP API, summarize model metrics, compare FX/rate baselines, fetch the public static artifact at choir-ip.com/marco, or start a local read-only Marco artifact API. This skill is for agent-facing data access, not for changing models or running undocumented finance analysis.
+description: Use when an agent needs to inspect or consume Marco macro/backtest/news artifacts, query the Marco agent CLI or HTTP API, summarize model metrics, compare FX/rate baselines, read the macro news source ledger, fetch the public static artifact at choir-ip.com/marco, or start a local read-only Marco artifact API. This skill is for agent-facing data access, not for changing models or running undocumented finance analysis.
 ---
 
 # Marco Agent API
@@ -19,9 +19,11 @@ Use the highest-fidelity available surface:
 Always preserve these constraints in summaries:
 
 - Current public artifacts are `latest_revised_snapshot`, not ALFRED/vintage-safe evidence.
+- Macro news artifacts are `publication_snapshot` source-ledger items, not generated analysis.
 - Random-walk/no-change baselines are first-class comparison points.
 - The API is read-only over committed artifacts.
 - Do not imply live trading suitability or finance-professional validation.
+- News summaries must cite exact `news_item.id` values; do not cite "recent rows" by position.
 
 ## Common Tasks
 
@@ -70,6 +72,14 @@ PYTHONPATH=src python3 -m emf_macro.cli suggest-hypotheses --root . --compact
 PYTHONPATH=src python3 -m emf_macro.cli plan-experiments --root . --pair USD_CAD --horizon 6 --compact
 ```
 
+For macro news source-ledger reads:
+
+```sh
+PYTHONPATH=src python3 -m emf_macro.cli news-summary --root . --compact
+PYTHONPATH=src python3 -m emf_macro.cli news-items --root . --limit 10 --compact
+PYTHONPATH=src python3 -m emf_macro.cli news-fetches --root . --limit 10 --compact
+```
+
 ## Decision Rules
 
 - Use CLI when working from a checked-out repo and no persistent service is needed.
@@ -88,6 +98,9 @@ When answering from Marco artifacts, include:
 - pair/horizon/model filters used;
 - whether the baseline or a model won;
 - the exact metric field being compared, usually RMSE.
+
+When answering from news artifacts, include source IDs, publication timestamps,
+and exact `news_item.id` values.
 
 Do not overstate small RMSE deltas. For example, if ridge beats random walk on
 `USD_CAD` at `6M`, say it is a slight improvement in this latest-revised

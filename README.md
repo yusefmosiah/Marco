@@ -26,6 +26,7 @@ Current artifact:
 - [ECB SDMX source adapter](docs/sources/ecb-sdmx.md)
 - [World Bank Indicators source adapter](docs/sources/world-bank-indicators.md)
 - [Fed FOMC communications source adapter](docs/sources/fed-fomc-communications.md)
+- [Macro news source ledger](docs/strategy/macro-news-source-ledger.md)
 - [Dataset, hypothesis, and parallel backtesting foundation](docs/strategy/datasets-hypotheses-parallel-backtesting.md)
 - [Agent API and CLI](docs/agents/api-and-cli.md)
 - [Repo-local Marco agent API skill](skills/marco-agent-api/SKILL.md)
@@ -35,6 +36,7 @@ Current artifact:
 - [ECB SDMX smoke checkpoint](docs/runs/20260531-ecb-sdmx-smoke-checkpoint.md)
 - [World Bank Indicators haul checkpoint](docs/runs/20260531-world-bank-indicators-haul.md)
 - [Fed FOMC communications haul checkpoint](docs/runs/20260531-fed-fomc-communications-haul.md)
+- [Macro news source ledger checkpoint](docs/runs/20260531-macro-news-source-ledger-checkpoint.md)
 - [Global macro panel continuation mission](docs/missions/global-macro-panel-continuation.md)
 - [Global macro panel checkpoint](docs/runs/20260531-global-macro-panel-checkpoint.md)
 - [FinRobot/MikeOSS platform evaluation](docs/strategy/finrobot-mikeoss-platform-evaluation.md)
@@ -42,6 +44,7 @@ Current artifact:
 - [GitHub Actions CI and Node A deploy](docs/deployment/github-actions.md)
 - [Shareable FRED FX/rate artifacts](artifacts/fred-fx-rate-lab/20260531-161930-fx-rate-diff/)
 - [Shareable Fed FOMC communications summary](artifacts/fed-fomc-communications/)
+- [Shareable macro news summary](artifacts/macro-news/)
 - [Shareable global macro panel summary](artifacts/global-macro-panel/global_macro_starter_20260531/)
 - [Repo-root data bundles](data/)
 - [Svelte visualization app](apps/web/)
@@ -65,7 +68,7 @@ See [Setup](docs/setup.md) for required tools and manual installation.
 
 ## Data Haul
 
-Marco currently has four concrete data surfaces.
+Marco currently has six concrete data surfaces.
 
 The repo-root shareable data bundles live under:
 
@@ -75,6 +78,7 @@ data/world-bank-indicators/
 data/ecb-sdmx/
 data/global-macro-panel/
 data/fed-fomc-communications/
+data/macro-news/
 data/backtests/
 ```
 
@@ -190,9 +194,40 @@ The compact committed summary lives at:
 artifacts/fed-fomc-communications/summary.json
 ```
 
+Macro news source ledger:
+
+| Source | Provider | Observations |
+| --- | --- | ---: |
+| `federal_reserve_press_all` | Federal Reserve Board | 20 |
+| `federal_reserve_speeches` | Federal Reserve Board | 15 |
+| `ecb_press` | European Central Bank | 15 |
+| `bis_press_releases` | Bank for International Settlements | 25 |
+| `bis_central_bank_speeches` | Bank for International Settlements | 25 |
+
+Total current macro news haul: 100 normalized official-feed items.
+
+The news ledger is event/publication data, not numeric macro time series. It is
+committed as a shareable repo-root data bundle under:
+
+```text
+data/macro-news/source_registry.json
+data/macro-news/source_manifest.json
+data/macro-news/fetches.jsonl
+data/macro-news/news_items.jsonl
+data/macro-news/dataset_record.json
+data/macro-news/summary.json
+```
+
+The compact committed summary lives at:
+
+```text
+artifacts/macro-news/summary.json
+apps/web/public/artifacts/macro-news-summary.json
+```
+
 The source catalog currently tracks 16 official/source-linked candidates. Active
-fetch adapters exist for `fred`, `ecb_sdmx`, `world_bank_indicators`, and
-`fed_fomc_communications`.
+fetch adapters exist for `fred`, `ecb_sdmx`, `world_bank_indicators`,
+`fed_fomc_communications`, and the separate `macro_news` source ledger.
 
 ### Normalized Global Macro Panel
 

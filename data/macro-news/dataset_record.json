@@ -1,0 +1,50 @@
+{
+  "byte_size": 96348,
+  "created_at": "2026-05-31T21:00:31.660856+00:00",
+  "dataset_id": "macro_news-8e4d301c2201",
+  "format": "jsonl",
+  "kind": "news_event_ledger",
+  "name": "Marco official macro news source ledger",
+  "schema": {
+    "column_count": 25,
+    "columns": [
+      "canonical_uri",
+      "categories",
+      "content_hash",
+      "feed_title",
+      "feed_url",
+      "id",
+      "language",
+      "metadata_json",
+      "original_id",
+      "provider",
+      "published_at",
+      "published_raw",
+      "raw_path",
+      "regions",
+      "retrieved_at",
+      "schema_version",
+      "source_id",
+      "source_snapshot_id",
+      "source_type",
+      "source_url",
+      "summary",
+      "title",
+      "updated_at",
+      "vertical_tags",
+      "vintage_policy"
+    ],
+    "sample_row_count": 5
+  },
+  "sha256": "8e4d301c2201cbb64a0f16e76b22095b3eb87cac5cee505005ad3a81b7ed4d2c",
+  "source_type": "official_public_feeds",
+  "source_uri": "configs/news_sources.json",
+  "stored_path": "data/derived/macro_news/news_items.jsonl",
+  "tags": [
+    "news",
+    "macro",
+    "central_bank",
+    "source_ledger",
+    "publication_snapshot"
+  ]
+}

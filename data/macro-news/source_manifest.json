@@ -1,0 +1,42 @@
+[
+  {
+    "bytes": 36022,
+    "fetched_at": "2026-05-31T21:00:29.990677+00:00",
+    "logical_name": "macro_news:bis_central_bank_speeches",
+    "raw_path": "data/raw/macro_news/bis_central_bank_speeches-913829e7ea6762bd1579867568e6fe3858dc46889bddb67926206909133741b6.xml",
+    "sha256": "913829e7ea6762bd1579867568e6fe3858dc46889bddb67926206909133741b6",
+    "url": "https://www.bis.org/doclist/cbspeeches.rss"
+  },
+  {
+    "bytes": 30113,
+    "fetched_at": "2026-05-31T21:00:29.990677+00:00",
+    "logical_name": "macro_news:bis_press_releases",
+    "raw_path": "data/raw/macro_news/bis_press_releases-c7aa21b9a7108e286a67ce3bd6753a16de2c18d7a555e9fa08131965bed536d7.xml",
+    "sha256": "c7aa21b9a7108e286a67ce3bd6753a16de2c18d7a555e9fa08131965bed536d7",
+    "url": "https://www.bis.org/doclist/all_pressrels.rss"
+  },
+  {
+    "bytes": 5703,
+    "fetched_at": "2026-05-31T21:00:29.990677+00:00",
+    "logical_name": "macro_news:ecb_press",
+    "raw_path": "data/raw/macro_news/ecb_press-f0bf6ee2481b60331c2990db4eb16c0052f475fe7ecf9d9e458cf2efb1ee7fed.xml",
+    "sha256": "f0bf6ee2481b60331c2990db4eb16c0052f475fe7ecf9d9e458cf2efb1ee7fed",
+    "url": "https://www.ecb.europa.eu/rss/press.html"
+  },
+  {
+    "bytes": 14928,
+    "fetched_at": "2026-05-31T21:00:29.990677+00:00",
+    "logical_name": "macro_news:federal_reserve_press_all",
+    "raw_path": "data/raw/macro_news/federal_reserve_press_all-7613e384a95f05b3596ae89595ad7a41258ab3e27f03dd113dfc6dce12567eee.xml",
+    "sha256": "7613e384a95f05b3596ae89595ad7a41258ab3e27f03dd113dfc6dce12567eee",
+    "url": "https://www.federalreserve.gov/feeds/press_all.xml"
+  },
+  {
+    "bytes": 9582,
+    "fetched_at": "2026-05-31T21:00:29.990677+00:00",
+    "logical_name": "macro_news:federal_reserve_speeches",
+    "raw_path": "data/raw/macro_news/federal_reserve_speeches-463d2c2a24ec61402a98a6ff4288fccbdba540c18896fd3de92d7d05d822beef.xml",
+    "sha256": "463d2c2a24ec61402a98a6ff4288fccbdba540c18896fd3de92d7d05d822beef",
+    "url": "https://www.federalreserve.gov/feeds/speeches.xml"
+  }
+]
