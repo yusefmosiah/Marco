@@ -58,6 +58,17 @@ emf-macro plan-experiments --root . --pair USD_CAD --horizon 6
 emf-macro sources list --root . --priority p0
 ```
 
+The CLI now also executes a generated plan into a local ledger:
+
+```sh
+emf-macro run-experiment-plan \
+  --root . \
+  --plan tmp/usd-cad-6m-plan.json \
+  --features data/derived/fred_fx_rates/features_monthly.parquet \
+  --evaluation-start 2006-01 \
+  --max-parallelism 2
+```
+
 ## Why Local Mutation First
 
 Public upload endpoints need authentication, quotas, file-size limits, content
@@ -122,10 +133,16 @@ and writes:
 ```text
 backtests/runs/<run_id>/
   experiment_plan.json
+  dataset_mapping.json
+  hypothesis_spec.json
+  run_manifest.json
   jobs/<job_id>/config.json
+  jobs/<job_id>/status.json
   jobs/<job_id>/predictions.jsonl
   jobs/<job_id>/metrics.json
+  jobs/<job_id>/failure.json
   aggregate_metrics.json
+  baseline_gates.json
   report.md
 ```
 

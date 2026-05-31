@@ -6,7 +6,7 @@ Repo: `/Users/wiz/emf`
 
 Mission name: `marco-experiment-ledger-continuation`
 
-Status: ready for execution
+Status: implementation checkpoint executed
 
 ## One-Line Goal String
 
@@ -240,24 +240,33 @@ Record evidence for:
 ## Run Checkpoint And Resumption State
 
 ```text
-status: ready_for_execution
-last checkpoint: df90722 Add source CLI and experiment contracts
+status: checkpoint_incomplete
+last checkpoint: local implementation of runner and ledger contract before
+  GitHub promotion
 current artifact state: source catalog, dataset mapping specs, hypothesis specs,
-  experiment plans, read-only API, skill, Svelte preview, and CI are present
-what shipped: mission document only
-what was proven: local and GitHub CI green before this mission was authored
-unproven or partial claims: no experiment runner, no atomic per-job artifacts,
-  no baseline-gated aggregation, no serial/parallel equivalence
-belief-state changes: next certain work is runner/ledger, not more source
-  discovery or model expansion
-remaining error field: existing pipeline may need extraction to avoid duplicate
-  runner logic
-highest-impact remaining uncertainty: where to place the per-job execution
-  boundary around existing backtest code
-next executable probe: inspect backtest.py and pipeline.py, then implement the
-  smallest serial runner around one USD_CAD 6M plan
+  experiment plans, read-only API, skill, Svelte preview, CI, and a local
+  experiment runner are present
+what shipped: source runner module, run-experiment-plan CLI, per-job artifact
+  writing, aggregate metrics, baseline gates, focused tests, and docs
+what was proven: local make ci passed with runner tests covering completed
+  artifacts, deterministic reruns, missing-baseline rejection, skipped jobs,
+  partial failure artifacts, and serial/parallel aggregate equivalence; CLI
+  help and bounded USD_CAD 6M plan generation smoke commands ran successfully
+unproven or partial claims: runner has not yet been exercised against a freshly
+  generated live FRED feature panel in this checkpoint; no hosted API mutation;
+  no ECB/IMF/RBI source adapter
+belief-state changes: existing walk_forward_pair is a workable per-group
+  execution boundary, so the runner can stay a ledger layer
+remaining error field: live FRED feature availability still determines whether
+  operator runs can execute immediately from a fresh clone without first running
+  run-fx-rate-lab
+highest-impact remaining uncertainty: whether the generated FRED features path
+  should become a committed compact fixture or remain purely local/generated
+next executable probe: run full CI, push, watch GitHub Actions, then run the
+  runner against a live/generated USD_CAD 6M plan if source data is available
 suggested resume goal string: /goal Run docs/missions/marco-experiment-ledger-continuation.md
   to build and verify the Marco experiment runner and artifact ledger
-evidence artifact refs: GitHub Actions CI run 26721124774 for commit df90722
-rollback refs: remove this mission doc or revise before runner implementation
+evidence artifact refs: tests/test_runner.py, local make ci run, and CLI smoke
+  output for run-experiment-plan plus USD_CAD 6M plan generation
+rollback refs: revert the runner/CLI/doc commit before any live deployment
 ```

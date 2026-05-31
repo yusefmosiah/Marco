@@ -118,3 +118,25 @@ emf-macro plan-experiments --root . --pair USD_CAD --horizon 6
 emf-macro sources list --root . --priority p0
 emf-macro sources inspect rbi_dbie --root .
 ```
+
+Execute a bounded experiment plan into an ignored local run ledger:
+
+```sh
+emf-macro plan-experiments \
+  --root . \
+  --pair USD_CAD \
+  --horizon 6 \
+  --model-id random_walk \
+  --model-id no_change \
+  --model-id ridge \
+  --output tmp/usd-cad-6m-plan.json
+
+emf-macro run-experiment-plan \
+  --root . \
+  --plan tmp/usd-cad-6m-plan.json \
+  --features data/derived/fred_fx_rates/features_monthly.parquet \
+  --evaluation-start 2006-01 \
+  --max-parallelism 1
+```
+
+Runner outputs live under ignored `backtests/runs/ledger-*/`.

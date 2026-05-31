@@ -9,6 +9,7 @@ from .agent_store import ArtifactStore
 from .datasets import DatasetRegistry
 from .experiments import build_experiment_plan, suggest_hypotheses
 from .model_registry import list_model_specs
+from .runner import RunnerConfig, run_experiment_plan
 from .sources import MacroSourceCatalog
 
 
@@ -114,6 +115,18 @@ def main() -> None:
     plan.add_argument("--output", help="optional path to write the plan JSON")
     plan.add_argument("--compact", action="store_true", help="emit compact JSON")
 
+    run_plan = sub.add_parser("run-experiment-plan", help="execute an experiment plan into a run ledger")
+    run_plan.add_argument("--root", default=".", help="repo root")
+    run_plan.add_argument("--plan", required=True, help="path to marco.experiment_plan.v1 JSON")
+    run_plan.add_argument("--features", help="path to features_monthly parquet/csv")
+    run_plan.add_argument("--output-dir", help="optional output run directory")
+    run_plan.add_argument("--mapping-spec", help="optional marco.dataset_mapping.v1 JSON")
+    run_plan.add_argument("--hypothesis-spec", help="optional marco.hypothesis_spec.v1 JSON")
+    run_plan.add_argument("--evaluation-start", default="2006-01")
+    run_plan.add_argument("--train-min-months", type=int, default=84)
+    run_plan.add_argument("--max-parallelism", type=int, default=1)
+    run_plan.add_argument("--compact", action="store_true", help="emit compact JSON")
+
     args = parser.parse_args()
 
     if args.command == "run-fx-rate-lab":
@@ -200,6 +213,21 @@ def main() -> None:
         if args.output:
             Path(args.output).write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
         print_json(payload, compact=args.compact)
+    elif args.command == "run-experiment-plan":
+        payload = run_experiment_plan(
+            RunnerConfig(
+                root=Path(args.root).resolve(),
+                plan=load_json(Path(args.plan)),
+                features_path=Path(args.features).resolve() if args.features else None,
+                output_dir=Path(args.output_dir).resolve() if args.output_dir else None,
+                mapping_spec=load_json(Path(args.mapping_spec)) if args.mapping_spec else None,
+                hypothesis_spec=load_json(Path(args.hypothesis_spec)) if args.hypothesis_spec else None,
+                evaluation_start=args.evaluation_start,
+                train_min_months=args.train_min_months,
+                max_parallelism=args.max_parallelism,
+            )
+        )
+        print_json(payload, compact=args.compact)
 
 
 def print_json(payload: object, compact: bool = False) -> None:
@@ -207,6 +235,10 @@ def print_json(payload: object, compact: bool = False) -> None:
         print(json.dumps(payload, separators=(",", ":"), sort_keys=True))
     else:
         print(json.dumps(payload, indent=2, sort_keys=True))
+
+
+def load_json(path: Path) -> object:
+    return json.loads(path.read_text(encoding="utf-8"))
 
 
 if __name__ == "__main__":
