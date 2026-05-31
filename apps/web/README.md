@@ -1,14 +1,14 @@
 # Marco Agent Workbench Web
 
-Svelte/Vite frontend for the Marco hackathon demo. The app is now a
-three-panel agent workbench:
+Svelte/Vite frontend for the Marco hackathon demo. The app is a three-panel
+live agent workbench:
 
 - left: chat threads and worker-agent status
 - center: open chat session with agent routing
 - right: rendered report summaries and committed artifact links
 
-It runs as a static preview from committed artifacts and can optionally call the
-deployed Marco agent API when configured.
+Prompts are sent to the deployed Marco agent API. The committed artifact JSON is
+used for the right-side evidence/report panel, not as a chat fallback.
 
 The app reads:
 
@@ -31,10 +31,16 @@ Open:
 http://127.0.0.1:5177/
 ```
 
-To route prompts to a live `marco-agentd` instead of the local static fallback:
+To run locally against a local `marco-agentd`:
 
 ```sh
 VITE_MARCO_AGENT_API=http://127.0.0.1:8080 npm run dev -- --port 5177
+```
+
+The Node A deployment builds with:
+
+```sh
+VITE_MARCO_AGENT_API=/marco-api npm run build
 ```
 
 ## Build
@@ -43,9 +49,9 @@ VITE_MARCO_AGENT_API=http://127.0.0.1:8080 npm run dev -- --port 5177
 npm run build
 ```
 
-The app intentionally uses Svelte with plain CSS and committed JSON artifacts
-instead of a heavy charting stack. The data contract is JSON/CSV-first so
-finance and data engineering users can inspect the source artifacts directly.
+The app intentionally uses Svelte with plain CSS and committed JSON evidence
+artifacts instead of a heavy charting stack. The data contract is JSON/CSV-first
+so finance and data engineering users can inspect the source artifacts directly.
 
 ## Agent API Contract
 

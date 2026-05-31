@@ -27,7 +27,7 @@ serve-agentd:
 	@go run ./cmd/marco-agentd --root . --host 127.0.0.1 --port 8787
 
 deploy-node-a:
-	@tools/deploy_node_a_static.sh
+	@tools/deploy_node_a_live.sh
 
 clean:
 	@rm -rf apps/web/dist .pytest_cache

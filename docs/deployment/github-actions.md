@@ -2,7 +2,8 @@
 
 Date: 2026-05-31
 
-Status: CI enabled; Node A deploy workflow added but waits for secrets
+Status: CI enabled; Node A deploy workflow manages the live agent system when
+secrets are present
 
 ## CI
 
@@ -27,7 +28,7 @@ Jobs:
 - Web build: runs `npm ci` and `npm run build` under `apps/web`, then uploads
   the built `dist` as a workflow artifact.
 
-## Node A Static Deploy
+## Node A Live Deploy
 
 Workflow:
 
@@ -39,19 +40,29 @@ Triggers:
 
 ```text
 workflow_dispatch
-push to main when apps/web, artifacts, deploy script, or deploy workflow changes
+push to main when web, API, data, runtime, or deploy files change
 ```
 
 This workflow calls:
 
 ```text
-tools/deploy_node_a_static.sh
+tools/deploy_node_a_live.sh
 ```
 
-It deploys the static Svelte preview to:
+It deploys:
+
+- Svelte workbench assets to `/var/www/marco/current`
+- repo/runtime files to `/opt/marco`
+- Python CLI in `/opt/marco/.venv`
+- Go API binary at `/usr/local/bin/marco-agentd`
+- systemd service `marco-agentd.service`
+- Caddy routes for `/marco/` and `/marco-api/`
+
+Public routes:
 
 ```text
 https://choir-ip.com/marco/
+https://choir-ip.com/marco-api/health
 ```
 
 ## Required Secrets
@@ -86,29 +97,32 @@ gh secret set NODE_A_SSH_PRIVATE_KEY < ~/.ssh/id_ed25519_ovh
 Only run the last command if you are comfortable letting this GitHub repo use
 that SSH key for Node A deploys. A narrower dedicated deploy key is better.
 
-## What Is Not Deployed Yet
+## Runtime Notes
 
-The current Node A preview is still static. The new Marco agent API and CLI are
-in the repo, but the dynamic HTTP API is not yet running as a Node A systemd
-service.
+The UI does not provide local browser-side chat answers. Prompt submission calls
+the live `marco-agentd` API through `/marco-api`.
 
-To expose the dynamic API publicly, we still need:
+The service uses:
 
-1. a durable Python runtime or packaged service on Node A;
-2. a systemd service for `emf-macro serve-agent-api`;
-3. a Caddy route such as `/marco/api/*` to proxy to the local service;
-4. an auth decision before adding mutating endpoints.
+```text
+ZOT_HOME=/var/lib/marco/zot
+MARCO_AGENT_MODEL=accounts/fireworks/models/deepseek-v4-flash
+MARCO_AGENT_REASONING=medium
+EnvironmentFile=-/var/lib/go-choir/gateway-provider.env
+```
 
-For now, agents can use:
+Agents can still use artifact URLs directly for evidence:
 
 ```text
 https://choir-ip.com/marco/artifacts/fred-fx-rate-lab-summary.json
 https://choir-ip.com/marco/artifacts/global-macro-panel-summary.json
 ```
 
-or clone the repo and use:
+or call the live agent API:
 
 ```sh
-emf-macro agent-context --root .
-emf-macro serve-agent-api --root . --host 127.0.0.1 --port 8765
+curl https://choir-ip.com/marco-api/health
+curl -X POST https://choir-ip.com/marco-api/v1/chat \
+  -H 'content-type: application/json' \
+  -d '{"prompt":"Summarize Marco status."}'
 ```

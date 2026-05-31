@@ -14,7 +14,7 @@
     }
   };
 
-  const apiBase = import.meta.env.VITE_MARCO_AGENT_API ?? '';
+  const apiBase = import.meta.env.VITE_MARCO_AGENT_API ?? '/marco-api';
 
   let fred = null;
   let globalPanel = null;
@@ -206,7 +206,7 @@
           role: 'assistant',
           eyebrow: 'New thread',
           body:
-            'Ask a question about the macro artifacts, news snapshot, or model results. With VITE_MARCO_AGENT_API set, this panel can call the deployed agent API.',
+            'Ask a question about the macro artifacts, news snapshot, or model results. This panel routes prompts to the live Marco agent API on Node A.',
           context: []
         }
       ]
@@ -223,14 +223,14 @@
     sending = true;
 
     try {
-      const answer = apiBase ? await callAgentApi(text) : localAnswer(text);
+      const answer = await callAgentApi(text);
       appendMessage(activeThreadId, answer);
     } catch (error) {
       appendMessage(activeThreadId, {
         role: 'assistant',
-        eyebrow: 'Local fallback',
-        body: `${localAnswer(text).body} The live agent API was unavailable: ${error.message}`,
-        context: ['./artifacts/fred-fx-rate-lab-summary.json', './artifacts/macro-news-summary.json']
+        eyebrow: 'Agent API error',
+        body: `The live Marco agent API did not return a response: ${error.message}`,
+        context: [apiBase]
       });
     } finally {
       sending = false;
@@ -250,50 +250,18 @@
     return {
       role: 'assistant',
       eyebrow: route === 'chat' ? 'Chat agent' : labelForRoute(route),
-      body: payload.response ?? payload.answer ?? payload.text ?? JSON.stringify(payload, null, 2),
-      context: payload.artifacts ?? payload.context ?? []
-    };
-  }
-
-  function localAnswer(text) {
-    const lower = text.toLowerCase();
-    if (lower.includes('news') || route === 'news-agent') {
-      return {
-        role: 'assistant',
-        eyebrow: 'News agent preview',
-        body: `Current committed snapshot has ${formatNumber(newsItems)} macro/news records from ${newsSources} sources. The next agent job is to record each fetch, summarize only marginal information, and update model.md with pruning at the token threshold.`,
-        context: ['./artifacts/macro-news-summary.json']
-      };
-    }
-
-    if (lower.includes('model') || lower.includes('backtest') || route === 'economic-modeling-agent') {
-      return {
-        role: 'assistant',
-        eyebrow: 'Modeling agent preview',
-        body: `The latest FRED FX/rate lab has ${formatNumber(fred?.headline?.prediction_rows)} predictions across ${fred?.pairs?.length ?? 0} pairs and ${fred?.horizons?.length ?? 0} horizons. Baselines win ${baselineWins}/${contestCount} RMSE contests, so the honest claim is benchmark discipline plus extensible data plumbing.`,
-        context: ['./artifacts/fred-fx-rate-lab-summary.json']
-      };
-    }
-
-    if (lower.includes('data') || lower.includes('coverage')) {
-      return {
-        role: 'assistant',
-        eyebrow: 'Data coverage',
-        body: `The global macro panel currently covers ${globalCountries} countries and ${globalPanel?.feature_count ?? 0} normalized features. It is useful as a schema and ingestion proof, not a complete global macro warehouse yet.`,
-        context: ['./artifacts/global-macro-panel-summary.json']
-      };
-    }
-
-    return {
-      role: 'assistant',
-      eyebrow: 'Chat agent preview',
       body:
-        'The strongest demo story is a four-agent Marco workbench: three specialist agents publish auditable reports, and the chat agent uses those artifacts as context while routing specialist prompts back to the worker APIs.',
-      context: [
-        './artifacts/fred-fx-rate-lab-summary.json',
-        './artifacts/macro-news-summary.json',
-        './artifacts/global-macro-panel-summary.json'
-      ]
+        payload.answer_markdown ??
+        payload.response ??
+        payload.answer ??
+        payload.text ??
+        JSON.stringify(payload, null, 2),
+      context:
+        payload.context_refs ??
+        payload.specialist_handoffs ??
+        payload.artifacts ??
+        payload.context ??
+        []
     };
   }
 
@@ -468,7 +436,7 @@
         <p class="eyebrow">Evidence</p>
         <h2>Reports & artifacts</h2>
       </div>
-      <span>{apiBase ? 'API connected' : 'static preview'}</span>
+      <span>live API</span>
     </header>
 
     <div class="tab-row" role="tablist" aria-label="Report sections">

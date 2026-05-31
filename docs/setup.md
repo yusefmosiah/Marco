@@ -166,12 +166,20 @@ MARCO_AGENT_REASONING=medium
 ZOT_HOME=/var/lib/marco/zot
 ```
 
-## Public Preview
+## Public Live Runtime
 
-Current Node A static preview:
+Current Node A live workbench:
 
 ```text
 https://choir-ip.com/marco/
+```
+
+Current Node A live agent API:
+
+```text
+https://choir-ip.com/marco-api/health
+https://choir-ip.com/marco-api/v1/chat
+https://choir-ip.com/marco-api/v1/agents/{agent}/prompt
 ```
 
 Current public JSON artifact:
@@ -196,8 +204,7 @@ The repo-local skill for this workflow is:
 skills/marco-agent-api/SKILL.md
 ```
 
-The skill helper can query local API, CLI fallback, or the public static
-artifact:
+The skill helper can query local API, CLI fallback, or the public artifact:
 
 ```sh
 python3 skills/marco-agent-api/scripts/marco_client.py context --repo-root .

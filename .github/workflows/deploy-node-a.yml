@@ -1,4 +1,4 @@
-name: Deploy Node A Static Preview
+name: Deploy Node A Live Agent System
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
@@ -10,6 +10,13 @@ on:
     paths:
       - "apps/web/**"
       - "artifacts/**"
+      - "cmd/marco-agentd/**"
+      - "src/**"
+      - "data/**"
+      - "go.mod"
+      - "pyproject.toml"
+      - "uv.lock"
+      - "tools/deploy_node_a_live.sh"
       - "tools/deploy_node_a_static.sh"
       - ".github/workflows/deploy-node-a.yml"
 
@@ -70,8 +77,8 @@ jobs:
             echo "  StrictHostKeyChecking yes"
           } >> ~/.ssh/config
 
-      - name: Deploy static preview
+      - name: Deploy live agent system
         if: steps.secrets.outputs.ready == 'true'
         env:
           SSH_ALIAS: node-a-ci
-        run: tools/deploy_node_a_static.sh
+        run: tools/deploy_node_a_live.sh

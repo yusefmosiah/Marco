@@ -42,7 +42,7 @@ Current artifact:
 - [Global macro panel continuation mission](docs/missions/global-macro-panel-continuation.md)
 - [Global macro panel checkpoint](docs/runs/20260531-global-macro-panel-checkpoint.md)
 - [FinRobot/MikeOSS platform evaluation](docs/strategy/finrobot-mikeoss-platform-evaluation.md)
-- [Node A static preview deployment](docs/deployment/node-a-static-preview.md)
+- [Node A live agent deployment](docs/deployment/node-a-static-preview.md)
 - [GitHub Actions CI and Node A deploy](docs/deployment/github-actions.md)
 - [Shareable FRED FX/rate artifacts](artifacts/fred-fx-rate-lab/20260531-161930-fx-rate-diff/)
 - [Shareable Fed FOMC communications summary](artifacts/fed-fomc-communications/)
@@ -55,9 +55,10 @@ Current artifact:
 
 MikeOSS integration and EM financial-statement extraction are intentionally
 deferred until the macro/backtesting foundation is stronger. The custom
-frontend is now the Svelte Marco workbench: a static artifact dashboard today,
-with the next pass focused on a three-panel chat, thread, and report interface
-over the Go/Zot `marco-agentd` runtime and specialist Python CLIs.
+frontend is now the Svelte Marco workbench: a three-panel chat, thread, and
+report interface over the Go/Zot `marco-agentd` runtime and specialist Python
+CLIs. The UI keeps committed JSON artifacts visible as evidence, but prompts
+are routed to the live Node A agent API.
 
 ## Quickstart
 
@@ -383,10 +384,10 @@ python3 tools/export_share_artifacts.py \
   artifacts/fred-fx-rate-lab/20260531-161930-fx-rate-diff
 ```
 
-## Visualization
+## Agent Workbench
 
-The visualization app is a small Svelte/Vite static frontend over committed
-artifact JSON:
+The web app is a Svelte/Vite live agent workbench. It reads committed artifact
+JSON for the report panel and sends prompts to `marco-agentd`.
 
 ```sh
 cd apps/web
@@ -396,6 +397,12 @@ npm run dev -- --port 5177
 
 Open `http://127.0.0.1:5177/`.
 
+For local chat against a local agent runtime:
+
+```sh
+VITE_MARCO_AGENT_API=http://127.0.0.1:8787 npm run dev -- --port 5177
+```
+
 Build:
 
 ```sh
@@ -403,8 +410,8 @@ npm run build
 ```
 
 Why Svelte: it keeps the frontend source small and reviewable while still
-producing a standard static web app. Finance/data-engineering users can ignore
-the frontend and consume the committed JSON/CSV artifacts directly.
+producing a simple deployable web bundle. Finance/data-engineering users can
+ignore the frontend and consume the committed JSON/CSV artifacts directly.
 
 ## Agent API And CLI
 
