@@ -343,6 +343,96 @@ p {
   line-height: 1.52;
 }
 
+.markdown-body {
+  color: inherit;
+  font-size: 14px;
+  line-height: 1.52;
+}
+
+.markdown-body > * + * {
+  margin-top: 10px;
+}
+
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3 {
+  color: inherit;
+  font-size: 15px;
+  line-height: 1.25;
+}
+
+.markdown-body p,
+.markdown-body ul,
+.markdown-body ol,
+.markdown-body pre,
+.markdown-body blockquote,
+.markdown-body table {
+  margin: 0;
+}
+
+.markdown-body ul,
+.markdown-body ol {
+  padding-left: 20px;
+}
+
+.markdown-body li + li {
+  margin-top: 4px;
+}
+
+.markdown-body a {
+  color: #1d6f8f;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.markdown-body code {
+  padding: 2px 5px;
+  color: #263446;
+  background: #edf3f8;
+  border-radius: 5px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 12px;
+}
+
+.markdown-body pre {
+  overflow-x: auto;
+  padding: 10px;
+  background: #13202b;
+  border-radius: 8px;
+}
+
+.markdown-body pre code {
+  padding: 0;
+  color: #edf6ff;
+  background: transparent;
+  border-radius: 0;
+}
+
+.markdown-body blockquote {
+  padding-left: 10px;
+  color: #4a596b;
+  border-left: 3px solid #b9c7d6;
+}
+
+.markdown-body table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+}
+
+.markdown-body th,
+.markdown-body td {
+  padding: 6px 8px;
+  border: 1px solid #dbe3eb;
+  text-align: left;
+}
+
+.message.user .markdown-body a,
+.message.user .markdown-body code {
+  color: #ffffff;
+}
+
 .message-eyebrow {
   margin-bottom: 7px;
 }
@@ -797,6 +887,10 @@ p {
   }
 
   .message p:not(.message-eyebrow) {
+    font-size: 13px;
+  }
+
+  .markdown-body {
     font-size: 13px;
   }
 }

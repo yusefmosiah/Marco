@@ -8,10 +8,13 @@
     "build": "vite build",
     "preview": "vite preview --host 127.0.0.1"
   },
-  "dependencies": {},
+  "dependencies": {
+    "dompurify": "^3.4.7",
+    "marked": "^18.0.4"
+  },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "2.5.3",
-    "vite": "4.5.14",
-    "svelte": "4.2.20"
+    "svelte": "4.2.20",
+    "vite": "4.5.14"
   }
 }

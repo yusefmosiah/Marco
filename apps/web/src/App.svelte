@@ -1,4 +1,12 @@
 <script>
+  import DOMPurify from 'dompurify';
+  import { marked } from 'marked';
+
+  marked.use({
+    gfm: true,
+    breaks: true
+  });
+
   const artifactSpecs = {
     fred: {
       label: 'FRED FX/rate lab',
@@ -282,6 +290,10 @@
     return Number(value).toLocaleString();
   }
 
+  function renderMarkdown(markdown) {
+    return DOMPurify.sanitize(marked.parse(markdown ?? ''));
+  }
+
   function handleComposerKeydown(event) {
     if ((event.metaKey || event.ctrlKey) && event.key === 'Enter') {
       event.preventDefault();
@@ -382,7 +394,11 @@
           {#if message.eyebrow}
             <p class="message-eyebrow">{message.eyebrow}</p>
           {/if}
-          <p>{message.body}</p>
+          {#if message.role === 'assistant'}
+            <div class="markdown-body">{@html renderMarkdown(message.body)}</div>
+          {:else}
+            <p>{message.body}</p>
+          {/if}
           {#if message.context?.length}
             <div class="context-row" aria-label="Evidence">
               {#each message.context as item}
