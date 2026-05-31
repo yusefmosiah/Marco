@@ -251,22 +251,26 @@ what shipped: source runner module, run-experiment-plan CLI, per-job artifact
 what was proven: local make ci passed with runner tests covering completed
   artifacts, deterministic reruns, missing-baseline rejection, skipped jobs,
   partial failure artifacts, and serial/parallel aggregate equivalence; CLI
-  help and bounded USD_CAD 6M plan generation smoke commands ran successfully
-unproven or partial claims: runner has not yet been exercised against a freshly
-  generated live FRED feature panel in this checkpoint; no hosted API mutation;
-  no ECB/IMF/RBI source adapter
+  help and bounded USD_CAD 6M plan generation smoke commands ran successfully;
+  local generated FRED features executed USD_CAD 6M random_walk/no_change/ridge
+  into ledger-77c68467739a7088 with 3 completed jobs, 0 failures, and passed
+  baseline gates
+unproven or partial claims: no hosted API mutation; no ECB/IMF/RBI source
+  adapter; no ALFRED real-time vintage-safe runner path yet
 belief-state changes: existing walk_forward_pair is a workable per-group
   execution boundary, so the runner can stay a ledger layer
-remaining error field: live FRED feature availability still determines whether
-  operator runs can execute immediately from a fresh clone without first running
-  run-fx-rate-lab
-highest-impact remaining uncertainty: whether the generated FRED features path
-  should become a committed compact fixture or remain purely local/generated
-next executable probe: run full CI, push, watch GitHub Actions, then run the
-  runner against a live/generated USD_CAD 6M plan if source data is available
+remaining error field: fresh clones still need either generated FRED features or
+  a committed compact fixture before run-experiment-plan can execute real
+  USD_CAD jobs without first running run-fx-rate-lab
+highest-impact remaining uncertainty: whether the next source adapter should
+  start with ECB SDMX smoke fetch or ALFRED vintage-safe replacement for the
+  current FRED pull path
+next executable probe: add a small committed runner fixture or implement the
+  first ECB SDMX smoke fetch behind the same dataset mapping contract
 suggested resume goal string: /goal Run docs/missions/marco-experiment-ledger-continuation.md
   to build and verify the Marco experiment runner and artifact ledger
-evidence artifact refs: tests/test_runner.py, local make ci run, and CLI smoke
-  output for run-experiment-plan plus USD_CAD 6M plan generation
+evidence artifact refs: tests/test_runner.py, local make ci run, CLI smoke
+  output for run-experiment-plan plus USD_CAD 6M plan generation, local ignored
+  run backtests/runs/ledger-77c68467739a7088
 rollback refs: revert the runner/CLI/doc commit before any live deployment
 ```
