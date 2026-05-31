@@ -114,4 +114,6 @@ Dataset and experiment-planning foundation:
 emf-macro dataset-add path/to/data.csv --root . --name "My Dataset"
 emf-macro suggest-hypotheses --root . --run-id latest
 emf-macro plan-experiments --root . --pair USD_CAD --horizon 6
+emf-macro sources list --root . --priority p0
+emf-macro sources inspect rbi_dbie --root .
 ```

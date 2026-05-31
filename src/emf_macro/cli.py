@@ -9,6 +9,7 @@ from .agent_store import ArtifactStore
 from .datasets import DatasetRegistry
 from .experiments import build_experiment_plan, suggest_hypotheses
 from .model_registry import list_model_specs
+from .sources import MacroSourceCatalog
 
 
 def main() -> None:
@@ -83,6 +84,19 @@ def main() -> None:
     models = sub.add_parser("models", help="list model ladder specs")
     models.add_argument("--active-only", action="store_true")
     models.add_argument("--compact", action="store_true", help="emit compact JSON")
+
+    sources = sub.add_parser("sources", help="list or inspect official macro source candidates")
+    sources_sub = sources.add_subparsers(dest="sources_command", required=True)
+    sources_list = sources_sub.add_parser("list", help="list official macro source candidates")
+    sources_list.add_argument("--root", default=".", help="repo root")
+    sources_list.add_argument("--priority", choices=["p0", "p1", "p2"])
+    sources_list.add_argument("--status", choices=["active", "planned", "candidate"])
+    sources_list.add_argument("--region", help="filter by region code, e.g. IN, BR, global")
+    sources_list.add_argument("--compact", action="store_true", help="emit compact JSON")
+    sources_inspect = sources_sub.add_parser("inspect", help="inspect one official macro source candidate")
+    sources_inspect.add_argument("source_id")
+    sources_inspect.add_argument("--root", default=".", help="repo root")
+    sources_inspect.add_argument("--compact", action="store_true", help="emit compact JSON")
 
     hypotheses = sub.add_parser("suggest-hypotheses", help="suggest next testable macro/backtest hypotheses")
     hypotheses.add_argument("--root", default=".", help="repo root")
@@ -159,6 +173,18 @@ def main() -> None:
         print_json(registry.fetch_url(args.url, name=args.name, kind=args.kind, tags=args.tag), compact=args.compact)
     elif args.command == "models":
         print_json({"models": list_model_specs(include_planned=not args.active_only)}, compact=args.compact)
+    elif args.command == "sources":
+        catalog = MacroSourceCatalog(Path(args.root).resolve())
+        if args.sources_command == "list":
+            print_json(
+                {
+                    "schema_version": "marco.macro_sources.list.v1",
+                    "sources": catalog.list(priority=args.priority, status=args.status, region=args.region),
+                },
+                compact=args.compact,
+            )
+        elif args.sources_command == "inspect":
+            print_json(catalog.inspect(args.source_id), compact=args.compact)
     elif args.command == "suggest-hypotheses":
         print_json(suggest_hypotheses(Path(args.root).resolve(), args.run_id), compact=args.compact)
     elif args.command == "plan-experiments":

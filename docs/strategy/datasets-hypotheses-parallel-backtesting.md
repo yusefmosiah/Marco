@@ -32,6 +32,10 @@ This commit adds the first local foundations:
 - model ladder specs from hard baselines to planned sequence models;
 - hypothesis suggestions based on current run artifacts and registered datasets;
 - experiment-plan JSON that fans out dataset/pair/horizon/model jobs.
+- official macro source catalog access;
+- dataset mapping specs for date/frequency/value/vintage contracts;
+- hypothesis specs with explicit baselines, metrics, horizons, split policy, and
+  falsification rules.
 
 The dynamic API exposes read-only planning surfaces:
 
@@ -51,6 +55,7 @@ emf-macro list-datasets --root .
 emf-macro models
 emf-macro suggest-hypotheses --root .
 emf-macro plan-experiments --root . --pair USD_CAD --horizon 6
+emf-macro sources list --root . --priority p0
 ```
 
 ## Why Local Mutation First
@@ -104,7 +109,15 @@ target, horizon, and split.
 
 ## Next Implementation Step
 
-Build a parallel job runner that consumes `marco.experiment_plan.v1` and writes:
+Build a job runner that consumes:
+
+```text
+marco.dataset_mapping.v1
+marco.hypothesis_spec.v1
+marco.experiment_plan.v1
+```
+
+and writes:
 
 ```text
 backtests/runs/<run_id>/

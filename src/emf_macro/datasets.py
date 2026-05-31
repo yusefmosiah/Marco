@@ -28,6 +28,22 @@ class DatasetRecord:
     tags: list[str]
 
 
+@dataclass(frozen=True)
+class DatasetMappingSpec:
+    schema_version: str
+    mapping_id: str
+    dataset_id: str
+    date_column: str
+    value_columns: list[str]
+    frequency: str
+    country: str | None
+    indicators: dict[str, str]
+    units: dict[str, str]
+    transformations: dict[str, str]
+    vintage_policy: str
+    source_snapshot_id: str | None = None
+
+
 class DatasetRegistry:
     def __init__(self, root: Path):
         self.root = root
@@ -106,6 +122,70 @@ class DatasetRegistry:
             encoding="utf-8",
         )
         return asdict(record)
+
+
+def build_dataset_mapping_spec(
+    record: dict[str, Any],
+    *,
+    date_column: str,
+    value_columns: list[str],
+    frequency: str,
+    country: str | None = None,
+    indicators: dict[str, str] | None = None,
+    units: dict[str, str] | None = None,
+    transformations: dict[str, str] | None = None,
+    vintage_policy: str = "latest_revised_snapshot",
+    source_snapshot_id: str | None = None,
+) -> dict[str, Any]:
+    spec = DatasetMappingSpec(
+        schema_version="marco.dataset_mapping.v1",
+        mapping_id=dataset_mapping_id(record["dataset_id"], date_column, value_columns, frequency, vintage_policy),
+        dataset_id=record["dataset_id"],
+        date_column=date_column,
+        value_columns=value_columns,
+        frequency=frequency,
+        country=country,
+        indicators=indicators or {},
+        units=units or {},
+        transformations=transformations or {},
+        vintage_policy=vintage_policy,
+        source_snapshot_id=source_snapshot_id,
+    )
+    payload = asdict(spec)
+    validate_dataset_mapping_spec(record, payload)
+    return payload
+
+
+def validate_dataset_mapping_spec(record: dict[str, Any], spec: dict[str, Any]) -> None:
+    if spec.get("schema_version") != "marco.dataset_mapping.v1":
+        raise ValueError("unsupported dataset mapping schema")
+    if spec.get("dataset_id") != record.get("dataset_id"):
+        raise ValueError("mapping dataset_id does not match dataset record")
+    if spec.get("frequency") not in {"D", "W", "M", "Q", "A"}:
+        raise ValueError("frequency must be one of D, W, M, Q, A")
+    if spec.get("vintage_policy") not in {"latest_revised_snapshot", "real_time_vintage", "mixed"}:
+        raise ValueError("unsupported vintage_policy")
+
+    columns = set(record.get("schema", {}).get("columns", []))
+    required_columns = [spec.get("date_column"), *spec.get("value_columns", [])]
+    missing = sorted(column for column in required_columns if column not in columns)
+    if missing:
+        raise ValueError(f"mapping references missing columns: {', '.join(missing)}")
+
+
+def dataset_mapping_id(dataset_id: str, date_column: str, value_columns: list[str], frequency: str, vintage_policy: str) -> str:
+    payload = json.dumps(
+        {
+            "dataset_id": dataset_id,
+            "date_column": date_column,
+            "frequency": frequency,
+            "value_columns": sorted(value_columns),
+            "vintage_policy": vintage_policy,
+        },
+        sort_keys=True,
+    )
+    digest = hashlib.sha256(payload.encode("utf-8")).hexdigest()
+    return f"map-{digest[:16]}"
 
 
 def sha256_file(path: Path) -> str:

@@ -2,12 +2,30 @@ from __future__ import annotations
 
 import hashlib
 import json
+from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any
 
 from .agent_store import ArtifactStore
 from .datasets import DatasetRegistry
 from .model_registry import list_model_specs
+
+
+@dataclass(frozen=True)
+class HypothesisSpec:
+    schema_version: str
+    hypothesis_id: str
+    title: str
+    claim: str
+    target: str
+    feature_families: list[str]
+    required_datasets: list[str]
+    candidate_models: list[str]
+    baseline_models: list[str]
+    metric: str
+    horizon_months: list[int]
+    split_policy: str
+    falsification_rule: str
 
 
 def suggest_hypotheses(root: Path, run_id: str = "latest") -> dict[str, Any]:
@@ -68,6 +86,57 @@ def suggest_hypotheses(root: Path, run_id: str = "latest") -> dict[str, Any]:
         "best_rows": best_rows,
         "hypotheses": suggestions,
     }
+
+
+def build_hypothesis_spec(
+    *,
+    hypothesis_id: str,
+    title: str,
+    claim: str,
+    target: str,
+    feature_families: list[str],
+    required_datasets: list[str],
+    candidate_models: list[str],
+    falsification_rule: str,
+    baseline_models: list[str] | None = None,
+    metric: str = "rmse",
+    horizon_months: list[int] | None = None,
+    split_policy: str = "walk_forward_expanding",
+) -> dict[str, Any]:
+    spec = HypothesisSpec(
+        schema_version="marco.hypothesis_spec.v1",
+        hypothesis_id=hypothesis_id,
+        title=title,
+        claim=claim,
+        target=target,
+        feature_families=feature_families,
+        required_datasets=required_datasets,
+        candidate_models=candidate_models,
+        baseline_models=baseline_models or ["random_walk", "no_change"],
+        metric=metric,
+        horizon_months=horizon_months or [1, 3, 6],
+        split_policy=split_policy,
+        falsification_rule=falsification_rule,
+    )
+    payload = asdict(spec)
+    validate_hypothesis_spec(payload)
+    return payload
+
+
+def validate_hypothesis_spec(spec: dict[str, Any]) -> None:
+    if spec.get("schema_version") != "marco.hypothesis_spec.v1":
+        raise ValueError("unsupported hypothesis spec schema")
+    required_text = ["hypothesis_id", "title", "claim", "target", "metric", "split_policy", "falsification_rule"]
+    missing_text = [field for field in required_text if not str(spec.get(field, "")).strip()]
+    if missing_text:
+        raise ValueError(f"missing required hypothesis fields: {', '.join(missing_text)}")
+    for field in ["feature_families", "required_datasets", "candidate_models", "baseline_models", "horizon_months"]:
+        if not spec.get(field):
+            raise ValueError(f"{field} must not be empty")
+    if not set(spec["baseline_models"]) <= set(spec["candidate_models"]):
+        raise ValueError("baseline_models must be included in candidate_models")
+    if any(int(horizon) <= 0 for horizon in spec["horizon_months"]):
+        raise ValueError("horizon_months must be positive")
 
 
 def build_experiment_plan(

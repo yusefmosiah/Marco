@@ -193,3 +193,13 @@ emf-macro sources inspect ecb_sdmx --root .
 Then implement an ECB SDMX smoke fetch because ECB is a clean central-bank API
 and exercises the same SDMX machinery needed for IMF, OECD, BIS, and many
 national sources.
+
+Current CLI support:
+
+```sh
+emf-macro sources list --root . --priority p0
+emf-macro sources list --root . --region IN
+emf-macro sources inspect imf_data_sdmx --root .
+```
+
+This is catalog access only. It does not yet fetch remote data.
