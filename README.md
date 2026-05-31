@@ -20,6 +20,7 @@ priority.
 Current artifact:
 
 - [Current focus](docs/strategy/current-focus.md)
+- [Agent API and CLI](docs/agents/api-and-cli.md)
 - [FRED-MD Macro Lab foundation mission](docs/missions/fred-md-macro-lab-foundation.md)
 - [FRED FX/rate lab checkpoint](docs/runs/20260531-fred-fx-rate-lab-checkpoint.md)
 - [FinRobot/MikeOSS platform evaluation](docs/strategy/finrobot-mikeoss-platform-evaluation.md)
@@ -83,3 +84,16 @@ npm run build
 Why Svelte: it keeps the frontend source small and reviewable while still
 producing a standard static web app. Finance/data-engineering users can ignore
 the frontend and consume the committed JSON/CSV artifacts directly.
+
+## Agent API And CLI
+
+Agents can use the read-only artifact surface instead of scraping the UI:
+
+```sh
+emf-macro list-runs --root .
+emf-macro metrics --root . --run-id latest --pair USD_CAD --horizon 6
+emf-macro agent-context --root . --run-id latest
+emf-macro serve-agent-api --root . --host 127.0.0.1 --port 8765
+```
+
+See [Agent API and CLI](docs/agents/api-and-cli.md).
