@@ -60,6 +60,9 @@ gravity. The active center is:
 pull FRED data and backtest models honestly
 ```
 
+The FinRobot/MikeOSS platform question is tracked separately in
+[FinRobot, MikeOSS, and the Marco Platform Path](finrobot-mikeoss-platform-evaluation.md).
+
 ## Near-Term Backtesting Roadmap
 
 1. Keep the current FRED FX/rate lab working.
