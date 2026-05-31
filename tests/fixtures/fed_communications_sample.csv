@@ -1,0 +1,5 @@
+Date,Release Date,Type,Text
+2024-01-31,2024-02-21,Minute,"Minutes of the Federal Open Market Committee sample text."
+2024-01-31,2024-01-31,Statement,"The Federal Open Market Committee statement sample text."
+2024-03-20,,Minute,"Minutes row with missing release date preserved by event date fallback."
+2024-03-20,2024-04-10,Minute,"Another minutes document with inflation and labor market discussion."

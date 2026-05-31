@@ -1,0 +1,37 @@
+{
+  "fields": [
+    "meeting_date",
+    "release_date",
+    "event_date",
+    "communication_type",
+    "text",
+    "word_count",
+    "text_length"
+  ],
+  "first_event_date": "2000-02-02",
+  "first_meeting_date": "2000-02-02",
+  "first_release_date": "2000-02-02",
+  "last_event_date": "2026-05-20",
+  "last_meeting_date": "2026-04-29",
+  "last_release_date": "2026-05-20",
+  "notes": [
+    "This is an open GitHub dataset derived from Federal Reserve FOMC statements and minutes pages.",
+    "The raw corpus contains both Statement and Minute rows; use communication_type=Minute for minutes-only analysis.",
+    "Some source rows have blank release dates; event_date falls back to meeting_date for those rows.",
+    "Text is event-time policy communication data, not a numeric macro time series."
+  ],
+  "observation_count": 464,
+  "primary_source": "Federal Reserve",
+  "provider": "vtasca/fed-statement-scraping",
+  "raw_path": "data/raw/fed_fomc_communications/ae6eb2b8a49c6334b762f92f4d080529bcafe1b4f2c805e5956ba09fec3f05f7.csv",
+  "release_date_missing_count": 29,
+  "schema_version": "marco.fed_communications_summary.v1",
+  "source_id": "fed_fomc_communications",
+  "source_snapshot_id": "ae6eb2b8a49c6334b762f92f4d080529bcafe1b4f2c805e5956ba09fec3f05f7",
+  "source_url": "https://raw.githubusercontent.com/vtasca/fed-statement-scraping/master/communications.csv",
+  "type_counts": {
+    "Minute": 241,
+    "Statement": 223
+  },
+  "vintage_policy": "latest_revised_snapshot"
+}

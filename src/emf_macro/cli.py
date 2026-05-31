@@ -9,6 +9,7 @@ from .agent_store import ArtifactStore
 from .datasets import DatasetRegistry
 from .ecb import fetch_ecb_series, load_ecb_observations
 from .experiments import build_experiment_plan, suggest_hypotheses
+from .fed_communications import fetch_fed_communications, load_fed_communications
 from .global_panel import build_global_macro_panel, load_global_macro_summary
 from .model_registry import list_model_specs
 from .runner import RunnerConfig, run_experiment_plan
@@ -103,8 +104,8 @@ def main() -> None:
     sources_inspect.add_argument("--root", default=".", help="repo root")
     sources_inspect.add_argument("--compact", action="store_true", help="emit compact JSON")
 
-    source_fetch = sub.add_parser("source-fetch", help="fetch a supported official macro source series")
-    source_fetch.add_argument("source_id", choices=["ecb_sdmx", "world_bank_indicators"])
+    source_fetch = sub.add_parser("source-fetch", help="fetch a supported macro source")
+    source_fetch.add_argument("source_id", choices=["ecb_sdmx", "world_bank_indicators", "fed_fomc_communications"])
     source_fetch.add_argument("--root", default=".", help="repo root")
     source_fetch.add_argument("--flow", default="EXR")
     source_fetch.add_argument("--series", help="provider series key, e.g. M.USD.EUR.SP00.A")
@@ -117,10 +118,11 @@ def main() -> None:
     source_fetch.add_argument("--compact", action="store_true", help="emit compact JSON")
 
     source_obs = sub.add_parser("source-observations", help="read normalized observations from a fetched source")
-    source_obs.add_argument("source_id", choices=["ecb_sdmx", "world_bank_indicators"])
+    source_obs.add_argument("source_id", choices=["ecb_sdmx", "world_bank_indicators", "fed_fomc_communications"])
     source_obs.add_argument("--root", default=".", help="repo root")
     source_obs.add_argument("--series", help="provider series key filter")
     source_obs.add_argument("--indicator", help="World Bank indicator code filter")
+    source_obs.add_argument("--communication-type", help="Fed communication type filter, e.g. Minute or Statement")
     source_obs.add_argument("--limit", type=int, default=10)
     source_obs.add_argument("--compact", action="store_true", help="emit compact JSON")
 
@@ -270,6 +272,8 @@ def main() -> None:
                 ),
                 compact=args.compact,
             )
+        elif args.source_id == "fed_fomc_communications":
+            print_json(fetch_fed_communications(Path(args.root).resolve()), compact=args.compact)
     elif args.command == "source-observations":
         if args.source_id == "ecb_sdmx":
             print_json(
@@ -292,6 +296,19 @@ def main() -> None:
                     "observations": load_world_bank_observations(
                         Path(args.root).resolve(),
                         indicator=args.indicator,
+                        limit=args.limit,
+                    ),
+                },
+                compact=args.compact,
+            )
+        elif args.source_id == "fed_fomc_communications":
+            print_json(
+                {
+                    "schema_version": "marco.source_observations.v1",
+                    "source_id": args.source_id,
+                    "observations": load_fed_communications(
+                        Path(args.root).resolve(),
+                        communication_type=args.communication_type,
                         limit=args.limit,
                     ),
                 },

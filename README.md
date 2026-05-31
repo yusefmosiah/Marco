@@ -25,6 +25,7 @@ Current artifact:
 - [Global macro data expansion](docs/strategy/global-macro-data-expansion.md)
 - [ECB SDMX source adapter](docs/sources/ecb-sdmx.md)
 - [World Bank Indicators source adapter](docs/sources/world-bank-indicators.md)
+- [Fed FOMC communications source adapter](docs/sources/fed-fomc-communications.md)
 - [Dataset, hypothesis, and parallel backtesting foundation](docs/strategy/datasets-hypotheses-parallel-backtesting.md)
 - [Agent API and CLI](docs/agents/api-and-cli.md)
 - [Repo-local Marco agent API skill](skills/marco-agent-api/SKILL.md)
@@ -33,12 +34,14 @@ Current artifact:
 - [FRED FX/rate lab checkpoint](docs/runs/20260531-fred-fx-rate-lab-checkpoint.md)
 - [ECB SDMX smoke checkpoint](docs/runs/20260531-ecb-sdmx-smoke-checkpoint.md)
 - [World Bank Indicators haul checkpoint](docs/runs/20260531-world-bank-indicators-haul.md)
+- [Fed FOMC communications haul checkpoint](docs/runs/20260531-fed-fomc-communications-haul.md)
 - [Global macro panel continuation mission](docs/missions/global-macro-panel-continuation.md)
 - [Global macro panel checkpoint](docs/runs/20260531-global-macro-panel-checkpoint.md)
 - [FinRobot/MikeOSS platform evaluation](docs/strategy/finrobot-mikeoss-platform-evaluation.md)
 - [Node A static preview deployment](docs/deployment/node-a-static-preview.md)
 - [GitHub Actions CI and Node A deploy](docs/deployment/github-actions.md)
 - [Shareable FRED FX/rate artifacts](artifacts/fred-fx-rate-lab/20260531-161930-fx-rate-diff/)
+- [Shareable Fed FOMC communications summary](artifacts/fed-fomc-communications/)
 - [Shareable global macro panel summary](artifacts/global-macro-panel/global_macro_starter_20260531/)
 - [Svelte visualization app](apps/web/)
 - [Historical MikeOSS proposal](docs/proposals/mission-proposal.md)
@@ -61,7 +64,7 @@ See [Setup](docs/setup.md) for required tools and manual installation.
 
 ## Data Haul
 
-Marco currently has three concrete data surfaces.
+Marco currently has four concrete data surfaces.
 
 ### Committed Shareable Artifacts
 
@@ -144,8 +147,29 @@ World Bank Indicators:
 
 Total current World Bank haul: 800 normalized annual observations.
 
-The source catalog currently tracks 15 official source candidates. Active
-fetch adapters exist for `fred`, `ecb_sdmx`, and `world_bank_indicators`.
+Fed FOMC communications:
+
+| Source | Rows | Minutes | Statements | Window |
+| --- | ---: | ---: | ---: | --- |
+| `vtasca/fed-statement-scraping` `communications.csv` | 464 | 241 | 223 | 2000-02-02 to 2026-05-20 |
+
+The Fed corpus is text-event data, not a numeric macro time series. It is
+stored locally under:
+
+```text
+data/raw/fed_fomc_communications/
+data/derived/fed_fomc_communications/
+```
+
+The compact committed summary lives at:
+
+```text
+artifacts/fed-fomc-communications/summary.json
+```
+
+The source catalog currently tracks 16 official/source-linked candidates. Active
+fetch adapters exist for `fred`, `ecb_sdmx`, `world_bank_indicators`, and
+`fed_fomc_communications`.
 
 ### Normalized Global Macro Panel
 
@@ -272,6 +296,7 @@ emf-macro suggest-hypotheses --root . --run-id latest
 emf-macro plan-experiments --root . --pair USD_CAD --horizon 6
 emf-macro sources list --root . --priority p0
 emf-macro sources inspect rbi_dbie --root .
+emf-macro sources inspect fed_fomc_communications --root .
 emf-macro source-hauls --root .
 emf-macro global-panel-summary --root .
 ```
@@ -300,6 +325,13 @@ emf-macro source-fetch world_bank_indicators \
   --end-year 2024
 
 emf-macro source-observations world_bank_indicators --root . --indicator NY.GDP.MKTP.CD --limit 5
+```
+
+Fetch Fed FOMC statements and minutes text:
+
+```sh
+emf-macro source-fetch fed_fomc_communications --root .
+emf-macro source-observations fed_fomc_communications --root . --communication-type Minute --limit 2
 ```
 
 Execute a bounded experiment plan into an ignored local run ledger:

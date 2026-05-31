@@ -31,6 +31,20 @@
       "notes": "Needed for vintage-safe leakage tests and latest-revised vs real-time comparisons."
     },
     {
+      "id": "fed_fomc_communications",
+      "name": "FOMC Statements and Minutes Corpus",
+      "operator": "vtasca/fed-statement-scraping, derived from Federal Reserve pages",
+      "scope": "Federal Reserve FOMC statement and minutes text from 2000 onward",
+      "regions": ["US"],
+      "access_pattern": "download_endpoint",
+      "priority": "p0",
+      "status": "active",
+      "official_url": "https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm",
+      "docs_url": "https://github.com/vtasca/fed-statement-scraping",
+      "auth": "none",
+      "notes": "Active text-event corpus adapter. Useful for Fed communication features such as hawkish/dovish tone, inflation emphasis, labor-market emphasis, and release-date event joins."
+    },
+    {
       "id": "imf_data_sdmx",
       "name": "IMF Data APIs",
       "operator": "International Monetary Fund",
