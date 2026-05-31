@@ -2,7 +2,7 @@
 
 Date: 2026-05-31
 
-Status: execution checkpoint
+Status: complete
 
 ## Goal
 
@@ -63,22 +63,26 @@ foundation.
 
 ## Run Checkpoint & Resumption State
 
-status: checkpoint_incomplete
+status: complete
 
 last checkpoint: configured source haul, global panel builder, CLI/API endpoint,
-frontend artifact load, docs, and local CI verification are in the worktree.
+frontend artifact load, docs, local CI verification, GitHub CI verification,
+and live static preview verification are complete.
 
 current artifact state: the committed target artifact should be
 `artifacts/global-macro-panel/global_macro_starter_20260531/summary.json`.
 
-what shipped: pending commit.
+what shipped: commit `7ddf4a7`, followed by a documentation evidence commit.
 
 what was proven: targeted tests for global panel, agent API, ECB, and World Bank
 passed locally; full `make ci` also passed with 34 Python tests and a Svelte
-production build.
+production build; GitHub CI passed; live `choir-ip.com` served the global panel
+JSON as `application/json`; browser verification found the new Global Macro
+Data Haul panel.
 
-unproven or partial claims: GitHub Actions and deployed Node A static preview
-refresh are pending.
+unproven or partial claims: GitHub Actions deploy secrets are still absent, so
+the deploy workflow currently skips remote deploy and local `node-a` deployment
+is still required.
 
 belief-state changes: the immediate highest-value expansion is a small
 official-source annual global panel, not another frontend feature or hosted
@@ -94,10 +98,9 @@ needs new missing-data/frequency semantics.
 next executable probe:
 
 ```sh
-git add .
-git commit
-git push
-gh run watch
+gh secret set NODE_A_HOST --body '51.81.93.94'
+gh secret set NODE_A_USER --body 'root'
+gh secret set NODE_A_SSH_PRIVATE_KEY < ~/.ssh/id_ed25519_ovh
 ```
 
 suggested resume goal string:

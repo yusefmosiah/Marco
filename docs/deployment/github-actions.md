@@ -103,6 +103,7 @@ For now, agents can use:
 
 ```text
 https://choir-ip.com/marco/artifacts/fred-fx-rate-lab-summary.json
+https://choir-ip.com/marco/artifacts/global-macro-panel-summary.json
 ```
 
 or clone the repo and use:

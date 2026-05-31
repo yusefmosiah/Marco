@@ -2,7 +2,7 @@
 
 Date: 2026-05-31
 
-Status: local CI passed; GitHub Actions pending after push
+Status: shipped to GitHub and live static preview
 
 ## What Changed
 
@@ -93,7 +93,25 @@ make ci
 vite build completed
 ```
 
-GitHub Actions evidence should be checked after push.
+GitHub Actions passed for commit `7ddf4a7`:
+
+```text
+CI: success
+Deploy Node A Static Preview: success, but skipped deploy because repo secrets are absent
+```
+
+The live Node A static preview was then deployed from the local `node-a` SSH
+alias using `tools/deploy_node_a_static.sh`.
+
+Live smoke checks:
+
+```text
+https://choir-ip.com/marco/
+https://choir-ip.com/marco/artifacts/global-macro-panel-summary.json
+```
+
+Browser verification found the Global Macro Data Haul panel on the live page
+with 8 countries, 25 years, 200 panel rows, and 800 World Bank observations.
 
 ## Limits
 
