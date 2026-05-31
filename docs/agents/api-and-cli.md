@@ -96,8 +96,9 @@ What this wrapper does:
 - passes the Analyst JSON schema for `run-ingestion`;
 - validates approved source domains, stable IDs, and excerpt length before
   writing output;
-- writes a one-page Markdown summary report with an audit section next to the
-  JSON output, or at `--report-output` when supplied.
+- writes a human-review Markdown report with a factual
+  senior-analyst-style narrative overview of every retrieved article and an
+  audit section next to the JSON output, or at `--report-output` when supplied.
 
 The Codex SDK package wraps the `codex` CLI and exchanges JSONL events with it,
 so the server needs Node 18+ and the SDK installed with

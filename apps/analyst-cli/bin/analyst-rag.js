@@ -252,6 +252,7 @@ export function buildSummaryReport(payload, options = {}) {
   const sourceCounts = countBy(articles, (article) => article.source_name || hostname(article.source_url) || "unknown");
   const errorCounts = countBy(retrievalErrors, (error) => `${error.source || "unknown"}:${error.reason || "unknown"}`);
   const contextChunks = options.contextChunks ?? [];
+  const narrativeOverview = buildNarrativeOverview(articles);
 
   return [
     "# Analyst Ingestion Summary",
@@ -265,6 +266,10 @@ export function buildSummaryReport(payload, options = {}) {
     `Domains: ${formatCounts(domainCounts) || "none"}.`,
     `Sources: ${formatCounts(sourceCounts) || "none"}.`,
     "",
+    "## Narrative Overview",
+    "",
+    narrativeOverview || "No articles were retrieved for narrative review.",
+    "",
     "## Audit",
     "",
     `The agent used the Analyst approved-source policy and rejected URLs outside: ${APPROVED_SOURCES.join(", ")}.`,
@@ -276,8 +281,65 @@ export function buildSummaryReport(payload, options = {}) {
     "",
     "## Handoff",
     "",
-    "The JSON payload remains the machine-readable handoff for sentiment scoring. This report is a human audit companion and does not add sentiment, recommendations, or predictions.",
+    "The JSON payload remains the machine-readable handoff for sentiment scoring. This report is a human audit companion and does not add sentiment scores, recommendations, or predictions.",
   ].join("\n") + "\n";
+}
+
+function buildNarrativeOverview(articles) {
+  const grouped = new Map();
+  for (const article of articles) {
+    const domain = article.domain || "unknown";
+    if (!grouped.has(domain)) grouped.set(domain, []);
+    grouped.get(domain).push(article);
+  }
+
+  return Array.from(grouped.entries())
+    .sort((a, b) => domainOrder(a[0]) - domainOrder(b[0]) || a[0].localeCompare(b[0]))
+    .map(([domain, rows]) => {
+      const sentences = rows
+        .slice()
+        .sort((a, b) => String(a.published_at || "").localeCompare(String(b.published_at || "")))
+        .map(articleNarrativeSentence);
+      return `${domainLabel(domain)}: ${sentences.join(" ")}`;
+    })
+    .join("\n\n");
+}
+
+function articleNarrativeSentence(article) {
+  const source = article.source_name || hostname(article.source_url) || "Unknown source";
+  const date = String(article.published_at || "").slice(0, 10) || "undated";
+  const headline = sentenceText(article.headline || "untitled article");
+  const detail = sentenceText(article.summary || article.body_excerpt || "");
+  const assets = [...new Set([...(article.tickers_mentioned || []), ...(article.assets_mentioned || [])])];
+  const assetText = assets.length ? ` Referenced assets or tickers: ${assets.slice(0, 8).join(", ")}.` : "";
+  const detailText = detail ? ` The extracted lede says: ${detail}.` : "";
+  return `${source} (${date}) covered "${headline}."${detailText}${assetText}`;
+}
+
+function sentenceText(value) {
+  return String(value)
+    .replace(/\s+/g, " ")
+    .replace(/[.。]+$/u, "")
+    .trim();
+}
+
+function domainLabel(domain) {
+  const labels = {
+    equities: "Equities",
+    macro_fed: "Macro and Fed policy",
+    crypto: "Crypto",
+    commodities_forex: "Commodities and foreign exchange",
+  };
+  return labels[domain] || domain;
+}
+
+function domainOrder(domain) {
+  return {
+    equities: 0,
+    macro_fed: 1,
+    crypto: 2,
+    commodities_forex: 3,
+  }[domain] ?? 99;
 }
 
 async function main(argv = process.argv.slice(2)) {
