@@ -27,6 +27,7 @@ Current artifact:
 - [Agent API and CLI](docs/agents/api-and-cli.md)
 - [Repo-local Marco agent API skill](skills/marco-agent-api/SKILL.md)
 - [FRED-MD Macro Lab foundation mission](docs/missions/fred-md-macro-lab-foundation.md)
+- [Experiment ledger continuation mission](docs/missions/marco-experiment-ledger-continuation.md)
 - [FRED FX/rate lab checkpoint](docs/runs/20260531-fred-fx-rate-lab-checkpoint.md)
 - [FinRobot/MikeOSS platform evaluation](docs/strategy/finrobot-mikeoss-platform-evaluation.md)
 - [Node A static preview deployment](docs/deployment/node-a-static-preview.md)

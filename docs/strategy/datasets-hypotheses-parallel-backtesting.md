@@ -31,7 +31,7 @@ This commit adds the first local foundations:
 - uploaded/fetched dataset storage under ignored `data/uploads/`;
 - model ladder specs from hard baselines to planned sequence models;
 - hypothesis suggestions based on current run artifacts and registered datasets;
-- experiment-plan JSON that fans out dataset/pair/horizon/model jobs.
+- experiment-plan JSON that fans out dataset/pair/horizon/model jobs;
 - official macro source catalog access;
 - dataset mapping specs for date/frequency/value/vintage contracts;
 - hypothesis specs with explicit baselines, metrics, horizons, split policy, and
@@ -140,3 +140,9 @@ dataset columns
 ```
 
 Only after that should the hosted app add user uploads.
+
+The runner work is now captured as a MissionGradient document:
+
+```text
+docs/missions/marco-experiment-ledger-continuation.md
+```

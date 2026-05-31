@@ -165,14 +165,19 @@ clear separation between public artifacts and private mutable state.
 ## Next Mission String
 
 ```text
-/goal In /Users/wiz/emf, build the Marco experiment-ledger foundation: define
-dataset mapping and hypothesis specs, implement a local runner for
-marco.experiment_plan.v1 with atomic per-job artifacts and baseline-gated
-aggregation, prove rerun determinism and partial-failure behavior in CI, keep
-Node A as static preview only, and document the later Sourcecycled, MikeOSS,
-FinRobot, Choir, and vmctl integration seams without coupling the current FRED
-backtesting mission to them.
+/goal In /Users/wiz/emf, continue Marco from the proven FRED/FX/rate foundation
+by building the experiment ledger and runner: consume marco.dataset_mapping.v1,
+marco.hypothesis_spec.v1, and marco.experiment_plan.v1; execute ready baseline
+and ridge jobs with atomic per-job artifacts; aggregate only when required
+baselines exist; prove deterministic reruns, partial-failure behavior, and
+serial/parallel equivalence in CI; preserve latest-revised vs vintage labeling;
+keep Node A as static preview; and checkpoint the next clean path toward
+ECB/IMF/World Bank/RBI global macro source ingestion without coupling the runner
+to hosted uploads, MikeOSS, FinRobot, Sourcecycled, or vmctl.
 ```
+
+The full continuation mission is
+[Marco Experiment Ledger Continuation Mission](../missions/marco-experiment-ledger-continuation.md).
 
 ## Current Stopping Rule
 
