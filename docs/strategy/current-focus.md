@@ -63,6 +63,10 @@ pull FRED data and backtest models honestly
 The FinRobot/MikeOSS platform question is tracked separately in
 [FinRobot, MikeOSS, and the Marco Platform Path](finrobot-mikeoss-platform-evaluation.md).
 
+The wider roadmap, including Sourcecycled, Node A, `vmctl`, CI gates, and later
+agent/platform seams, is tracked in
+[Marco Coherent Platform Plan](coherent-platform-plan.md).
+
 ## Near-Term Backtesting Roadmap
 
 1. Keep the current FRED FX/rate lab working.
@@ -81,3 +85,6 @@ The FinRobot/MikeOSS platform question is tracked separately in
 If a task does not improve FRED ingestion, panel construction, feature
 engineering, leakage control, baseline comparison, or backtest reporting, it is
 probably not part of the active mission.
+
+Broader platform work is allowed only when it strengthens the experiment ledger
+or lands behind a documented integration seam.

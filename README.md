@@ -21,6 +21,7 @@ Current artifact:
 
 - [Setup](docs/setup.md)
 - [Current focus](docs/strategy/current-focus.md)
+- [Coherent platform plan](docs/strategy/coherent-platform-plan.md)
 - [Dataset, hypothesis, and parallel backtesting foundation](docs/strategy/datasets-hypotheses-parallel-backtesting.md)
 - [Agent API and CLI](docs/agents/api-and-cli.md)
 - [Repo-local Marco agent API skill](skills/marco-agent-api/SKILL.md)
