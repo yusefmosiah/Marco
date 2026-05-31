@@ -25,6 +25,7 @@
   let route = 'chat';
   let promptText = '';
   let sending = false;
+  let detailsOpen = false;
 
   const threads = [
     {
@@ -287,6 +288,10 @@
       sendPrompt();
     }
   }
+
+  function selectRoute(id) {
+    route = id;
+  }
 </script>
 
 <main class="workbench" aria-label="Marco agent workbench">
@@ -296,7 +301,7 @@
         <p class="eyebrow">Marco</p>
         <h1>Macro agent workbench</h1>
       </div>
-      <span class="live-dot">Node A ready</span>
+      <span class="live-dot">Live</span>
     </div>
 
     <button class="new-thread" type="button" on:click={startThread}>New Thread</button>
@@ -319,7 +324,7 @@
     </nav>
 
     <div class="agent-stack" aria-label="Worker agents">
-      <p class="section-label">Worker APIs</p>
+      <p class="section-label">Agents</p>
       {#each agents as agent}
         <button
           class={`agent-row ${agent.accent}`}
@@ -339,44 +344,32 @@
   <section class="conversation-panel" aria-label="Open conversation">
     <header class="conversation-header">
       <div>
-        <p class="eyebrow">Open session</p>
         <h2>{activeThread.title}</h2>
         <p>{activeThread.subtitle}</p>
       </div>
-      <div class="route-actions" aria-label="Quick agent routes">
-        {#each promptRoutes.slice(1) as item}
-          <button
-            type="button"
-            class:active={route === item.id}
-            on:click={() => (route = item.id)}
-          >
-            {item.label}
-          </button>
-        {/each}
+      <div class="header-actions">
+        <button class="details-toggle" type="button" on:click={() => (detailsOpen = true)}>
+          Details
+        </button>
+        <div class="route-actions" aria-label="Quick agent routes">
+          {#each promptRoutes as item}
+            <button
+              type="button"
+              class:active={route === item.id}
+              on:click={() => selectRoute(item.id)}
+            >
+              {item.label}
+            </button>
+          {/each}
+        </div>
       </div>
     </header>
 
-    <div class="metrics-strip" aria-label="Current artifact metrics">
-      <div>
-        <span>News</span>
-        <strong>{formatNumber(newsItems)}</strong>
-        <small>{newsSources} sources</small>
-      </div>
-      <div>
-        <span>Backtests</span>
-        <strong>{baselineWins}/{contestCount}</strong>
-        <small>baseline wins</small>
-      </div>
-      <div>
-        <span>Macro panel</span>
-        <strong>{globalCountries}</strong>
-        <small>countries</small>
-      </div>
-      <div>
-        <span>Vintage</span>
-        <strong>{latestVintage}</strong>
-        <small>{fred?.lookahead_status?.replaceAll('_', ' ') ?? 'loading'}</small>
-      </div>
+    <div class="mobile-context" aria-label="Current artifact summary">
+      <span>{formatNumber(newsItems)} news</span>
+      <span>{baselineWins}/{contestCount} baselines</span>
+      <span>{globalCountries} countries</span>
+      <button type="button" on:click={() => (detailsOpen = true)}>Artifacts</button>
     </div>
 
     {#if loadError}
@@ -401,8 +394,12 @@
       {/each}
       {#if sending}
         <article class="message assistant pending">
-          <p class="message-eyebrow">Working</p>
-          <p>Routing prompt to {labelForRoute(route)}...</p>
+          <div class="typing-dots" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          <p>Working with {labelForRoute(route)}...</p>
         </article>
       {/if}
     </div>
@@ -412,7 +409,7 @@
       on:submit|preventDefault={sendPrompt}
       aria-label="Prompt Marco agents"
     >
-      <label>
+      <label class="route-select">
         <span>Route</span>
         <select bind:value={route}>
           {#each promptRoutes as item}
@@ -423,21 +420,47 @@
       <textarea
         bind:value={promptText}
         rows="2"
-        placeholder="Ask what changed in the macro news, request a model status, or draft an investor explanation..."
+        placeholder="Ask Marco..."
         on:keydown={handleComposerKeydown}
       />
-      <button type="submit" disabled={!promptText.trim() || sending}>Send</button>
+      <button type="submit" disabled={!promptText.trim() || sending}>
+        {sending ? 'Sending' : 'Send'}
+      </button>
     </form>
   </section>
 
-  <aside class="artifact-panel" aria-label="Reports and artifacts">
+  <aside class="artifact-panel" class:open={detailsOpen} aria-label="Reports and artifacts">
     <header>
       <div>
-        <p class="eyebrow">Evidence</p>
-        <h2>Reports & artifacts</h2>
+        <p class="eyebrow">Artifacts</p>
+        <h2>Evidence</h2>
       </div>
+      <button class="close-details" type="button" on:click={() => (detailsOpen = false)}>Close</button>
       <span>live API</span>
     </header>
+
+    <div class="artifact-metrics" aria-label="Current artifact metrics">
+      <div>
+        <span>News</span>
+        <strong>{formatNumber(newsItems)}</strong>
+        <small>{newsSources} sources</small>
+      </div>
+      <div>
+        <span>Backtests</span>
+        <strong>{baselineWins}/{contestCount}</strong>
+        <small>baseline wins</small>
+      </div>
+      <div>
+        <span>Macro panel</span>
+        <strong>{globalCountries}</strong>
+        <small>countries</small>
+      </div>
+      <div>
+        <span>Vintage</span>
+        <strong>{latestVintage}</strong>
+        <small>{fred?.lookahead_status?.replaceAll('_', ' ') ?? 'loading'}</small>
+      </div>
+    </div>
 
     <div class="tab-row" role="tablist" aria-label="Report sections">
       {#each reportTabs as tab}
@@ -483,8 +506,7 @@
         <h3>{formatNumber(newsItems)} committed records</h3>
         <p>
           Current news scope emphasizes central banks, financial stability, India,
-          Japan, Europe, the UK, and US policy material. The next runtime job is
-          marginal information compression into model.md.
+          Japan, Europe, the UK, and US policy material.
         </p>
         <div class="rank-list">
           {#each regionRows as [region, count]}
@@ -505,9 +527,7 @@
         <p class="section-label">Global macro panel</p>
         <h3>{globalCountries} countries, {globalPanel?.feature_count ?? 0} features</h3>
         <p>
-          This is the normalized starter shape for official macro data expansion.
-          It proves source ingestion and mapping before coupling anything to
-          uploads or the experiment runner.
+          Normalized starter shape for official macro data expansion.
         </p>
         <div class="country-grid" aria-label="Countries in panel">
           {#each globalPanel?.countries ?? [] as country}
@@ -523,7 +543,7 @@
     {/if}
 
     <section class="artifact-links">
-      <p class="section-label">Committed JSON</p>
+      <p class="section-label">JSON</p>
       {#each Object.values(artifactSpecs) as artifact}
         <a href={artifact.path}>{artifact.label}</a>
       {/each}
@@ -541,4 +561,13 @@
       </section>
     {/if}
   </aside>
+
+  {#if detailsOpen}
+    <button
+      class="scrim"
+      type="button"
+      aria-label="Close artifact details"
+      on:click={() => (detailsOpen = false)}
+    ></button>
+  {/if}
 </main>
