@@ -24,6 +24,7 @@ Current artifact:
 - [Coherent platform plan](docs/strategy/coherent-platform-plan.md)
 - [Global macro data expansion](docs/strategy/global-macro-data-expansion.md)
 - [ECB SDMX source adapter](docs/sources/ecb-sdmx.md)
+- [World Bank Indicators source adapter](docs/sources/world-bank-indicators.md)
 - [Dataset, hypothesis, and parallel backtesting foundation](docs/strategy/datasets-hypotheses-parallel-backtesting.md)
 - [Agent API and CLI](docs/agents/api-and-cli.md)
 - [Repo-local Marco agent API skill](skills/marco-agent-api/SKILL.md)
@@ -31,6 +32,7 @@ Current artifact:
 - [Experiment ledger continuation mission](docs/missions/marco-experiment-ledger-continuation.md)
 - [FRED FX/rate lab checkpoint](docs/runs/20260531-fred-fx-rate-lab-checkpoint.md)
 - [ECB SDMX smoke checkpoint](docs/runs/20260531-ecb-sdmx-smoke-checkpoint.md)
+- [World Bank Indicators haul checkpoint](docs/runs/20260531-world-bank-indicators-haul.md)
 - [FinRobot/MikeOSS platform evaluation](docs/strategy/finrobot-mikeoss-platform-evaluation.md)
 - [Node A static preview deployment](docs/deployment/node-a-static-preview.md)
 - [GitHub Actions CI and Node A deploy](docs/deployment/github-actions.md)
@@ -53,6 +55,94 @@ make ci
 ```
 
 See [Setup](docs/setup.md) for required tools and manual installation.
+
+## Data Haul
+
+Marco currently has three concrete data surfaces.
+
+### Committed Shareable Artifacts
+
+The repo commits compact FRED FX/rate lab artifacts under:
+
+```text
+artifacts/fred-fx-rate-lab/20260531-161930-fx-rate-diff/
+```
+
+That checkpoint contains:
+
+| Item | Value |
+| --- | ---: |
+| Run ID | `20260531-161930-fx-rate-diff` |
+| FX pairs | `EUR_USD`, `GBP_USD`, `USD_CAD`, `USD_JPY`, `USD_MXN` |
+| Horizons | 1M, 3M, 6M |
+| Models | `random_walk`, `no_change`, `rolling_mean_36m`, `carry_diff`, `real_rate_diff`, `ridge` |
+| Monthly panel rows | 1,349 |
+| Monthly panel columns | 23 |
+| Feature rows | 6,745 |
+| Prediction rows | 17,394 |
+| Metric rows | 90 |
+| Best-by-RMSE rows | 15 |
+
+Files:
+
+```text
+summary.json
+metrics.json
+validation.json
+model_metrics.csv
+best_by_rmse.csv
+report.md
+```
+
+### Generated Local FRED Data
+
+Running `emf-macro run-fx-rate-lab` creates ignored local source and derived
+data under:
+
+```text
+data/raw/fred_fx_rates/
+data/derived/fred_fx_rates/
+backtests/runs/
+```
+
+The local derived FRED feature panel currently includes:
+
+```text
+data/derived/fred_fx_rates/panel_monthly.csv
+data/derived/fred_fx_rates/panel_monthly.parquet
+data/derived/fred_fx_rates/features_monthly.csv
+data/derived/fred_fx_rates/features_monthly.parquet
+data/derived/fred_fx_rates/macro_facts.jsonl
+data/derived/fred_fx_rates/feature_manifest.jsonl
+data/derived/fred_fx_rates/source_manifest.json
+data/derived/fred_fx_rates/series_catalog.jsonl
+```
+
+These are latest-revised FRED/FRED-MD snapshots, not ALFRED vintage-safe data.
+
+### Live Source Adapter Hauls
+
+Generated adapter hauls are ignored under `data/`.
+
+ECB SDMX:
+
+| Source | Series | Window | Observations |
+| --- | --- | --- | ---: |
+| ECB `EXR` | `M.USD.EUR.SP00.A` | 2024-01 to 2024-03 | 3 |
+
+World Bank Indicators:
+
+| Indicator | Countries | Years | Observations |
+| --- | --- | --- | ---: |
+| `NY.GDP.MKTP.CD` | USA, IND, BRA, MEX, ZAF, IDN, TUR, CHN | 2000-2024 | 200 |
+| `FP.CPI.TOTL.ZG` | USA, IND, BRA, MEX, ZAF, IDN, TUR, CHN | 2000-2024 | 200 |
+| `BN.CAB.XOKA.CD` | USA, IND, BRA, MEX, ZAF, IDN, TUR, CHN | 2000-2024 | 200 |
+| `SP.POP.TOTL` | USA, IND, BRA, MEX, ZAF, IDN, TUR, CHN | 2000-2024 | 200 |
+
+Total current World Bank haul: 800 normalized annual observations.
+
+The source catalog currently tracks 15 official source candidates. Active
+fetch adapters exist for `fred`, `ecb_sdmx`, and `world_bank_indicators`.
 
 ## Macro Lab
 
@@ -132,6 +222,19 @@ emf-macro source-fetch ecb_sdmx \
   --end-period 2024-03
 
 emf-macro source-observations ecb_sdmx --root . --series M.USD.EUR.SP00.A --limit 5
+```
+
+Fetch World Bank annual macro controls:
+
+```sh
+emf-macro source-fetch world_bank_indicators \
+  --root . \
+  --country 'USA;IND;BRA;MEX;ZAF;IDN;TUR;CHN' \
+  --indicator NY.GDP.MKTP.CD \
+  --start-year 2000 \
+  --end-year 2024
+
+emf-macro source-observations world_bank_indicators --root . --indicator NY.GDP.MKTP.CD --limit 5
 ```
 
 Execute a bounded experiment plan into an ignored local run ledger:

@@ -2,7 +2,7 @@
 
 Date: 2026-05-31
 
-Status: source-expansion plan with first ECB adapter
+Status: source-expansion plan with ECB and World Bank adapters
 
 ## Direction
 
@@ -76,7 +76,8 @@ Build adapters in this order:
 3. ECB adapter using the SDMX wrapper. The first ECB CSV smoke adapter now
    exists for `EXR/M.USD.EUR.SP00.A`.
 4. IMF adapter using the SDMX wrapper.
-5. World Bank Indicators REST adapter.
+5. World Bank Indicators REST adapter. This now exists for annual indicator
+   hauls across country baskets.
 6. RBI DBIE discovery/downloader.
 7. Brazil SGS REST JSON/CSV adapter.
 
@@ -205,5 +206,5 @@ emf-macro source-fetch ecb_sdmx --root . --flow EXR --series M.USD.EUR.SP00.A --
 emf-macro source-observations ecb_sdmx --root . --series M.USD.EUR.SP00.A --limit 5
 ```
 
-ECB is the first source with remote fetch support. The other catalog entries are
-still catalog/discovery entries until their adapters land.
+ECB and World Bank Indicators now have remote fetch support. The other catalog
+entries are still catalog/discovery entries until their adapters land.

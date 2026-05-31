@@ -52,11 +52,11 @@
       "regions": ["global"],
       "access_pattern": "rest_api",
       "priority": "p0",
-      "status": "candidate",
+      "status": "active",
       "official_url": "https://data.worldbank.org/",
       "docs_url": "https://datahelpdesk.worldbank.org/knowledgebase/articles/889392",
       "auth": "none",
-      "notes": "High coverage and easy access; useful for country controls, fundamentals, debt, and annual macro context."
+      "notes": "Active annual macro controls adapter; current smoke path supports indicator JSON fetches across country baskets."
     },
     {
       "id": "world_bank_sdmx_wdi",

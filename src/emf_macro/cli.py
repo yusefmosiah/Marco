@@ -12,6 +12,7 @@ from .experiments import build_experiment_plan, suggest_hypotheses
 from .model_registry import list_model_specs
 from .runner import RunnerConfig, run_experiment_plan
 from .sources import MacroSourceCatalog
+from .world_bank import fetch_world_bank_indicator, load_world_bank_observations
 
 
 def main() -> None:
@@ -101,18 +102,23 @@ def main() -> None:
     sources_inspect.add_argument("--compact", action="store_true", help="emit compact JSON")
 
     source_fetch = sub.add_parser("source-fetch", help="fetch a supported official macro source series")
-    source_fetch.add_argument("source_id", choices=["ecb_sdmx"])
+    source_fetch.add_argument("source_id", choices=["ecb_sdmx", "world_bank_indicators"])
     source_fetch.add_argument("--root", default=".", help="repo root")
     source_fetch.add_argument("--flow", default="EXR")
-    source_fetch.add_argument("--series", required=True, help="provider series key, e.g. M.USD.EUR.SP00.A")
+    source_fetch.add_argument("--series", help="provider series key, e.g. M.USD.EUR.SP00.A")
+    source_fetch.add_argument("--indicator", help="World Bank indicator code, e.g. NY.GDP.MKTP.CD")
+    source_fetch.add_argument("--country", action="append", dest="countries", help="World Bank country code; repeat or use semicolon list")
     source_fetch.add_argument("--start-period")
     source_fetch.add_argument("--end-period")
+    source_fetch.add_argument("--start-year", type=int)
+    source_fetch.add_argument("--end-year", type=int)
     source_fetch.add_argument("--compact", action="store_true", help="emit compact JSON")
 
     source_obs = sub.add_parser("source-observations", help="read normalized observations from a fetched source")
-    source_obs.add_argument("source_id", choices=["ecb_sdmx"])
+    source_obs.add_argument("source_id", choices=["ecb_sdmx", "world_bank_indicators"])
     source_obs.add_argument("--root", default=".", help="repo root")
     source_obs.add_argument("--series", help="provider series key filter")
+    source_obs.add_argument("--indicator", help="World Bank indicator code filter")
     source_obs.add_argument("--limit", type=int, default=10)
     source_obs.add_argument("--compact", action="store_true", help="emit compact JSON")
 
@@ -217,6 +223,8 @@ def main() -> None:
             print_json(catalog.inspect(args.source_id), compact=args.compact)
     elif args.command == "source-fetch":
         if args.source_id == "ecb_sdmx":
+            if not args.series:
+                raise SystemExit("--series is required for ecb_sdmx")
             print_json(
                 fetch_ecb_series(
                     Path(args.root).resolve(),
@@ -224,6 +232,20 @@ def main() -> None:
                     flow=args.flow,
                     start_period=args.start_period,
                     end_period=args.end_period,
+                ),
+                compact=args.compact,
+            )
+        elif args.source_id == "world_bank_indicators":
+            if not args.indicator:
+                raise SystemExit("--indicator is required for world_bank_indicators")
+            countries = split_country_args(args.countries or ["all"])
+            print_json(
+                fetch_world_bank_indicator(
+                    Path(args.root).resolve(),
+                    countries,
+                    args.indicator,
+                    start_year=args.start_year,
+                    end_year=args.end_year,
                 ),
                 compact=args.compact,
             )
@@ -236,6 +258,19 @@ def main() -> None:
                     "observations": load_ecb_observations(
                         Path(args.root).resolve(),
                         series_key=args.series,
+                        limit=args.limit,
+                    ),
+                },
+                compact=args.compact,
+            )
+        elif args.source_id == "world_bank_indicators":
+            print_json(
+                {
+                    "schema_version": "marco.source_observations.v1",
+                    "source_id": args.source_id,
+                    "observations": load_world_bank_observations(
+                        Path(args.root).resolve(),
+                        indicator=args.indicator,
                         limit=args.limit,
                     ),
                 },
@@ -282,6 +317,13 @@ def print_json(payload: object, compact: bool = False) -> None:
 
 def load_json(path: Path) -> object:
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+def split_country_args(values: list[str]) -> list[str]:
+    countries: list[str] = []
+    for value in values:
+        countries.extend(part.strip() for part in value.split(";") if part.strip())
+    return countries
 
 
 if __name__ == "__main__":
