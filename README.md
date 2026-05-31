@@ -245,6 +245,13 @@ It fetches the feeds, writes a per-fetch journal, updates
 `data/macro-news/model.md` with new marginal information, and prunes old update
 sections when the model approaches the configured token budget.
 
+The synthesis agent is not wired in yet. When it is added, route LLM calls
+through the go-choir gateway on Node A rather than committing provider secrets
+to Marco. The intended default is Fireworks
+`accounts/fireworks/models/deepseek-v4-flash` with `reasoning_effort=medium`;
+deploy Node A gateway credentials from `/Users/wiz/go-choir` with
+`./nix/deploy-provider-creds.sh node-a`.
+
 The compact committed summary lives at:
 
 ```text

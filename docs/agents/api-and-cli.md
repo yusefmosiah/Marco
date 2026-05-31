@@ -147,6 +147,33 @@ curl -s 'http://127.0.0.1:8765/v1/news' | jq
 curl -s 'http://127.0.0.1:8765/v1/news/items?limit=5' | jq
 ```
 
+## LLM Gateway
+
+Marco's committed news model agent is deterministic today. The next synthesis
+agent should use the go-choir gateway instead of storing provider credentials in
+this repo or in the Marco web app.
+
+Current preferred synthesis model:
+
+```text
+provider = fireworks
+model = accounts/fireworks/models/deepseek-v4-flash
+reasoning_effort = medium
+```
+
+Node A has the go-choir gateway on `127.0.0.1:8084`. Provider credentials are
+deployed from `/Users/wiz/go-choir/.env` with:
+
+```sh
+cd /Users/wiz/go-choir
+./nix/deploy-provider-creds.sh node-a
+```
+
+Gateway calls should explicitly set `provider`, `model`, and
+`reasoning_effort`; do not rely on the gateway's provider default model. The
+gateway keeps Fireworks, search, and other provider keys host-side and issues
+short caller credentials for authenticated runtime clients.
+
 ## Agent Context Shape
 
 `GET /v1/agent-context` and `emf-macro agent-context` return:
