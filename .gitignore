@@ -1,0 +1,11 @@
+data/raw/
+data/derived/
+tmp/
+.env
+.env.*
+!.env.example
+node_modules/
+.venv/
+.next/
+dist/
+coverage/
