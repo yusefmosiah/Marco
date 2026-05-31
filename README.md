@@ -43,6 +43,7 @@ Current artifact:
 - [Shareable FRED FX/rate artifacts](artifacts/fred-fx-rate-lab/20260531-161930-fx-rate-diff/)
 - [Shareable Fed FOMC communications summary](artifacts/fed-fomc-communications/)
 - [Shareable global macro panel summary](artifacts/global-macro-panel/global_macro_starter_20260531/)
+- [Repo-root data bundles](data/)
 - [Svelte visualization app](apps/web/)
 - [Historical MikeOSS proposal](docs/proposals/mission-proposal.md)
 - [Mobile-friendly PDF](output/pdf/emf-mission-proposal.pdf)
@@ -65,6 +66,21 @@ See [Setup](docs/setup.md) for required tools and manual installation.
 ## Data Haul
 
 Marco currently has four concrete data surfaces.
+
+The repo-root shareable data bundles live under:
+
+```text
+data/fred-fx-rate-lab/
+data/world-bank-indicators/
+data/ecb-sdmx/
+data/global-macro-panel/
+data/fed-fomc-communications/
+data/backtests/
+```
+
+The ignored `data/raw/`, `data/derived/`, and `backtests/runs/` paths are still
+working caches, but the current local contents have been promoted into the
+shareable bundles above.
 
 ### Committed Shareable Artifacts
 

@@ -1,0 +1,46 @@
+{
+  "byte_size": 960,
+  "created_at": "2026-05-31T19:01:56.183727+00:00",
+  "dataset_id": "ecb_sdmx-exr-m-usd-eur-sp00-a-6ca199a1728f",
+  "format": "jsonl",
+  "kind": "time_series",
+  "name": "ECB EXR M.USD.EUR.SP00.A",
+  "schema": {
+    "column_count": 23,
+    "columns": [
+      "currency",
+      "currency_denom",
+      "exchange_rate_suffix",
+      "exchange_rate_type",
+      "flow",
+      "frequency",
+      "indicator",
+      "observation_status",
+      "period",
+      "provider",
+      "provider_series_id",
+      "raw_path",
+      "schema_version",
+      "series_key",
+      "source_id",
+      "source_snapshot_id",
+      "source_url",
+      "title",
+      "title_complement",
+      "unit",
+      "unit_multiplier",
+      "value",
+      "vintage_policy"
+    ],
+    "sample_row_count": 3
+  },
+  "sha256": "6ca199a1728f7fba60327d21d8d6f068d52c3ea615deec4569fb08e520385278",
+  "source_type": "official_api",
+  "source_uri": "https://data-api.ecb.europa.eu/service/data/EXR/M.USD.EUR.SP00.A?format=csvdata&startPeriod=2024-01&endPeriod=2024-03",
+  "stored_path": "data/derived/ecb_sdmx/observations.jsonl",
+  "tags": [
+    "ecb",
+    "exr",
+    "exchange_rate"
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "baseline_models": [
+    "random_walk",
+    "no_change"
+  ],
+  "candidate_models": [
+    "no_change",
+    "random_walk",
+    "ridge"
+  ],
+  "claim": "Candidate FX/rate models should only be promoted when they beat random-walk and no-change baselines under the same split.",
+  "falsification_rule": "Reject any promoted model claim when random_walk or no_change is missing for the same dataset, pair, target, horizon, and split.",
+  "feature_families": [
+    "rate_diff",
+    "real_rate_diff",
+    "inflation_diff",
+    "yield_diff"
+  ],
+  "horizon_months": [
+    6
+  ],
+  "hypothesis_id": "hyp-77c68467739a7088",
+  "metric": "rmse",
+  "required_datasets": [
+    "current_fred_fx_rate_panel"
+  ],
+  "schema_version": "marco.hypothesis_spec.v1",
+  "split_policy": "walk_forward_expanding",
+  "target": "fx_return",
+  "title": "Rate and inflation differentials should earn their place against hard FX baselines."
+}

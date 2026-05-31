@@ -1,0 +1,24 @@
+{
+  "backtest_config": {
+    "evaluation_start": "2006-01",
+    "horizon_months": 6,
+    "lookahead_status": "not_real_time_vintage_safe",
+    "pair": "USD_CAD",
+    "target": "fx_return_6m",
+    "train_min_months": 84,
+    "train_window": "expanding",
+    "vintage_policy": "latest_revised_snapshot"
+  },
+  "job": {
+    "complexity_tier": 2,
+    "dataset_id": "current_fred_fx_rate_panel",
+    "executable_now": true,
+    "horizon_months": 6,
+    "job_id": "job-575c3a43339b170c",
+    "model_id": "ridge",
+    "pair": "USD_CAD",
+    "status": "ready",
+    "target": "fx_return_6m"
+  },
+  "schema_version": "marco.experiment_job_config.v1"
+}

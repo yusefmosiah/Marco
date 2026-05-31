@@ -1,0 +1,31 @@
+{
+  "catalog_rows": 149,
+  "features_rows": 6745,
+  "lookahead_status": "not_real_time_vintage_safe",
+  "models": [
+    "carry_diff",
+    "no_change",
+    "random_walk",
+    "real_rate_diff",
+    "ridge",
+    "rolling_mean_36m"
+  ],
+  "notes": [
+    "FRED-MD current and ordinary FRED pulls are latest/revised snapshots.",
+    "Backtests enforce walk-forward train windows, but are not ALFRED real-time vintage safe.",
+    "Every FX target keeps explicit quote convention metadata in feature_manifest.jsonl."
+  ],
+  "pairs": [
+    "EUR_USD",
+    "GBP_USD",
+    "USD_CAD",
+    "USD_JPY",
+    "USD_MXN"
+  ],
+  "panel_columns": 23,
+  "panel_rows": 1349,
+  "prediction_rows": 17394,
+  "required_baselines_present": true,
+  "status": "passed",
+  "vintage_policy": "latest_revised_snapshot"
+}

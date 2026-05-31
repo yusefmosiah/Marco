@@ -1,0 +1,18 @@
+{
+  "country": null,
+  "dataset_id": "current_fred_fx_rate_panel",
+  "date_column": "period",
+  "frequency": "M",
+  "indicators": {
+    "fx_return_6m": "fx_return"
+  },
+  "mapping_id": "map-b4809ca388c6a3cc",
+  "schema_version": "marco.dataset_mapping.v1",
+  "source_snapshot_id": null,
+  "transformations": {},
+  "units": {},
+  "value_columns": [
+    "fx_return_6m"
+  ],
+  "vintage_policy": "latest_revised_snapshot"
+}

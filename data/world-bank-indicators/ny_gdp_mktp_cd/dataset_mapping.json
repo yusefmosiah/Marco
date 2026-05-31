@@ -1,0 +1,20 @@
+{
+  "country": null,
+  "dataset_id": "world_bank_indicators-ny-gdp-mktp-cd-00d3d9e1ada8",
+  "date_column": "period",
+  "frequency": "A",
+  "indicators": {
+    "value": "NY.GDP.MKTP.CD"
+  },
+  "mapping_id": "map-9f28119354c04806",
+  "schema_version": "marco.dataset_mapping.v1",
+  "source_snapshot_id": "00d3d9e1ada87813a2535c6ee8864299f21ff4e19d2b6d5b1681365f45fccf21",
+  "transformations": {},
+  "units": {
+    "value": "source_native"
+  },
+  "value_columns": [
+    "value"
+  ],
+  "vintage_policy": "latest_revised_snapshot"
+}

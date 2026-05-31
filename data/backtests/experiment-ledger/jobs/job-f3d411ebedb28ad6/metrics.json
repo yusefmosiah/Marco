@@ -1,0 +1,13 @@
+{
+  "dataset_id": "current_fred_fx_rate_panel",
+  "directional_accuracy": 0.0,
+  "horizon_months": 6,
+  "job_id": "job-f3d411ebedb28ad6",
+  "mae": 0.04333989247953913,
+  "model_id": "random_walk",
+  "n": 231,
+  "pair": "USD_CAD",
+  "rmse": 0.05915017088445292,
+  "schema_version": "marco.experiment_job_metrics.v1",
+  "target": "fx_return_6m"
+}

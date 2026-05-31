@@ -1,0 +1,53 @@
+{
+  "completed_job_count": 3,
+  "failed_job_count": 0,
+  "failures": [],
+  "lookahead_status": "not_real_time_vintage_safe",
+  "metrics": [
+    {
+      "dataset_id": "current_fred_fx_rate_panel",
+      "directional_accuracy": 0.0,
+      "horizon_months": 6,
+      "job_id": "job-121170d86e96717c",
+      "mae": 0.04333989247953913,
+      "model_id": "no_change",
+      "n": 231,
+      "pair": "USD_CAD",
+      "rmse": 0.05915017088445292,
+      "schema_version": "marco.experiment_job_metrics.v1",
+      "target": "fx_return_6m"
+    },
+    {
+      "dataset_id": "current_fred_fx_rate_panel",
+      "directional_accuracy": 0.0,
+      "horizon_months": 6,
+      "job_id": "job-f3d411ebedb28ad6",
+      "mae": 0.04333989247953913,
+      "model_id": "random_walk",
+      "n": 231,
+      "pair": "USD_CAD",
+      "rmse": 0.05915017088445292,
+      "schema_version": "marco.experiment_job_metrics.v1",
+      "target": "fx_return_6m"
+    },
+    {
+      "dataset_id": "current_fred_fx_rate_panel",
+      "directional_accuracy": 0.6103896103896104,
+      "horizon_months": 6,
+      "job_id": "job-575c3a43339b170c",
+      "mae": 0.04303100026923828,
+      "model_id": "ridge",
+      "n": 231,
+      "pair": "USD_CAD",
+      "rmse": 0.05870072749649144,
+      "schema_version": "marco.experiment_job_metrics.v1",
+      "target": "fx_return_6m"
+    }
+  ],
+  "plan_id": "plan-77c68467739a7088",
+  "schema_version": "marco.aggregate_metrics.v1",
+  "skipped": [],
+  "skipped_job_count": 0,
+  "source_run_id": "20260531-161930-fx-rate-diff",
+  "vintage_policy": "latest_revised_snapshot"
+}

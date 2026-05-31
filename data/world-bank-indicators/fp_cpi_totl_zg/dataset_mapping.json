@@ -1,0 +1,20 @@
+{
+  "country": null,
+  "dataset_id": "world_bank_indicators-fp-cpi-totl-zg-dc2adab04e07",
+  "date_column": "period",
+  "frequency": "A",
+  "indicators": {
+    "value": "FP.CPI.TOTL.ZG"
+  },
+  "mapping_id": "map-d94d958f9c4fb5a9",
+  "schema_version": "marco.dataset_mapping.v1",
+  "source_snapshot_id": "dc2adab04e07d26e1bd3d4ca707f5a8e4cbc0224b15d07ef76ea39fbb1504b28",
+  "transformations": {},
+  "units": {
+    "value": "source_native"
+  },
+  "value_columns": [
+    "value"
+  ],
+  "vintage_policy": "latest_revised_snapshot"
+}

@@ -1,0 +1,49 @@
+{
+  "byte_size": 46476,
+  "created_at": "2026-05-31T19:08:07.993031+00:00",
+  "dataset_id": "world_bank_indicators-bn-cab-xoka-cd-efc888626d2d",
+  "format": "jsonl",
+  "kind": "time_series",
+  "name": "World Bank BN.CAB.XOKA.CD",
+  "schema": {
+    "column_count": 18,
+    "columns": [
+      "country",
+      "country_name",
+      "decimal",
+      "frequency",
+      "indicator",
+      "indicator_code",
+      "indicator_name",
+      "observation_status",
+      "period",
+      "provider",
+      "raw_path",
+      "schema_version",
+      "source_id",
+      "source_snapshot_id",
+      "source_url",
+      "unit",
+      "value",
+      "vintage_policy"
+    ],
+    "sample_row_count": 5
+  },
+  "sha256": "efc888626d2d34dbd3fb13845f063c2797b10bee78497eb80a99c99eca06ece9",
+  "source_type": "official_api",
+  "source_uri": "https://api.worldbank.org/v2/country/USA;IND;BRA;MEX;ZAF;IDN;TUR;CHN/indicator/BN.CAB.XOKA.CD?format=json&per_page=20000&date=2000%3A2024",
+  "stored_path": "data/derived/world_bank_indicators/bn_cab_xoka_cd/observations.jsonl",
+  "tags": [
+    "world_bank",
+    "annual",
+    "bn.cab.xoka.cd",
+    "usa",
+    "ind",
+    "bra",
+    "mex",
+    "zaf",
+    "idn",
+    "tur",
+    "chn"
+  ]
+}

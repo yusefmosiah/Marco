@@ -1,0 +1,20 @@
+{
+  "country": null,
+  "dataset_id": "world_bank_indicators-bn-cab-xoka-cd-efc888626d2d",
+  "date_column": "period",
+  "frequency": "A",
+  "indicators": {
+    "value": "BN.CAB.XOKA.CD"
+  },
+  "mapping_id": "map-1e982f384fac80be",
+  "schema_version": "marco.dataset_mapping.v1",
+  "source_snapshot_id": "efc888626d2d34dbd3fb13845f063c2797b10bee78497eb80a99c99eca06ece9",
+  "transformations": {},
+  "units": {
+    "value": "source_native"
+  },
+  "value_columns": [
+    "value"
+  ],
+  "vintage_policy": "latest_revised_snapshot"
+}

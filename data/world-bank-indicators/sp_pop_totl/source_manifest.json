@@ -1,0 +1,10 @@
+[
+  {
+    "bytes": 39669,
+    "fetched_at": "2026-05-31T19:08:10.298360+00:00",
+    "logical_name": "world_bank_indicators:SP.POP.TOTL:USA;IND;BRA;MEX;ZAF;IDN;TUR;CHN",
+    "raw_path": "data/raw/world_bank_indicators/d1c50ab18921d2735885891fcff0c4ad8ebc7786a0e887e95ebc9d5d4d5981b2.json",
+    "sha256": "d1c50ab18921d2735885891fcff0c4ad8ebc7786a0e887e95ebc9d5d4d5981b2",
+    "url": "https://api.worldbank.org/v2/country/USA;IND;BRA;MEX;ZAF;IDN;TUR;CHN/indicator/SP.POP.TOTL?format=json&per_page=20000&date=2000%3A2024"
+  }
+]

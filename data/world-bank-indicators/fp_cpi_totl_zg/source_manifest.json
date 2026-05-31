@@ -1,0 +1,10 @@
+[
+  {
+    "bytes": 45655,
+    "fetched_at": "2026-05-31T19:08:04.585097+00:00",
+    "logical_name": "world_bank_indicators:FP.CPI.TOTL.ZG:USA;IND;BRA;MEX;ZAF;IDN;TUR;CHN",
+    "raw_path": "data/raw/world_bank_indicators/dc2adab04e07d26e1bd3d4ca707f5a8e4cbc0224b15d07ef76ea39fbb1504b28.json",
+    "sha256": "dc2adab04e07d26e1bd3d4ca707f5a8e4cbc0224b15d07ef76ea39fbb1504b28",
+    "url": "https://api.worldbank.org/v2/country/USA;IND;BRA;MEX;ZAF;IDN;TUR;CHN/indicator/FP.CPI.TOTL.ZG?format=json&per_page=20000&date=2000%3A2024"
+  }
+]

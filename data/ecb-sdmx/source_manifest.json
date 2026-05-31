@@ -1,0 +1,10 @@
+[
+  {
+    "bytes": 960,
+    "fetched_at": "2026-05-31T19:01:56.183727+00:00",
+    "logical_name": "ecb_sdmx:EXR:M.USD.EUR.SP00.A",
+    "raw_path": "data/raw/ecb_sdmx/6ca199a1728f7fba60327d21d8d6f068d52c3ea615deec4569fb08e520385278.csv",
+    "sha256": "6ca199a1728f7fba60327d21d8d6f068d52c3ea615deec4569fb08e520385278",
+    "url": "https://data-api.ecb.europa.eu/service/data/EXR/M.USD.EUR.SP00.A?format=csvdata&startPeriod=2024-01&endPeriod=2024-03"
+  }
+]

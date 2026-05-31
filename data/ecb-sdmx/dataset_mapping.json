@@ -1,0 +1,20 @@
+{
+  "country": null,
+  "dataset_id": "ecb_sdmx-exr-m-usd-eur-sp00-a-6ca199a1728f",
+  "date_column": "period",
+  "frequency": "M",
+  "indicators": {
+    "value": "exchange_rate"
+  },
+  "mapping_id": "map-c111eb9beefe61ef",
+  "schema_version": "marco.dataset_mapping.v1",
+  "source_snapshot_id": "6ca199a1728f7fba60327d21d8d6f068d52c3ea615deec4569fb08e520385278",
+  "transformations": {},
+  "units": {
+    "value": "USD"
+  },
+  "value_columns": [
+    "value"
+  ],
+  "vintage_policy": "latest_revised_snapshot"
+}

@@ -1,0 +1,908 @@
+{
+  "created_at": "2026-05-31T16:19:50.741723+00:00",
+  "lookahead_status": "not_real_time_vintage_safe",
+  "run_id": "20260531-161930-fx-rate-diff",
+  "summaries": {
+    "EUR_USD:fx_return_1m": {
+      "advanced_models": [
+        "ridge"
+      ],
+      "baselines": [
+        "random_walk",
+        "no_change",
+        "rolling_mean_36m",
+        "carry_diff",
+        "real_rate_diff"
+      ],
+      "config": {
+        "evaluation_start": "2006-01",
+        "horizon_months": 1,
+        "lookahead_status": "not_real_time_vintage_safe",
+        "pair": "EUR_USD",
+        "target": "fx_return_1m",
+        "train_min_months": 84,
+        "train_window": "expanding",
+        "vintage_policy": "latest_revised_snapshot"
+      },
+      "metrics": {
+        "carry_diff": {
+          "directional_accuracy": 0.5131578947368421,
+          "mae": 0.020030281772286503,
+          "n": 228,
+          "rmse": 0.026687890661620323
+        },
+        "no_change": {
+          "directional_accuracy": 0.0,
+          "mae": 0.019965690200182948,
+          "n": 228,
+          "rmse": 0.026572898695930686
+        },
+        "random_walk": {
+          "directional_accuracy": 0.0,
+          "mae": 0.019965690200182948,
+          "n": 228,
+          "rmse": 0.026572898695930686
+        },
+        "real_rate_diff": {
+          "directional_accuracy": 0.43859649122807015,
+          "mae": 0.02019752978179062,
+          "n": 228,
+          "rmse": 0.02687223638298248
+        },
+        "ridge": {
+          "directional_accuracy": 0.5833333333333334,
+          "mae": 0.02015217135042403,
+          "n": 228,
+          "rmse": 0.027526425397719934
+        },
+        "rolling_mean_36m": {
+          "directional_accuracy": 0.4649122807017544,
+          "mae": 0.020346767779201202,
+          "n": 228,
+          "rmse": 0.027093954118833325
+        }
+      }
+    },
+    "EUR_USD:fx_return_3m": {
+      "advanced_models": [
+        "ridge"
+      ],
+      "baselines": [
+        "random_walk",
+        "no_change",
+        "rolling_mean_36m",
+        "carry_diff",
+        "real_rate_diff"
+      ],
+      "config": {
+        "evaluation_start": "2006-01",
+        "horizon_months": 3,
+        "lookahead_status": "not_real_time_vintage_safe",
+        "pair": "EUR_USD",
+        "target": "fx_return_3m",
+        "train_min_months": 84,
+        "train_window": "expanding",
+        "vintage_policy": "latest_revised_snapshot"
+      },
+      "metrics": {
+        "carry_diff": {
+          "directional_accuracy": 0.49122807017543857,
+          "mae": 0.034951137948405625,
+          "n": 228,
+          "rmse": 0.0463232668566766
+        },
+        "no_change": {
+          "directional_accuracy": 0.0,
+          "mae": 0.034578284076714635,
+          "n": 228,
+          "rmse": 0.045708328381013776
+        },
+        "random_walk": {
+          "directional_accuracy": 0.0,
+          "mae": 0.034578284076714635,
+          "n": 228,
+          "rmse": 0.045708328381013776
+        },
+        "real_rate_diff": {
+          "directional_accuracy": 0.40789473684210525,
+          "mae": 0.035750964810945834,
+          "n": 228,
+          "rmse": 0.047227015951144334
+        },
+        "ridge": {
+          "directional_accuracy": 0.6535087719298246,
+          "mae": 0.035631243583621804,
+          "n": 228,
+          "rmse": 0.04660000173150209
+        },
+        "rolling_mean_36m": {
+          "directional_accuracy": 0.4692982456140351,
+          "mae": 0.035402040899261834,
+          "n": 228,
+          "rmse": 0.04712431054574841
+        }
+      }
+    },
+    "EUR_USD:fx_return_6m": {
+      "advanced_models": [
+        "ridge"
+      ],
+      "baselines": [
+        "random_walk",
+        "no_change",
+        "rolling_mean_36m",
+        "carry_diff",
+        "real_rate_diff"
+      ],
+      "config": {
+        "evaluation_start": "2006-01",
+        "horizon_months": 6,
+        "lookahead_status": "not_real_time_vintage_safe",
+        "pair": "EUR_USD",
+        "target": "fx_return_6m",
+        "train_min_months": 84,
+        "train_window": "expanding",
+        "vintage_policy": "latest_revised_snapshot"
+      },
+      "metrics": {
+        "carry_diff": {
+          "directional_accuracy": 0.4911504424778761,
+          "mae": 0.053711922135096964,
+          "n": 226,
+          "rmse": 0.06880115437521236
+        },
+        "no_change": {
+          "directional_accuracy": 0.0,
+          "mae": 0.052950097212720704,
+          "n": 226,
+          "rmse": 0.06716542400904976
+        },
+        "random_walk": {
+          "directional_accuracy": 0.0,
+          "mae": 0.052950097212720704,
+          "n": 226,
+          "rmse": 0.06716542400904976
+        },
+        "real_rate_diff": {
+          "directional_accuracy": 0.415929203539823,
+          "mae": 0.055212288786654844,
+          "n": 226,
+          "rmse": 0.07087066471757392
+        },
+        "ridge": {
+          "directional_accuracy": 0.6504424778761062,
+          "mae": 0.05082126115426104,
+          "n": 226,
+          "rmse": 0.06762308627856223
+        },
+        "rolling_mean_36m": {
+          "directional_accuracy": 0.5221238938053098,
+          "mae": 0.05416260151473733,
+          "n": 226,
+          "rmse": 0.06984254767094399
+        }
+      }
+    },
+    "GBP_USD:fx_return_1m": {
+      "advanced_models": [
+        "ridge"
+      ],
+      "baselines": [
+        "random_walk",
+        "no_change",
+        "rolling_mean_36m",
+        "carry_diff",
+        "real_rate_diff"
+      ],
+      "config": {
+        "evaluation_start": "2006-01",
+        "horizon_months": 1,
+        "lookahead_status": "not_real_time_vintage_safe",
+        "pair": "GBP_USD",
+        "target": "fx_return_1m",
+        "train_min_months": 84,
+        "train_window": "expanding",
+        "vintage_policy": "latest_revised_snapshot"
+      },
+      "metrics": {
+        "carry_diff": {
+          "directional_accuracy": 0.462882096069869,
+          "mae": 0.01980609289027414,
+          "n": 231,
+          "rmse": 0.025871985825555947
+        },
+        "no_change": {
+          "directional_accuracy": 0.0,
+          "mae": 0.019674564845148478,
+          "n": 231,
+          "rmse": 0.02567518078798166
+        },
+        "random_walk": {
+          "directional_accuracy": 0.0,
+          "mae": 0.019674564845148478,
+          "n": 231,
+          "rmse": 0.02567518078798166
+        },
+        "real_rate_diff": {
+          "directional_accuracy": 0.42358078602620086,
+          "mae": 0.01995281550298724,
+          "n": 231,
+          "rmse": 0.026056167878589404
+        },
+        "ridge": {
+          "directional_accuracy": 0.4672489082969432,
+          "mae": 0.0202753798396078,
+          "n": 231,
+          "rmse": 0.02631635957648122
+        },
+        "rolling_mean_36m": {
+          "directional_accuracy": 0.4759825327510917,
+          "mae": 0.019958913277842133,
+          "n": 231,
+          "rmse": 0.02615865842479594
+        }
+      }
+    },
+    "GBP_USD:fx_return_3m": {
+      "advanced_models": [
+        "ridge"
+      ],
+      "baselines": [
+        "random_walk",
+        "no_change",
+        "rolling_mean_36m",
+        "carry_diff",
+        "real_rate_diff"
+      ],
+      "config": {
+        "evaluation_start": "2006-01",
+        "horizon_months": 3,
+        "lookahead_status": "not_real_time_vintage_safe",
+        "pair": "GBP_USD",
+        "target": "fx_return_3m",
+        "train_min_months": 84,
+        "train_window": "expanding",
+        "vintage_policy": "latest_revised_snapshot"
+      },
+      "metrics": {
+        "carry_diff": {
+          "directional_accuracy": 0.45021645021645024,
+          "mae": 0.036189689909506696,
+          "n": 231,
+          "rmse": 0.04864257082064814
+        },
+        "no_change": {
+          "directional_accuracy": 0.0,
+          "mae": 0.03576888319600675,
+          "n": 231,
+          "rmse": 0.04773167045447118
+        },
+        "random_walk": {
+          "directional_accuracy": 0.0,
+          "mae": 0.03576888319600675,
+          "n": 231,
+          "rmse": 0.04773167045447118
+        },
+        "real_rate_diff": {
+          "directional_accuracy": 0.39826839826839827,
+          "mae": 0.037051705821687396,
+          "n": 231,
+          "rmse": 0.049543291729503794
+        },
+        "ridge": {
+          "directional_accuracy": 0.42424242424242425,
+          "mae": 0.03791488645315812,
+          "n": 231,
+          "rmse": 0.050018391787159104
+        },
+        "rolling_mean_36m": {
+          "directional_accuracy": 0.5454545454545454,
+          "mae": 0.03634036480325205,
+          "n": 231,
+          "rmse": 0.04889081970183395
+        }
+      }
+    },
+    "GBP_USD:fx_return_6m": {
+      "advanced_models": [
+        "ridge"
+      ],
+      "baselines": [
+        "random_walk",
+        "no_change",
+        "rolling_mean_36m",
+        "carry_diff",
+        "real_rate_diff"
+      ],
+      "config": {
+        "evaluation_start": "2006-01",
+        "horizon_months": 6,
+        "lookahead_status": "not_real_time_vintage_safe",
+        "pair": "GBP_USD",
+        "target": "fx_return_6m",
+        "train_min_months": 84,
+        "train_window": "expanding",
+        "vintage_policy": "latest_revised_snapshot"
+      },
+      "metrics": {
+        "carry_diff": {
+          "directional_accuracy": 0.4329004329004329,
+          "mae": 0.053104848908921594,
+          "n": 231,
+          "rmse": 0.07276335419502995
+        },
+        "no_change": {
+          "directional_accuracy": 0.0,
+          "mae": 0.05226821068646095,
+          "n": 231,
+          "rmse": 0.0705951001440429
+        },
+        "random_walk": {
+          "directional_accuracy": 0.0,
+          "mae": 0.05226821068646095,
+          "n": 231,
+          "rmse": 0.0705951001440429
+        },
+        "real_rate_diff": {
+          "directional_accuracy": 0.33766233766233766,
+          "mae": 0.055299420579888195,
+          "n": 231,
+          "rmse": 0.07509357507168403
+        },
+        "ridge": {
+          "directional_accuracy": 0.42857142857142855,
+          "mae": 0.057164372709145275,
+          "n": 231,
+          "rmse": 0.07489283049903707
+        },
+        "rolling_mean_36m": {
+          "directional_accuracy": 0.5108225108225108,
+          "mae": 0.054260378647188925,
+          "n": 231,
+          "rmse": 0.07292502048578758
+        }
+      }
+    },
+    "USD_CAD:fx_return_1m": {
+      "advanced_models": [
+        "ridge"
+      ],
+      "baselines": [
+        "random_walk",
+        "no_change",
+        "rolling_mean_36m",
+        "carry_diff",
+        "real_rate_diff"
+      ],
+      "config": {
+        "evaluation_start": "2006-01",
+        "horizon_months": 1,
+        "lookahead_status": "not_real_time_vintage_safe",
+        "pair": "USD_CAD",
+        "target": "fx_return_1m",
+        "train_min_months": 84,
+        "train_window": "expanding",
+        "vintage_policy": "latest_revised_snapshot"
+      },
+      "metrics": {
+        "carry_diff": {
+          "directional_accuracy": 0.5064935064935064,
+          "mae": 0.018913220399909635,
+          "n": 231,
+          "rmse": 0.025709508979815967
+        },
+        "no_change": {
+          "directional_accuracy": 0.0,
+          "mae": 0.018917237355176593,
+          "n": 231,
+          "rmse": 0.025635849274427545
+        },
+        "random_walk": {
+          "directional_accuracy": 0.0,
+          "mae": 0.018917237355176593,
+          "n": 231,
+          "rmse": 0.025635849274427545
+        },
+        "real_rate_diff": {
+          "directional_accuracy": 0.5324675324675324,
+          "mae": 0.01891152385865822,
+          "n": 231,
+          "rmse": 0.025805318651377245
+        },
+        "ridge": {
+          "directional_accuracy": 0.5411255411255411,
+          "mae": 0.018840084064567435,
+          "n": 231,
+          "rmse": 0.025859209786864443
+        },
+        "rolling_mean_36m": {
+          "directional_accuracy": 0.49783549783549785,
+          "mae": 0.019046937154022,
+          "n": 231,
+          "rmse": 0.026038775168230315
+        }
+      }
+    },
+    "USD_CAD:fx_return_3m": {
+      "advanced_models": [
+        "ridge"
+      ],
+      "baselines": [
+        "random_walk",
+        "no_change",
+        "rolling_mean_36m",
+        "carry_diff",
+        "real_rate_diff"
+      ],
+      "config": {
+        "evaluation_start": "2006-01",
+        "horizon_months": 3,
+        "lookahead_status": "not_real_time_vintage_safe",
+        "pair": "USD_CAD",
+        "target": "fx_return_3m",
+        "train_min_months": 84,
+        "train_window": "expanding",
+        "vintage_policy": "latest_revised_snapshot"
+      },
+      "metrics": {
+        "carry_diff": {
+          "directional_accuracy": 0.47186147186147187,
+          "mae": 0.03138827869215362,
+          "n": 231,
+          "rmse": 0.04289485124798558
+        },
+        "no_change": {
+          "directional_accuracy": 0.0,
+          "mae": 0.031097788784558433,
+          "n": 231,
+          "rmse": 0.04252955440673156
+        },
+        "random_walk": {
+          "directional_accuracy": 0.0,
+          "mae": 0.031097788784558433,
+          "n": 231,
+          "rmse": 0.04252955440673156
+        },
+        "real_rate_diff": {
+          "directional_accuracy": 0.4458874458874459,
+          "mae": 0.03167910931080557,
+          "n": 231,
+          "rmse": 0.0433320390017474
+        },
+        "ridge": {
+          "directional_accuracy": 0.5541125541125541,
+          "mae": 0.03116317039498486,
+          "n": 231,
+          "rmse": 0.04257936922873445
+        },
+        "rolling_mean_36m": {
+          "directional_accuracy": 0.48917748917748916,
+          "mae": 0.031759068717961816,
+          "n": 231,
+          "rmse": 0.04338506514992437
+        }
+      }
+    },
+    "USD_CAD:fx_return_6m": {
+      "advanced_models": [
+        "ridge"
+      ],
+      "baselines": [
+        "random_walk",
+        "no_change",
+        "rolling_mean_36m",
+        "carry_diff",
+        "real_rate_diff"
+      ],
+      "config": {
+        "evaluation_start": "2006-01",
+        "horizon_months": 6,
+        "lookahead_status": "not_real_time_vintage_safe",
+        "pair": "USD_CAD",
+        "target": "fx_return_6m",
+        "train_min_months": 84,
+        "train_window": "expanding",
+        "vintage_policy": "latest_revised_snapshot"
+      },
+      "metrics": {
+        "carry_diff": {
+          "directional_accuracy": 0.45021645021645024,
+          "mae": 0.04402949121731863,
+          "n": 231,
+          "rmse": 0.06002815034932734
+        },
+        "no_change": {
+          "directional_accuracy": 0.0,
+          "mae": 0.04333989247953913,
+          "n": 231,
+          "rmse": 0.05915017088445292
+        },
+        "random_walk": {
+          "directional_accuracy": 0.0,
+          "mae": 0.04333989247953913,
+          "n": 231,
+          "rmse": 0.05915017088445292
+        },
+        "real_rate_diff": {
+          "directional_accuracy": 0.41125541125541126,
+          "mae": 0.045037062455961646,
+          "n": 231,
+          "rmse": 0.06142884954254478
+        },
+        "ridge": {
+          "directional_accuracy": 0.6103896103896104,
+          "mae": 0.04303100026923828,
+          "n": 231,
+          "rmse": 0.05870072749649144
+        },
+        "rolling_mean_36m": {
+          "directional_accuracy": 0.47619047619047616,
+          "mae": 0.04558211466086812,
+          "n": 231,
+          "rmse": 0.06091847923932608
+        }
+      }
+    },
+    "USD_JPY:fx_return_1m": {
+      "advanced_models": [
+        "ridge"
+      ],
+      "baselines": [
+        "random_walk",
+        "no_change",
+        "rolling_mean_36m",
+        "carry_diff",
+        "real_rate_diff"
+      ],
+      "config": {
+        "evaluation_start": "2006-01",
+        "horizon_months": 1,
+        "lookahead_status": "not_real_time_vintage_safe",
+        "pair": "USD_JPY",
+        "target": "fx_return_1m",
+        "train_min_months": 84,
+        "train_window": "expanding",
+        "vintage_policy": "latest_revised_snapshot"
+      },
+      "metrics": {
+        "carry_diff": {
+          "directional_accuracy": 0.4794520547945205,
+          "mae": 0.01867580392288363,
+          "n": 147,
+          "rmse": 0.025129425168514803
+        },
+        "no_change": {
+          "directional_accuracy": 0.0,
+          "mae": 0.018609305479350635,
+          "n": 147,
+          "rmse": 0.02509899363412593
+        },
+        "random_walk": {
+          "directional_accuracy": 0.0,
+          "mae": 0.018609305479350635,
+          "n": 147,
+          "rmse": 0.02509899363412593
+        },
+        "real_rate_diff": {
+          "directional_accuracy": 0.5753424657534246,
+          "mae": 0.01851133329811885,
+          "n": 147,
+          "rmse": 0.025130932829181014
+        },
+        "ridge": {
+          "directional_accuracy": 0.5342465753424658,
+          "mae": 0.01953187095049267,
+          "n": 147,
+          "rmse": 0.025869246336940876
+        },
+        "rolling_mean_36m": {
+          "directional_accuracy": 0.5684931506849316,
+          "mae": 0.018541144935238264,
+          "n": 147,
+          "rmse": 0.02526379387367721
+        }
+      }
+    },
+    "USD_JPY:fx_return_3m": {
+      "advanced_models": [
+        "ridge"
+      ],
+      "baselines": [
+        "random_walk",
+        "no_change",
+        "rolling_mean_36m",
+        "carry_diff",
+        "real_rate_diff"
+      ],
+      "config": {
+        "evaluation_start": "2006-01",
+        "horizon_months": 3,
+        "lookahead_status": "not_real_time_vintage_safe",
+        "pair": "USD_JPY",
+        "target": "fx_return_3m",
+        "train_min_months": 84,
+        "train_window": "expanding",
+        "vintage_policy": "latest_revised_snapshot"
+      },
+      "metrics": {
+        "carry_diff": {
+          "directional_accuracy": 0.47619047619047616,
+          "mae": 0.03343775176640103,
+          "n": 147,
+          "rmse": 0.04566773424076239
+        },
+        "no_change": {
+          "directional_accuracy": 0.0,
+          "mae": 0.03331952167385346,
+          "n": 147,
+          "rmse": 0.04553031842265862
+        },
+        "random_walk": {
+          "directional_accuracy": 0.0,
+          "mae": 0.03331952167385346,
+          "n": 147,
+          "rmse": 0.04553031842265862
+        },
+        "real_rate_diff": {
+          "directional_accuracy": 0.5510204081632653,
+          "mae": 0.03358433915178948,
+          "n": 147,
+          "rmse": 0.045818796237509195
+        },
+        "ridge": {
+          "directional_accuracy": 0.564625850340136,
+          "mae": 0.03579865650704664,
+          "n": 147,
+          "rmse": 0.04640866037940723
+        },
+        "rolling_mean_36m": {
+          "directional_accuracy": 0.54421768707483,
+          "mae": 0.034402189676458285,
+          "n": 147,
+          "rmse": 0.045637461845536964
+        }
+      }
+    },
+    "USD_JPY:fx_return_6m": {
+      "advanced_models": [
+        "ridge"
+      ],
+      "baselines": [
+        "random_walk",
+        "no_change",
+        "rolling_mean_36m",
+        "carry_diff",
+        "real_rate_diff"
+      ],
+      "config": {
+        "evaluation_start": "2006-01",
+        "horizon_months": 6,
+        "lookahead_status": "not_real_time_vintage_safe",
+        "pair": "USD_JPY",
+        "target": "fx_return_6m",
+        "train_min_months": 84,
+        "train_window": "expanding",
+        "vintage_policy": "latest_revised_snapshot"
+      },
+      "metrics": {
+        "carry_diff": {
+          "directional_accuracy": 0.4489795918367347,
+          "mae": 0.051599142181331055,
+          "n": 147,
+          "rmse": 0.06809312924654118
+        },
+        "no_change": {
+          "directional_accuracy": 0.0,
+          "mae": 0.05063760394557985,
+          "n": 147,
+          "rmse": 0.06770652174025736
+        },
+        "random_walk": {
+          "directional_accuracy": 0.0,
+          "mae": 0.05063760394557985,
+          "n": 147,
+          "rmse": 0.06770652174025736
+        },
+        "real_rate_diff": {
+          "directional_accuracy": 0.5102040816326531,
+          "mae": 0.05143203085345501,
+          "n": 147,
+          "rmse": 0.06882227305362443
+        },
+        "ridge": {
+          "directional_accuracy": 0.564625850340136,
+          "mae": 0.05135974587161601,
+          "n": 147,
+          "rmse": 0.06827454284537514
+        },
+        "rolling_mean_36m": {
+          "directional_accuracy": 0.6122448979591837,
+          "mae": 0.048712813978834646,
+          "n": 147,
+          "rmse": 0.0684440119998286
+        }
+      }
+    },
+    "USD_MXN:fx_return_1m": {
+      "advanced_models": [
+        "ridge"
+      ],
+      "baselines": [
+        "random_walk",
+        "no_change",
+        "rolling_mean_36m",
+        "carry_diff",
+        "real_rate_diff"
+      ],
+      "config": {
+        "evaluation_start": "2006-01",
+        "horizon_months": 1,
+        "lookahead_status": "not_real_time_vintage_safe",
+        "pair": "USD_MXN",
+        "target": "fx_return_1m",
+        "train_min_months": 84,
+        "train_window": "expanding",
+        "vintage_policy": "latest_revised_snapshot"
+      },
+      "metrics": {
+        "carry_diff": {
+          "directional_accuracy": 0.5,
+          "mae": 0.025999843003486605,
+          "n": 130,
+          "rmse": 0.0354095020529915
+        },
+        "no_change": {
+          "directional_accuracy": 0.0,
+          "mae": 0.025898969072812188,
+          "n": 130,
+          "rmse": 0.034899918281337775
+        },
+        "random_walk": {
+          "directional_accuracy": 0.0,
+          "mae": 0.025898969072812188,
+          "n": 130,
+          "rmse": 0.034899918281337775
+        },
+        "real_rate_diff": {
+          "directional_accuracy": 0.5076923076923077,
+          "mae": 0.02593596364505088,
+          "n": 130,
+          "rmse": 0.03526065735279558
+        },
+        "ridge": {
+          "directional_accuracy": 0.4846153846153846,
+          "mae": 0.02657955080461026,
+          "n": 130,
+          "rmse": 0.035956729328703016
+        },
+        "rolling_mean_36m": {
+          "directional_accuracy": 0.47692307692307695,
+          "mae": 0.026197593986016173,
+          "n": 130,
+          "rmse": 0.035416241670739694
+        }
+      }
+    },
+    "USD_MXN:fx_return_3m": {
+      "advanced_models": [
+        "ridge"
+      ],
+      "baselines": [
+        "random_walk",
+        "no_change",
+        "rolling_mean_36m",
+        "carry_diff",
+        "real_rate_diff"
+      ],
+      "config": {
+        "evaluation_start": "2006-01",
+        "horizon_months": 3,
+        "lookahead_status": "not_real_time_vintage_safe",
+        "pair": "USD_MXN",
+        "target": "fx_return_3m",
+        "train_min_months": 84,
+        "train_window": "expanding",
+        "vintage_policy": "latest_revised_snapshot"
+      },
+      "metrics": {
+        "carry_diff": {
+          "directional_accuracy": 0.5,
+          "mae": 0.046715222748585514,
+          "n": 130,
+          "rmse": 0.06309392986279606
+        },
+        "no_change": {
+          "directional_accuracy": 0.0,
+          "mae": 0.04616146599217612,
+          "n": 130,
+          "rmse": 0.06064508687886719
+        },
+        "random_walk": {
+          "directional_accuracy": 0.0,
+          "mae": 0.04616146599217612,
+          "n": 130,
+          "rmse": 0.06064508687886719
+        },
+        "real_rate_diff": {
+          "directional_accuracy": 0.5076923076923077,
+          "mae": 0.045973648435853096,
+          "n": 130,
+          "rmse": 0.062150853210056665
+        },
+        "ridge": {
+          "directional_accuracy": 0.5307692307692308,
+          "mae": 0.04575408920798214,
+          "n": 130,
+          "rmse": 0.06108007415927057
+        },
+        "rolling_mean_36m": {
+          "directional_accuracy": 0.5076923076923077,
+          "mae": 0.047706824293786754,
+          "n": 130,
+          "rmse": 0.0622291656749157
+        }
+      }
+    },
+    "USD_MXN:fx_return_6m": {
+      "advanced_models": [
+        "ridge"
+      ],
+      "baselines": [
+        "random_walk",
+        "no_change",
+        "rolling_mean_36m",
+        "carry_diff",
+        "real_rate_diff"
+      ],
+      "config": {
+        "evaluation_start": "2006-01",
+        "horizon_months": 6,
+        "lookahead_status": "not_real_time_vintage_safe",
+        "pair": "USD_MXN",
+        "target": "fx_return_6m",
+        "train_min_months": 84,
+        "train_window": "expanding",
+        "vintage_policy": "latest_revised_snapshot"
+      },
+      "metrics": {
+        "carry_diff": {
+          "directional_accuracy": 0.47692307692307695,
+          "mae": 0.06390067012525412,
+          "n": 130,
+          "rmse": 0.08437562331978128
+        },
+        "no_change": {
+          "directional_accuracy": 0.0,
+          "mae": 0.05870700235002112,
+          "n": 130,
+          "rmse": 0.07745661331701775
+        },
+        "random_walk": {
+          "directional_accuracy": 0.0,
+          "mae": 0.05870700235002112,
+          "n": 130,
+          "rmse": 0.07745661331701775
+        },
+        "real_rate_diff": {
+          "directional_accuracy": 0.45384615384615384,
+          "mae": 0.06115707829038622,
+          "n": 130,
+          "rmse": 0.08143054822944405
+        },
+        "ridge": {
+          "directional_accuracy": 0.5384615384615384,
+          "mae": 0.060171107133610534,
+          "n": 130,
+          "rmse": 0.07759986086536486
+        },
+        "rolling_mean_36m": {
+          "directional_accuracy": 0.5,
+          "mae": 0.06236470576279388,
+          "n": 130,
+          "rmse": 0.08008167108824629
+        }
+      }
+    }
+  },
+  "vintage_policy": "latest_revised_snapshot"
+}

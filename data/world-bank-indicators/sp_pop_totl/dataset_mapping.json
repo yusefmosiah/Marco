@@ -1,0 +1,20 @@
+{
+  "country": null,
+  "dataset_id": "world_bank_indicators-sp-pop-totl-d1c50ab18921",
+  "date_column": "period",
+  "frequency": "A",
+  "indicators": {
+    "value": "SP.POP.TOTL"
+  },
+  "mapping_id": "map-89410a4e5680a475",
+  "schema_version": "marco.dataset_mapping.v1",
+  "source_snapshot_id": "d1c50ab18921d2735885891fcff0c4ad8ebc7786a0e887e95ebc9d5d4d5981b2",
+  "transformations": {},
+  "units": {
+    "value": "source_native"
+  },
+  "value_columns": [
+    "value"
+  ],
+  "vintage_policy": "latest_revised_snapshot"
+}

@@ -1,0 +1,14 @@
+{
+  "dataset_mapping_id": "map-b4809ca388c6a3cc",
+  "evaluation_start": "2006-01",
+  "features_path": "/Users/wiz/emf/data/derived/fred_fx_rates/features_monthly.parquet",
+  "hypothesis_id": "hyp-77c68467739a7088",
+  "lookahead_status": "not_real_time_vintage_safe",
+  "max_parallelism": 2,
+  "plan_id": "plan-77c68467739a7088",
+  "run_id": "ledger-77c68467739a7088",
+  "schema_version": "marco.experiment_run.v1",
+  "source_run_id": "20260531-161930-fx-rate-diff",
+  "train_min_months": 84,
+  "vintage_policy": "latest_revised_snapshot"
+}

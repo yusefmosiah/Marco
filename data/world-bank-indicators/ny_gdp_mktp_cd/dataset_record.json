@@ -1,0 +1,49 @@
+{
+  "byte_size": 41608,
+  "created_at": "2026-05-31T19:08:00.741982+00:00",
+  "dataset_id": "world_bank_indicators-ny-gdp-mktp-cd-00d3d9e1ada8",
+  "format": "jsonl",
+  "kind": "time_series",
+  "name": "World Bank NY.GDP.MKTP.CD",
+  "schema": {
+    "column_count": 18,
+    "columns": [
+      "country",
+      "country_name",
+      "decimal",
+      "frequency",
+      "indicator",
+      "indicator_code",
+      "indicator_name",
+      "observation_status",
+      "period",
+      "provider",
+      "raw_path",
+      "schema_version",
+      "source_id",
+      "source_snapshot_id",
+      "source_url",
+      "unit",
+      "value",
+      "vintage_policy"
+    ],
+    "sample_row_count": 5
+  },
+  "sha256": "00d3d9e1ada87813a2535c6ee8864299f21ff4e19d2b6d5b1681365f45fccf21",
+  "source_type": "official_api",
+  "source_uri": "https://api.worldbank.org/v2/country/USA;IND;BRA;MEX;ZAF;IDN;TUR;CHN/indicator/NY.GDP.MKTP.CD?format=json&per_page=20000&date=2000%3A2024",
+  "stored_path": "data/derived/world_bank_indicators/ny_gdp_mktp_cd/observations.jsonl",
+  "tags": [
+    "world_bank",
+    "annual",
+    "ny.gdp.mktp.cd",
+    "usa",
+    "ind",
+    "bra",
+    "mex",
+    "zaf",
+    "idn",
+    "tur",
+    "chn"
+  ]
+}
