@@ -1,146 +1,223 @@
-# FRED-MD Macro Lab Foundation Mission
+# FRED-MD FX/Rate Macro Lab Mission
 
 Date: 2026-05-31
 
 Repo: `/Users/wiz/emf`
 
-Mission name: `fred-md-macro-lab-foundation`
+Mission name: `fred-md-fx-rate-macro-lab`
 
 Status: planned checkpoint, not executed
 
 ## Goal String
 
 ```text
-/goal In /Users/wiz/emf, build the FRED-MD Macro Lab foundation as a durable
-macro-modeling substrate: ingest and hash public FRED-MD source data, parse
-series metadata and transformation codes, emit normalized macro facts plus a
-model-ready monthly panel, implement baseline walk-forward backtests with clear
-latest-revised-snapshot vs real-time-vintage labeling, and checkpoint with
-tests, metrics, report artifacts, and the next path toward vintage-safe
-backtesting and India-MD.
+/goal In /Users/wiz/emf, build the FRED-MD FX/Rate Macro Lab foundation:
+ingest and hash public FRED-MD/FRED source data, create a normalized
+macro panel for rates, inflation, yields, and FX, engineer nominal and real
+interest-rate differentials, implement random-walk/no-change and carry-style
+baselines, run walk-forward backtests for FX returns and rate-policy targets
+with explicit latest-revised-snapshot vs real-time-vintage labeling, and
+checkpoint with tests, metrics, model artifacts, reports, and the next path
+toward vintage-safe India/EM expansion.
 ```
 
 ## Mission Thesis
 
-Build the macro foundation of EMF around FRED-MD before expanding to India and
-other emerging markets.
-
-The goal is not to make a dashboard first. The goal is to create a reproducible
-macro modeling substrate:
+Build the first EMF macro modeling foundation around a concrete economic
+hypothesis:
 
 ```text
-FRED-MD / FRED-QD source data
--> normalized macro fact graph
--> model-ready monthly and quarterly panels
--> transformation engine
--> backtesting harness
--> baseline economic model runs
--> evidence and no-lookahead checks
+interest-rate differentials and real-rate differentials contain information
+about FX returns, FX pressure, and future rate-policy moves.
 ```
 
-FRED-MD is the right first substrate because it is already a curated monthly
-macroeconomic database designed for research and factor modeling. FRED-QD is
-the quarterly companion. These datasets give EMF a clean reference shape before
-we build noisier India-MD / EM-MD panels from RBI, MoSPI, IMF, World Bank,
-central banks, finance ministries, and other sources.
+The mission is not "predict FX with AI." FX is hard, noisy, and hostile to
+overfit models. The mission is to build a backtesting substrate that can test
+whether rate differentials, inflation differentials, yield spreads, and simple
+macro controls beat naive baselines under walk-forward evaluation.
+
+FRED-MD remains useful as the macro-panel reference shape, but this mission
+should not stop at reproducing FRED-MD. It should build a model-ready panel for
+rates and FX, run baseline models, and produce an honest report.
+
+The long-term EMF macro product is:
+
+```text
+official macro sources
+-> normalized vintage-aware macro panel
+-> economic feature engineering
+-> reproducible backtests
+-> model outputs with evidence, baselines, and error metrics
+```
 
 ## Cognitive Transforms
 
 Current uncertainty or obstacle:
 
-It is tempting to treat the task as "download FRED-MD and run models." That
-would produce charts quickly but would not create the durable foundation we need
-for emerging-market macro work. The real object is a source-linked,
-transformation-aware, vintage-aware modeling substrate.
+The easy but weak route is to ingest a broad macro dataset and produce generic
+forecast charts. That would be too diffuse. The stronger route is to choose one
+economic mechanism, build the substrate needed to test it, and make every model
+fight a baseline.
 
 Selected transforms:
 
-1. Depth extraction - "normalized macro data" is not the value. The value is
-   reproducible economic model runs on model-ready panels, with enough source
-   lineage to trust or falsify each result.
-2. Failure-mode inversion - assume every attractive backtest is fake until it
-   proves no lookahead, no revised-data leakage, and no target-period leakage.
-3. Homotopy preservation - build the FRED-MD foundation using the same artifact
-   topology we will need for India-MD: source manifest, series catalog, facts,
-   transformations, panels, model configs, run outputs, and reports.
-4. Audience translation - the hackathon-visible claim should not be
-   "macroeconomic AI." It should be "we can reproduce a standard macro panel,
-   run transparent backtests, and then apply the same machinery to EM data."
-5. Anti-Goodhart transform - baseline models are not a warm-up; they are the
-   guardrail. Complex models only matter if they beat simple baselines under the
-   same protocol.
+1. Depth extraction - "interest-rate differential predicts FX" is not a magic
+   formula. The deeper object is a testable carry/UIP/real-rate pressure model
+   with regimes, crashes, and baseline comparisons.
+2. Failure-mode inversion - assume every FX model is overfit until it beats a
+   random walk or no-change baseline out of sample.
+3. Homotopy preservation - start with US/FRED-accessible series and major FX
+   pairs, but preserve the same artifact topology needed for India/EM: source
+   manifests, normalized facts, panel features, model configs, predictions,
+   metrics, and reports.
+4. Audience translation - for hackathon presentation, say "we built a
+   source-linked macro backtesting lab for testing rate-differential FX/rate
+   models," not "we built an AI that predicts currencies."
+5. Anti-Goodhart transform - the first valuable outcome may be "carry baseline
+   does not beat random walk on this setup." Honest negative results validate
+   the platform more than a cherry-picked chart.
 
 Route-changing insights:
 
-- The first shipped artifact should be a backtestable panel and run report, not
-  an agent or UI.
-- `current.csv` should be accepted for foundation plumbing but explicitly
-  labeled as latest-revised-snapshot data.
-- True vintage-safe backtesting is a separate realism axis and must become the
-  next executable probe after the foundation works.
-- The pipeline should store run configs and outputs as first-class artifacts so
-  model failures are inspectable, not overwritten.
+- Model target selection must drive data ingestion. Pull rates, inflation,
+  yields, FX, and risk controls before broad generic indicators.
+- FRED-MD `current.csv` is useful for macro context, but FX/rate modeling may
+  require direct FRED series pulls beyond FRED-MD.
+- The first report should compare naive, carry, real-rate, and simple
+  regularized models on the same walk-forward split.
+- Real-time/vintage-safe backtesting is a realism upgrade. The first checkpoint
+  may use revised snapshots, but it must label that limitation.
 
 Changed plan:
 
-- Implementation: build ingestion, transformation, panel, and backtest modules
-  before adding agents, Mike, UI, or India-specific source complexity.
-- Verifier/evidence: test source hashes, tcode parsing, transformation math,
-  panel shape, walk-forward train/test separation, and report consistency.
-- Scope: stop first foundation run after FRED-MD baseline backtests and report;
-  defer FRED-QD, India-MD, UI, deployment, and advanced models unless the core
-  loop is already proven.
-- Stopping condition: a checkpoint is valid only when a user can inspect
-  `series_catalog.jsonl`, `macro_facts.jsonl`, `panel_monthly.*`, and a
-  baseline backtest report with explicit vintage limitations.
+- Implementation: build a rates/FX panel and feature engine before broad
+  FRED-MD factor models.
+- Verifier/evidence: prove train/test separation, target horizon alignment,
+  exchange-rate direction convention, rate differential signs, and baseline
+  metrics.
+- Scope: first checkpoint targets a small set of FRED-available currencies or
+  proxies, plus a clean path to India/EM data.
+- Stopping condition: a checkpoint is valid only when model outputs include
+  metrics against random-walk/no-change baselines and a report explicitly states
+  whether results are vintage-safe.
 
 Next high-information action:
 
-Download FRED-MD `current.csv`, inspect the exact header/tcode/date layout, and
-write parser tests before implementing model code.
+Identify FRED-accessible series for policy/short rates, inflation, yields, and
+FX rates; inspect availability and date ranges; then lock a minimal target
+basket before coding model complexity.
 
 ## Real Artifact
 
 A working repo foundation that can:
 
-1. Download and cache FRED-MD `current.csv` plus the appendix/metadata.
-2. Parse series IDs, categories, transformation codes, dates, and raw values.
-3. Emit a normalized macro fact graph.
-4. Emit model-ready panel files.
-5. Apply McCracken-Ng/FRED-MD transformations reproducibly.
-6. Run first walk-forward backtests without lookahead against simple baselines.
-7. Produce a run report showing data coverage, transformations, model outputs,
-   errors, and known realism gaps.
+1. Download and cache FRED-MD plus selected FRED rate, inflation, yield, and FX
+   series.
+2. Preserve source manifests and file hashes.
+3. Normalize observations into macro facts.
+4. Build a monthly model-ready panel.
+5. Engineer nominal-rate differential, inflation differential,
+   real-rate differential, yield-spread, and FX-return targets.
+6. Run walk-forward backtests for FX-return and rate-policy targets.
+7. Compare every nontrivial model against random-walk/no-change and simple
+   historical baselines.
+8. Emit predictions, metrics, feature manifests, and report artifacts.
 
 ## Value Criterion
 
-Maximize reproducible macro-model usefulness while minimizing lookahead bias,
-silent transformation errors, missing source lineage, fake precision, and model
-performance claims that only work because revised/future data leaked into the
-past.
-
-This mission is successful only if the foundation makes later economic models
-easier to run and harder to overclaim.
+Maximize honest out-of-sample economic signal discovery while minimizing
+lookahead bias, target leakage, revised-data overclaims, sign-convention
+mistakes, cherry-picked pairs, missing source lineage, and model complexity that
+does not beat baselines.
 
 ## Hard Invariants
 
 - Preserve raw downloaded source files by content hash.
 - Do not commit downloaded raw datasets unless intentionally small and licensed
   for repo storage.
-- Do not commit secrets. FRED-MD public CSV work should not require secrets.
+- Do not commit secrets. Initial FRED public CSV/API work should not require
+  secrets unless an optional FRED API key is later used.
 - Every normalized series/fact must retain source dataset, source series ID,
-  frequency, period, vintage or source snapshot, transformation code, and unit
-  metadata when available.
+  frequency, period, source snapshot, and unit metadata when available.
+- Every FX series must record direction convention, for example `USD_PER_EUR` or
+  `INR_PER_USD`.
+- Every target must record forecast horizon and target construction.
 - Do not call a backtest "no-lookahead" unless the run uses only data available
   as of each simulated date.
-- Treat FRED-MD `current.csv` as a latest/revised snapshot. It is fine for
-  parser, transform, panel, and model-plumbing work. It is not sufficient for
-  production-grade real-time vintage backtesting by itself.
-- Baselines must be present before complex models.
-- Model outputs must include uncertainty/residuals or at least explicit error
-  metrics; no chart-only claims.
-- No EM expansion until FRED-MD ingestion, transformation, and a baseline
-  backtest report work end to end.
+- Treat FRED-MD `current.csv` and ordinary FRED latest pulls as
+  latest-revised-snapshot data unless ALFRED/vintage sources are used.
+- Every model must compare against a random-walk/no-change baseline.
+- No EM expansion until the FRED/rates/FX panel and baseline backtest report
+  work end to end.
+
+## Initial Model Targets
+
+Primary target:
+
+```text
+h-month log FX return
+```
+
+Example:
+
+```text
+fx_return_h = log(spot_fx_{t+h} / spot_fx_t)
+```
+
+The sign convention must be explicit. If `spot_fx` is local currency per USD,
+positive return means local currency depreciation against USD. If `spot_fx` is
+USD per foreign currency, positive return means foreign currency appreciation.
+
+Secondary targets:
+
+- next policy-rate change direction;
+- next short-rate change;
+- FX pressure score;
+- carry return proxy if spot and rate data permit.
+
+## Initial Feature Families
+
+Core:
+
+- local short/policy rate;
+- US short/policy rate;
+- nominal-rate differential;
+- local CPI inflation;
+- US CPI inflation;
+- inflation differential;
+- real-rate differential;
+- local and US 10-year yield;
+- yield differential;
+- yield-curve slope;
+- lagged FX returns;
+- realized FX volatility.
+
+Optional risk controls:
+
+- equity drawdown / VIX proxy;
+- commodity price proxy;
+- credit spread proxy;
+- current account / external balance proxy;
+- FX reserves for EM expansion.
+
+## Initial Currency/Pairs Basket
+
+Start with FRED-accessible, liquid pairs and rate series where possible:
+
+- EUR/USD or USD/EUR;
+- JPY/USD or USD/JPY;
+- GBP/USD or USD/GBP;
+- CAD/USD or USD/CAD;
+- MXN/USD or USD/MXN if data coverage is good.
+
+India/EM expansion comes after the foundation:
+
+- USD/INR;
+- USD/BRL;
+- USD/MXN;
+- USD/ZAR;
+- USD/IDR;
+- USD/TRY.
 
 ## Initial Output Format
 
@@ -148,25 +225,26 @@ easier to run and harder to overclaim.
 data/
   raw/                         # ignored; source downloads by hash
   derived/
-    fred_md/
+    fred_fx_rates/
       source_manifest.json
       series_catalog.jsonl
       macro_facts.jsonl
       panel_monthly.parquet
       panel_monthly.csv
-      transformations.jsonl
+      feature_manifest.jsonl
       validation_report.json
-    fred_qd/
-      ...
 models/
   baselines/
-    last_value/
-    ar1/
-  factor_model/
+    random_walk/
+    no_change/
+    rolling_mean/
+    carry_diff/
+  linear/
+    ridge/
 backtests/
   configs/
   runs/
-    YYYYMMDD-HHMMSS-fred-md-baseline/
+    YYYYMMDD-HHMMSS-fx-rate-diff/
       config.json
       metrics.json
       predictions.jsonl
@@ -176,11 +254,10 @@ backtests/
 
 The central durable objects are:
 
-- `series_catalog.jsonl`: one row per source series with category, source ID,
-  frequency, transformation code, units, and notes.
-- `macro_facts.jsonl`: long-format facts, one row per series-period-snapshot.
-- `panel_monthly.parquet`: wide matrix for modeling.
-- `transformations.jsonl`: raw -> transformed derivation records.
+- `series_catalog.jsonl`: source series metadata.
+- `macro_facts.jsonl`: long-format observations.
+- `panel_monthly.parquet`: model-ready matrix.
+- `feature_manifest.jsonl`: feature and target derivations.
 - `backtests/runs/...`: model run evidence.
 
 ## Fact Shape
@@ -188,18 +265,36 @@ The central durable objects are:
 ```json
 {
   "geo_id": "US",
-  "dataset": "FRED-MD",
-  "source_series_id": "INDPRO",
-  "indicator": "production.industrial.total",
+  "dataset": "FRED",
+  "source_series_id": "FEDFUNDS",
+  "indicator": "rates.policy.fed_funds",
   "period": "2025-04",
   "frequency": "monthly",
-  "value_raw": 102.4,
-  "value_transformed": 0.0031,
-  "unit": "index",
-  "transformation_code": 5,
+  "value_raw": 4.33,
+  "unit": "percent",
   "source_snapshot": "sha256:...",
   "vintage_policy": "latest_revised_snapshot",
-  "evidence_id": "fred-md:INDPRO:2025-04"
+  "evidence_id": "fred:FEDFUNDS:2025-04"
+}
+```
+
+## Feature Shape
+
+```json
+{
+  "feature_id": "feature:MX:2025-04:real_rate_diff_us",
+  "country": "MX",
+  "period": "2025-04",
+  "name": "real_rate_diff_vs_us",
+  "value": 2.15,
+  "inputs": [
+    "rates.short.mx",
+    "rates.short.us",
+    "inflation.cpi_yoy.mx",
+    "inflation.cpi_yoy.us"
+  ],
+  "formula": "(mx_rate - us_rate) - (mx_cpi_yoy - us_cpi_yoy)",
+  "vintage_policy": "latest_revised_snapshot"
 }
 ```
 
@@ -207,105 +302,113 @@ The central durable objects are:
 
 ```json
 {
-  "run_id": "20260531-fred-md-ar1-industrial-production",
-  "model_id": "baseline_ar1_v0",
-  "target": "INDPRO",
-  "forecast_horizon": "1M",
+  "run_id": "20260531-fx-rate-diff-v0",
+  "model_id": "carry_diff_baseline_v0",
+  "target": "fx_return_3m",
+  "pair": "USD_MXN",
+  "forecast_horizon": "3M",
   "train_window": "expanding",
-  "evaluation_start": "1985-01",
+  "evaluation_start": "2005-01",
   "evaluation_end": "2024-12",
   "vintage_policy": "latest_revised_snapshot",
   "lookahead_status": "not_real_time_vintage_safe",
-  "baselines": ["last_value", "rolling_mean"],
+  "baselines": ["random_walk", "rolling_mean"],
   "metrics": {
     "mae": 0.0,
     "rmse": 0.0,
-    "directional_accuracy": 0.0
+    "directional_accuracy": 0.0,
+    "hit_rate_vs_random_walk": 0.0
   }
 }
 ```
 
 ## Receding-Horizon Plan
 
-### Pass 1: Data Foundation
+### Pass 1: Target Basket And Source Discovery
+
+- Identify FRED series IDs for selected FX pairs.
+- Identify US and foreign short-rate/policy-rate proxies.
+- Identify CPI/inflation proxies.
+- Identify 10-year yield or yield-spread proxies where available.
+- Record date ranges and missingness before locking model targets.
+
+### Pass 2: Data Foundation
 
 - Create package skeleton.
-- Add a FRED-MD downloader with source manifest and hash storage.
-- Parse `current.csv` into raw metadata and observations.
-- Parse transformation-code rows correctly.
+- Add FRED/FRED-MD downloader with source manifest and hash storage.
+- Parse selected series into normalized macro facts.
 - Emit `series_catalog.jsonl` and `macro_facts.jsonl`.
-- Add tests for date parsing, tcode parsing, series count, and hash manifest.
+- Add tests for date parsing, frequency normalization, source hashing, and
+  direction convention metadata.
 
-### Pass 2: Transform And Panel Builder
+### Pass 3: Feature And Target Engine
 
-- Implement FRED-MD transformation codes.
-- Emit raw and transformed long-format facts.
-- Build a wide monthly panel.
-- Add missing-value handling policy.
-- Validate that transformed panel has expected shape and no accidental date
-  leakage from future periods.
+- Build monthly panel.
+- Align mixed-frequency or missing series with explicit policy.
+- Compute FX returns for 1M, 3M, and 6M horizons.
+- Compute nominal and real interest-rate differentials.
+- Compute inflation differentials, yield differentials, lagged returns, and
+  volatility features.
+- Add tests that target horizons do not leak future values into features.
 
-### Pass 3: Baseline Backtesting Harness
+### Pass 4: Baseline Backtesting Harness
 
-- Add walk-forward backtest runner.
-- Add last-value, rolling-mean, and AR(1) baselines.
-- Require explicit target, horizon, train window, and evaluation window.
-- Emit predictions, metrics, and a Markdown report.
-- Mark `current.csv` backtests as latest-revised snapshot backtests, not true
-  real-time vintage backtests.
+- Add walk-forward runner.
+- Add random-walk/no-change, rolling-mean, and carry-differential baselines.
+- Require explicit pair, target, horizon, train window, and evaluation window.
+- Emit predictions, metrics, and Markdown report.
+- Mark latest-pull/revised-snapshot backtests clearly as not real-time-vintage
+  safe.
 
-### Pass 4: First Model Layer
+### Pass 5: First Regularized Model
 
-- Add a simple factor model or PCA factor extractor.
-- Forecast one or two targets:
-  - industrial production growth
-  - CPI inflation or unemployment
-- Compare to baselines.
-- Report whether the factor model actually improves out-of-sample metrics.
+- Add ridge or lasso regression.
+- Compare against baselines on identical splits.
+- Report whether the model improves MAE/RMSE/directional accuracy.
+- Preserve negative results honestly.
 
-### Pass 5: Realism Upgrade Plan
+### Pass 6: Realism Upgrade Plan
 
-- Identify the smallest route to real-time vintage backtesting:
-  - archived FRED-MD vintages if available;
-  - ALFRED release/vintage data for selected series;
-  - source release calendars;
-  - synthetic release-date policy only as clearly labeled approximation.
-- Produce the India-MD source map:
-  - RBI;
-  - MoSPI;
-  - Ministry of Finance;
-  - IMF;
-  - World Bank;
-  - BIS;
-  - market rates/FX sources.
+- Identify smallest path to vintage-safe runs:
+  - ALFRED vintages for selected FRED series;
+  - release-date calendars;
+  - archived FRED-MD/FRED snapshots if available;
+  - source-specific release timestamps for EM data.
+- Produce India/EM data source map for rates, inflation, FX, reserves, current
+  account, debt, and risk controls.
 
 ## Agent/Module Roles
 
 - Source Loader: downloads public files and writes source manifests.
-- Catalog Builder: normalizes series metadata and transformation codes.
-- Transformation Engine: applies raw -> transformed series rules.
+- Catalog Builder: normalizes series metadata, units, frequencies, and FX
+  direction conventions.
+- Feature Engineer: owns rate differentials, real-rate differentials, and target
+  construction.
 - Panel Builder: produces model-ready matrices.
 - Backtest Runner: runs walk-forward evaluations.
-- Model Runner: owns baseline and first factor models.
-- Verifier: checks shape, leakage policy, metrics, and report consistency.
+- Model Runner: owns baselines and first regularized models.
+- Verifier: checks leakage policy, target alignment, metrics, and report
+  consistency.
 
-These can be ordinary modules first. Agents come later if document ingestion or
-model-selection loops become complex.
+These should be ordinary modules first. Agents come later for source discovery,
+EM document ingestion, and model-selection loops.
 
 ## Evaluation
 
 Data tests:
 
-- Source file exists and hash is recorded.
-- Date columns parse into monthly periods.
-- Series IDs and transformation codes align.
-- Long facts count equals non-empty source observations after expected filtering.
-- Panel columns match catalog.
+- Source files exist and hashes are recorded.
+- Dates parse into monthly periods.
+- Series IDs align with catalog.
+- FX direction convention is recorded for every FX series.
+- Panel columns match catalog and feature manifest.
 
-Transformation tests:
+Feature tests:
 
-- Each transformation code has a deterministic implementation.
-- Log/difference transformations handle non-positive values explicitly.
+- Nominal-rate differential sign is deterministic.
+- Real-rate differential formula is deterministic.
+- FX return target sign is deterministic.
+- Forecast target at `t+h` is never used in features at `t`.
 - Missing-value behavior is explicit and reported.
 
 Backtest tests:
@@ -317,24 +420,27 @@ Backtest tests:
 
 Model tests:
 
-- Model beats or fails baselines honestly.
+- Random-walk/no-change baseline is always present.
+- Carry/real-rate models beat or fail baselines honestly.
 - Metrics are written even when performance is poor.
-- Top contributing factors/features are reported when available.
+- Feature coefficients or contribution summaries are reported when available.
 
 ## Anti-Goodhart Constraints
 
 - Do not optimize for a pretty chart.
 - Do not hide baseline failures.
-- Do not claim factor-model value unless it beats simple baselines under the
-  same backtest protocol.
-- Do not use revised FRED-MD snapshots to make claims about real-time trading or
-  nowcasting performance.
-- Do not introduce India/EM source complexity until the FRED-MD foundation is
-  reproducible.
+- Do not cherry-pick one currency pair without showing the basket.
+- Do not claim "predicts FX" unless out-of-sample metrics beat baseline.
+- Do not claim trading profitability without transaction costs, carry mechanics,
+  and risk controls.
+- Do not use revised/latest snapshots to claim real-time nowcast or trading
+  performance.
+- Do not add complex agent orchestration before the panel/backtest artifact
+  works.
 
 ## Rollback And Safety
 
-- Keep all generated data under ignored `data/` and `backtests/runs/` unless a
+- Keep generated data under ignored `data/` and `backtests/runs/` unless a
   small fixture is intentionally committed.
 - Keep source code and docs separate from generated data artifacts.
 - Every run report must include enough config to reproduce the run.
@@ -345,47 +451,41 @@ Model tests:
 
 The first implementation mission can stop at a valid checkpoint when:
 
-- FRED-MD downloads and hashes successfully.
+- Selected FRED/FRED-MD sources download and hash successfully.
 - Series catalog and macro facts are emitted.
-- Transformed monthly panel is built.
-- At least two baseline models run in walk-forward mode for one target.
+- Monthly rates/FX panel is built.
+- Nominal and real rate differentials plus FX-return targets are generated.
+- At least random-walk/no-change and carry-differential baselines run in
+  walk-forward mode for at least one pair and horizon.
 - A backtest report exists and clearly labels the vintage limitation.
-- Tests or verification scripts prove parser, transform, and backtest invariants.
+- Tests or verification scripts prove parser, feature, target, and backtest
+  invariants.
 
-Do not require India-MD, Mike integration, UI, deployment, or advanced models in
-the first foundation mission.
-
-## Suggested Resume Goal
-
-```text
-/goal In /Users/wiz/emf, build the FRED-MD Macro Lab foundation: implement
-public FRED-MD ingestion with source hashing, parse the catalog and
-transformation codes, emit normalized macro facts and a model-ready monthly
-panel, implement baseline walk-forward backtests, and checkpoint with tests,
-metrics, and a report that clearly labels the vintage/no-lookahead limitations.
-```
+Do not require India-MD, Mike integration, UI, deployment, true vintage-safe
+ALFRED runs, or advanced models in the first foundation mission.
 
 ## Run Checkpoint & Resumption State
 
 ```text
 status: checkpoint_incomplete
-last checkpoint: mission document prepared; no implementation run started
+last checkpoint: mission document rewritten around FX/rate-differential modeling;
+  no implementation run started
 current artifact state: /Users/wiz/emf contains proposal artifacts and this
-  FRED-MD macro foundation mission
+  FX/rate macro mission
 what shipped: docs only
-what was proven: FRED-MD/FRED-QD source path and mission shape researched
-unproven or partial claims: exact CSV format, current row/column counts,
-  transformation parsing, panel builder, and backtest harness
-belief-state changes: macro value is model-ready panels and backtests, not data
-  normalization alone
-remaining error field: vintage-safe backtesting, transformation correctness,
-  model baseline integrity
-highest-impact remaining uncertainty: whether we can obtain enough historical
-  vintages/release dates for credible no-lookahead claims beyond revised-snapshot
-  plumbing
-next executable probe: download current FRED-MD CSV, inspect format, and build
-  source manifest + parser tests
-suggested resume goal string: see Suggested Resume Goal
+what was proven: mission shape researched and scoped; no code executed
+unproven or partial claims: exact FRED series basket, data availability, feature
+  alignment, baseline performance, model usefulness
+belief-state changes: macro value is source-linked panels plus backtested
+  economic models; first concrete wedge is interest-rate differential / FX-rate
+  pressure, not broad generic macro dashboards
+remaining error field: vintage-safe backtesting, FX direction conventions,
+  target leakage, baseline integrity, overfit risk
+highest-impact remaining uncertainty: whether a simple carry/real-rate model
+  beats random-walk/no-change baselines on selected FRED-accessible pairs
+next executable probe: identify and inspect candidate FRED series IDs for FX,
+  rates, inflation, and yields; lock the minimal pair basket
+suggested resume goal string: use the Goal String at top of document
 evidence artifact refs: this mission doc
 rollback refs: git history once committed
 ```
@@ -398,7 +498,9 @@ rollback refs: git history once committed
   https://files.stlouisfed.org/files/htdocs/fred-databases/fredmd.pdf
 - FRED-QD article:
   https://www.stlouisfed.org/publications/review/2021/01/14/fred-qd-a-quarterly-database-for-macroeconomic-research
-- FRED-MD paper listing:
-  https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2646151
+- FRED API documentation:
+  https://fred.stlouisfed.org/docs/api/fred/
+- FRED series search:
+  https://fred.stlouisfed.org/search
 - KRED weak signal for FRED-MD-style country datasets:
   https://arxiv.org/abs/2509.16115
