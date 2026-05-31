@@ -36,3 +36,16 @@ npm run build
 The app intentionally uses Svelte with plain SVG/CSS/table rendering instead of
 a heavy charting stack. The data contract is JSON/CSV-first so finance and data
 engineering users can work from the artifacts directly.
+
+## Next Interface
+
+The next Svelte pass is a Marco workbench rather than a static dashboard:
+
+```text
+left: chat threads, specialist runs, queued requests
+center: conversation stream backed by POST /v1/chat
+right: rendered markdown handoffs and raw artifact links
+```
+
+See `../../docs/agents/chat-and-agent-interface-strategy.md` for the current
+agent/chat diagram and UI contract.

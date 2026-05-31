@@ -7,10 +7,11 @@ Status: initial read-only agent surface
 ## Goal
 
 Agents should not have to scrape the Svelte UI or guess file paths. Marco now
-has two stable machine surfaces over committed artifacts:
+has three machine surfaces over committed artifacts:
 
 - CLI commands through `emf-macro`;
-- a dependency-free local HTTP JSON API.
+- a dependency-free Python local HTTP JSON API for read-only artifact access;
+- a Go `marco-agentd` runtime for Zot-backed prompt/chat endpoints.
 
 The planned multiagent runtime contract is documented in
 `docs/agents/multiagent-runtime-harness.md`.
@@ -30,16 +31,30 @@ by default. When a user asks for a custom answer, the chatbot may call a
 specialist API to create a bounded run request, then consume that agent's next
 report.
 
-The first surface is read-only over committed artifact bundles. Running new
-backtests remains an explicit CLI operation until there is authentication, job
-isolation, and a run queue.
+The Python API surface is read-only over committed artifact bundles. Running
+new backtests remains an explicit CLI operation until there is authentication,
+job isolation, and a run queue. Prompt/chat synthesis belongs in Go
+`marco-agentd`, not in the Python API.
 
-Implemented specialist endpoints:
+Implemented Python specialist packet endpoints:
 
 ```text
 GET /v1/agents/economic-modeling-agent
 GET /v1/agents/news-agent
 GET /v1/agents/analyst-agent
+```
+
+Implemented Go/Zot runtime endpoints:
+
+```text
+GET /health
+GET /v1/agents/economic-modeling-agent
+GET /v1/agents/news-agent
+GET /v1/agents/analyst-agent
+POST /v1/agents/economic-modeling-agent/prompt
+POST /v1/agents/news-agent/prompt
+POST /v1/agents/analyst-agent/prompt
+POST /v1/chat
 ```
 
 All three return a JSON packet on their own. By default these endpoints are
@@ -48,6 +63,10 @@ read-only and do not replace `data/agents/latest/*.md`. Pass
 shared markdown handoff files. For `news-agent`, pass `run=true` to run the
 deterministic news model wrapper and `fetch=true` to fetch feeds. For
 `analyst-agent`, pass `run=true` to invoke the Codex SDK CLI.
+
+The Go prompt endpoints call the Python CLI to load context packets, assemble a
+bounded prompt with latest handoff markdown, and run `zot -p` with tools
+disabled.
 
 ## Install
 
@@ -140,7 +159,7 @@ home directory for local state.
 
 ## HTTP API
 
-Start the local read-only API:
+Start the local read-only Python artifact API:
 
 ```sh
 emf-macro serve-agent-api --root . --host 127.0.0.1 --port 8765 \
@@ -249,6 +268,43 @@ curl -s 'http://127.0.0.1:8765/v1/agents/economic-modeling-agent?target=interest
 curl -s 'http://127.0.0.1:8765/v1/agents/news-agent' | jq
 curl -s 'http://127.0.0.1:8765/v1/agents/analyst-agent' | jq
 ```
+
+Go/Zot promptable agent API:
+
+```sh
+go run ./cmd/marco-agentd --root . --host 127.0.0.1 --port 8787
+
+curl -s -X POST 'http://127.0.0.1:8787/v1/agents/news-agent/prompt' \
+  -H 'Content-Type: application/json' \
+  -d '{"prompt":"What changed in central-bank news?"}' | jq
+
+curl -s -X POST 'http://127.0.0.1:8787/v1/chat' \
+  -H 'Content-Type: application/json' \
+  -d '{"prompt":"What should I tell an economist about the current Marco state?"}' | jq
+```
+
+`marco-agentd` shells out to `.venv/bin/emf-macro` by default and then to
+`zot -p` for synthesis. Override with:
+
+```sh
+MARCO_PYTHON_CLI=.venv/bin/emf-macro
+MARCO_ZOT_BIN=zot
+MARCO_AGENT_PROVIDER=fireworks
+MARCO_AGENT_MODEL=accounts/fireworks/models/deepseek-v4-flash
+MARCO_AGENT_REASONING=medium
+ZOT_HOME=/var/lib/marco/zot
+```
+
+On Node A, configure Zot against the go-choir Fireworks credential source with:
+
+```sh
+tools/configure_node_a_zot_gateway.sh node-a
+```
+
+The current working Node A configuration uses Zot's Fireworks provider directly
+with the same `/var/lib/go-choir/gateway-provider.env` credential source as the
+gateway. The go-choir gateway itself remains active on `127.0.0.1:8084` and
+already resolves Fireworks v4-flash with medium reasoning.
 
 The API is read-only by default. Use the CLI when updating committed handoff
 files; pass `write_handoff=true` only for controlled local runs that should

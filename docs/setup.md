@@ -11,6 +11,7 @@ uv
 Python 3.11+
 Node.js 22+
 npm
+Go 1.22+
 git
 curl
 ```
@@ -20,6 +21,7 @@ Useful but optional:
 ```text
 jq      inspect JSON artifacts and API responses
 gh      GitHub Actions/secrets/repo operations
+zot     Go agent harness for prompt/chat synthesis
 rsync   Node A static deploy
 ssh     Node A static deploy
 ```
@@ -44,6 +46,23 @@ npm ci
 cd ../analyst-cli
 npm ci
 ```
+
+Install Zot for the Go agent runtime:
+
+```sh
+go install github.com/patriceckhart/zot/cmd/zot@latest
+```
+
+Configure Zot on Node A to use the same Fireworks DeepSeek v4-flash credential
+source as the Node A go-choir gateway:
+
+```sh
+tools/configure_node_a_zot_gateway.sh node-a
+```
+
+This writes Zot state to `/var/lib/marco/zot` on Node A and verifies a real
+`marco-node-a-zot-ok` response from
+`accounts/fireworks/models/deepseek-v4-flash` with medium reasoning.
 
 ## Common Commands
 
@@ -121,6 +140,32 @@ curl -s http://127.0.0.1:8765/v1/agent-context | jq
 curl -s 'http://127.0.0.1:8765/v1/runs/latest/metrics?pair=USD_CAD&horizon_months=6' | jq
 ```
 
+Serve the Go/Zot prompt and chat runtime:
+
+```sh
+go run ./cmd/marco-agentd --root . --host 127.0.0.1 --port 8787
+```
+
+Then query:
+
+```sh
+curl -s http://127.0.0.1:8787/health | jq
+curl -s -X POST http://127.0.0.1:8787/v1/chat \
+  -H 'Content-Type: application/json' \
+  -d '{"prompt":"What should I tell an economist about Marco right now?"}' | jq
+```
+
+Runtime defaults:
+
+```sh
+MARCO_PYTHON_CLI=.venv/bin/emf-macro
+MARCO_ZOT_BIN=zot
+MARCO_AGENT_PROVIDER=fireworks
+MARCO_AGENT_MODEL=accounts/fireworks/models/deepseek-v4-flash
+MARCO_AGENT_REASONING=medium
+ZOT_HOME=/var/lib/marco/zot
+```
+
 ## Public Preview
 
 Current Node A static preview:
@@ -165,6 +210,7 @@ GitHub Actions runs on push to `main`:
 
 - Python install and tests;
 - CLI smoke commands;
+- Go agent runtime tests;
 - Svelte frontend build.
 
 Node A auto-deploy exists but waits for SSH secrets. See

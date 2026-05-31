@@ -29,6 +29,7 @@ Current artifact:
 - [Macro news source ledger](docs/strategy/macro-news-source-ledger.md)
 - [Dataset, hypothesis, and parallel backtesting foundation](docs/strategy/datasets-hypotheses-parallel-backtesting.md)
 - [Agent API and CLI](docs/agents/api-and-cli.md)
+- [Agent chat and interface strategy](docs/agents/chat-and-agent-interface-strategy.md)
 - [Analyst Codex SDK CLI](apps/analyst-cli/)
 - [Repo-local Marco agent API skill](skills/marco-agent-api/SKILL.md)
 - [FRED-MD Macro Lab foundation mission](docs/missions/fred-md-macro-lab-foundation.md)
@@ -52,9 +53,11 @@ Current artifact:
 - [Historical MikeOSS proposal](docs/proposals/mission-proposal.md)
 - [Mobile-friendly PDF](output/pdf/emf-mission-proposal.pdf)
 
-The custom frontend, MikeOSS integration, EM financial-statement extraction, and
-deployment are intentionally out of scope until the FRED/backtesting foundation
-is stronger.
+MikeOSS integration and EM financial-statement extraction are intentionally
+deferred until the macro/backtesting foundation is stronger. The custom
+frontend is now the Svelte Marco workbench: a static artifact dashboard today,
+with the next pass focused on a three-panel chat, thread, and report interface
+over the Go/Zot `marco-agentd` runtime and specialist Python CLIs.
 
 ## Quickstart
 
@@ -66,6 +69,22 @@ make ci
 ```
 
 See [Setup](docs/setup.md) for required tools and manual installation.
+
+Run the Go/Zot agent runtime after setup:
+
+```sh
+ZOT_HOME=/var/lib/marco/zot \
+go run ./cmd/marco-agentd --root . --host 127.0.0.1 --port 8787
+```
+
+`marco-agentd` calls `.venv/bin/emf-macro` for specialist context packets and
+`zot -p` for prompt/chat synthesis.
+
+Configure Node A Zot once:
+
+```sh
+tools/configure_node_a_zot_gateway.sh node-a
+```
 
 ## Data Haul
 

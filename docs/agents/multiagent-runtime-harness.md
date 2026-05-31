@@ -39,9 +39,11 @@ fresh run.
   it must not edit another agent's completed output.
 - Agent outputs must separate observations, interpretations, claims, caveats,
   and next-run instructions.
-- Any LLM synthesis routes through the Node A go-choir gateway, defaulting to
-  Fireworks `accounts/fireworks/models/deepseek-v4-flash` with medium
-  reasoning.
+- Python owns data ingestion, modeling, backtests, and packet-emitting CLIs.
+  The agent runtime and prompt/chat HTTP surface live in Go.
+- LLM synthesis runs through Zot from the Go runtime. Default local provider
+  settings target Fireworks `accounts/fireworks/models/deepseek-v4-flash` with
+  medium reasoning, but Zot can also use OpenAI-Codex/Codex-auth models.
 
 ## API Topology
 
@@ -50,17 +52,18 @@ The hackathon architecture has four services:
 ```text
 public website
   -> chatbot GUI
-      -> chatbot_agent API
+      -> marco-agentd Go API
           -> reads data/agents/latest/*.md
-          -> calls specialist public APIs for custom responses or queued runs
+          -> calls Python CLIs for specialist packets
+          -> calls Zot for prompt synthesis
 
-economic_modeling_agent API
+economic_modeling_agent CLI/API lane
   -> writes data/agents/latest/economic_modeling_agent.md
 
-news_agent API
+news_agent CLI/API lane
   -> writes data/agents/latest/news_agent.md
 
-analyst_agent API
+analyst_agent CLI/API lane
   -> writes data/agents/latest/analyst_agent.md
 ```
 
@@ -75,6 +78,7 @@ GET  /health
 GET  /v1/report/latest
 GET  /v1/runs
 GET  /v1/runs/{run_id}
+POST /v1/prompt
 POST /v1/runs
 ```
 
@@ -86,6 +90,19 @@ POST /v1/chat
 GET  /v1/context
 POST /v1/requests/{agent_id}
 ```
+
+In the current Marco monorepo, these specialist prompt routes are exposed by
+the Go `marco-agentd` process:
+
+```text
+POST /v1/agents/economic-modeling-agent/prompt
+POST /v1/agents/news-agent/prompt
+POST /v1/agents/analyst-agent/prompt
+```
+
+These v0 prompt routes load context from Python CLIs, read latest handoff
+files, and invoke Zot with tools disabled. They are not a substitute for queued
+long-running runs.
 
 `POST /v1/runs` and `POST /v1/requests/{agent_id}` should create request files
 or queued run records. They should not synchronously perform long backtests,
@@ -357,5 +374,12 @@ a run rather than hallucinate.
 4. Add an analyst synthesis command that reads the modeling and news handoffs
    and writes `data/agents/latest/analyst_agent.md`.
 5. Add a local runner command for queued requested-run files.
-6. Expose read-only latest handoffs through the API and frontend.
-7. Add a controlled chatbot action that writes requested-run markdown files.
+6. Expose read-only latest handoffs through the API and frontend. Done for the
+   API; frontend rendering is next.
+7. Add Go/Zot prompt endpoints that answer from current specialist context.
+   Started as `cmd/marco-agentd`.
+8. Add a controlled chatbot action that writes requested-run markdown files.
+9. Decide whether `marco-agentd` should keep spawning `zot -p`, move to
+   long-lived `zot rpc`, or import Zot's Go SDK in-process.
+10. Route `POST /v1/chat` through the selected provider/gateway once context
+   bundling, auth, and request logging are stable.

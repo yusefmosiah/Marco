@@ -16,7 +16,7 @@ from .global_panel import build_global_macro_panel, load_global_macro_summary
 from .macro_forecast import MacroForecastConfig, run_macro_forecast_lab
 from .model_registry import list_model_specs
 from .news import fetch_news, list_news_sources, load_news_fetches, load_news_items, load_news_summary
-from .news_agent import run_news_model_agent
+from .news_agent import read_news_agent_packet, run_news_model_agent
 from .runner import RunnerConfig, run_experiment_plan
 from .source_hauls import list_source_hauls, run_source_haul
 from .sources import MacroSourceCatalog
@@ -186,6 +186,10 @@ def main() -> None:
     news_agent.add_argument("--no-handoff", action="store_true", help="do not update data/agents/latest/news_agent.md")
     news_agent.add_argument("--compact", action="store_true", help="emit compact JSON")
 
+    news_agent_read = sub.add_parser("news-agent", help="emit the read-only news agent packet")
+    news_agent_read.add_argument("--root", default=".", help="repo root")
+    news_agent_read.add_argument("--compact", action="store_true", help="emit compact JSON")
+
     analyst_agent = sub.add_parser("analyst-agent", help="emit or run the analyst Codex SDK agent packet")
     analyst_agent.add_argument("--root", default=".", help="repo root")
     analyst_agent.add_argument("--run-codex", action="store_true", help="invoke the Codex SDK analyst CLI before reading the packet")
@@ -213,6 +217,7 @@ def main() -> None:
     economic_agent.add_argument("--target", choices=["interest_rate", "inflation_yoy", "growth_proxy_yoy"])
     economic_agent.add_argument("--model-id")
     economic_agent.add_argument("--refresh", action="store_true", help="rerun the macro forecast lab before emitting the packet")
+    economic_agent.add_argument("--no-handoff", action="store_true", help="do not update data/agents/latest/economic_modeling_agent.md")
     economic_agent.add_argument("--compact", action="store_true", help="emit compact JSON")
 
     hypotheses = sub.add_parser("suggest-hypotheses", help="suggest next testable macro/backtest hypotheses")
@@ -435,6 +440,8 @@ def main() -> None:
             ),
             compact=args.compact,
         )
+    elif args.command == "news-agent":
+        print_json(read_news_agent_packet(Path(args.root).resolve()), compact=args.compact)
     elif args.command == "analyst-agent":
         print_json(
             run_analyst_agent(
@@ -472,6 +479,7 @@ def main() -> None:
                 target=args.target,
                 model_id=args.model_id,
                 refresh=args.refresh,
+                write_handoff=not args.no_handoff,
             ),
             compact=args.compact,
         )
