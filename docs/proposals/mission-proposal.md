@@ -2,6 +2,12 @@
 
 Date: 2026-05-31
 
+Status: historical proposal, MikeOSS/table-extraction lane deferred
+
+Current active work has moved to FRED macro data ingestion and backtesting. See
+[Current Focus](../strategy/current-focus.md) and
+[FRED-MD FX/Rate Macro Lab Mission](../missions/fred-md-macro-lab-foundation.md).
+
 Project: `emf` - Emerging Markets Financials
 
 Initial market: India

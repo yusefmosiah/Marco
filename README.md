@@ -2,20 +2,32 @@
 
 Emerging Markets Financials.
 
-This repo is the working home for the MikeOSS-backed workflow to pull emerging
-markets financial statements, starting with India, and normalize them into a
-cited JSON graph for cross-company and cross-market comparison.
+This repo is currently focused on macro data ingestion and backtesting.
+
+The active priority is:
+
+```text
+pull FRED/FRED-MD data
+-> normalize into model-ready macro panels
+-> engineer FX/rate features
+-> run honest backtests against hard baselines
+```
+
+The earlier MikeOSS/table-extraction work is deferred. It remains useful
+context for a later document-processing lane, but it is not the current build
+priority.
 
 Current artifact:
 
-- [Mission proposal](docs/proposals/mission-proposal.md)
+- [Current focus](docs/strategy/current-focus.md)
 - [FRED-MD Macro Lab foundation mission](docs/missions/fred-md-macro-lab-foundation.md)
 - [FRED FX/rate lab checkpoint](docs/runs/20260531-fred-fx-rate-lab-checkpoint.md)
+- [Historical MikeOSS proposal](docs/proposals/mission-proposal.md)
 - [Mobile-friendly PDF](output/pdf/emf-mission-proposal.pdf)
 
-The initial mission is workflow-first. The custom frontend and production
-deployment are intentionally deferred until the extraction and verification
-pipeline works on real filings.
+The custom frontend, MikeOSS integration, EM financial-statement extraction, and
+deployment are intentionally out of scope until the FRED/backtesting foundation
+is stronger.
 
 ## Macro Lab Quickstart
 

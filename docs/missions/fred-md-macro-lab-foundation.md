@@ -8,6 +8,24 @@ Mission name: `fred-md-fx-rate-macro-lab`
 
 Status: foundation checkpoint executed
 
+## Scope Boundary
+
+This is the active mission lane.
+
+MikeOSS, tabular document extraction, financial-statement parsing, custom UI,
+and deployment are explicitly out of scope for the current implementation pass.
+They are deferred until the FRED/backtesting substrate is stronger.
+
+Current priority:
+
+```text
+pull FRED data
+-> build model-ready panels
+-> engineer FX/rate features
+-> run backtests
+-> document evidence and limitations
+```
+
 ## Goal String
 
 ```text
