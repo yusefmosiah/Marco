@@ -154,12 +154,19 @@ Fed FOMC communications:
 | `vtasca/fed-statement-scraping` `communications.csv` | 464 | 241 | 223 | 2000-02-02 to 2026-05-20 |
 
 The Fed corpus is text-event data, not a numeric macro time series. It is
-stored locally under:
+committed as a shareable repo-root data bundle under:
 
 ```text
-data/raw/fed_fomc_communications/
-data/derived/fed_fomc_communications/
+data/fed-fomc-communications/communications.csv
+data/fed-fomc-communications/observations.jsonl
+data/fed-fomc-communications/dataset_record.json
+data/fed-fomc-communications/dataset_mapping.json
+data/fed-fomc-communications/source_manifest.json
+data/fed-fomc-communications/summary.json
 ```
+
+The hash-addressed raw cache and generated derived cache still live under
+ignored `data/raw/` and `data/derived/`.
 
 The compact committed summary lives at:
 

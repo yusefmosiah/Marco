@@ -34,7 +34,24 @@ The current local pull produced:
 | First event date | 2000-02-02 |
 | Last event date | 2026-05-20 |
 
-The raw CSV is cached by hash:
+The repo-root shareable data bundle is:
+
+```text
+data/fed-fomc-communications/
+```
+
+It includes:
+
+```text
+communications.csv
+observations.jsonl
+dataset_record.json
+dataset_mapping.json
+source_manifest.json
+summary.json
+```
+
+The raw CSV is also cached by hash:
 
 ```text
 data/raw/fed_fomc_communications/ae6eb2b8a49c6334b762f92f4d080529bcafe1b4f2c805e5956ba09fec3f05f7.csv
@@ -43,7 +60,7 @@ data/raw/fed_fomc_communications/ae6eb2b8a49c6334b762f92f4d080529bcafe1b4f2c805e
 Normalized JSONL:
 
 ```text
-data/derived/fed_fomc_communications/observations.jsonl
+data/fed-fomc-communications/observations.jsonl
 ```
 
 Committed compact summary:

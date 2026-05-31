@@ -1,0 +1,47 @@
+{
+  "byte_size": 12212149,
+  "created_at": "2026-05-31T20:47:08.151834+00:00",
+  "dataset_id": "fed_fomc_communications-ae6eb2b8a49c",
+  "format": "jsonl",
+  "kind": "text_event_corpus",
+  "name": "FOMC statements and minutes communications corpus",
+  "schema": {
+    "column_count": 21,
+    "columns": [
+      "communication_id",
+      "communication_type",
+      "country",
+      "event_date",
+      "frequency",
+      "indicator",
+      "meeting_date",
+      "primary_source",
+      "provider",
+      "raw_path",
+      "release_date",
+      "release_date_missing",
+      "schema_version",
+      "sequence",
+      "source_id",
+      "source_snapshot_id",
+      "source_url",
+      "text",
+      "text_length",
+      "vintage_policy",
+      "word_count"
+    ],
+    "sample_row_count": 5
+  },
+  "sha256": "ae6eb2b8a49c6334b762f92f4d080529bcafe1b4f2c805e5956ba09fec3f05f7",
+  "source_type": "github_open_dataset",
+  "source_uri": "https://raw.githubusercontent.com/vtasca/fed-statement-scraping/master/communications.csv",
+  "stored_path": "data/derived/fed_fomc_communications/observations.jsonl",
+  "tags": [
+    "fed",
+    "fomc",
+    "minutes",
+    "statements",
+    "text",
+    "monetary_policy"
+  ]
+}

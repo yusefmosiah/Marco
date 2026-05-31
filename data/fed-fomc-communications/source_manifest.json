@@ -1,0 +1,10 @@
+[
+  {
+    "bytes": 12212149,
+    "fetched_at": "2026-05-31T20:47:08.151834+00:00",
+    "logical_name": "fed_fomc_communications:communications",
+    "raw_path": "data/raw/fed_fomc_communications/ae6eb2b8a49c6334b762f92f4d080529bcafe1b4f2c805e5956ba09fec3f05f7.csv",
+    "sha256": "ae6eb2b8a49c6334b762f92f4d080529bcafe1b4f2c805e5956ba09fec3f05f7",
+    "url": "https://raw.githubusercontent.com/vtasca/fed-statement-scraping/master/communications.csv"
+  }
+]

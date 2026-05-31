@@ -41,7 +41,10 @@ def fetch_fed_communications(
         raise ValueError("Fed communications response contained no observations")
 
     derived_dir = ensure_dir(root / "data" / "derived" / FED_COMMUNICATIONS_SOURCE_ID)
+    public_data_dir = ensure_dir(root / "data" / "fed-fomc-communications")
     observations_path = derived_dir / "observations.jsonl"
+    public_csv_path = public_data_dir / "communications.csv"
+    public_observations_path = public_data_dir / "observations.jsonl"
     dataset_record = dataset_record_for_observations(root, observations_path, observations, record)
     mapping_spec = build_dataset_mapping_spec(
         dataset_record,
@@ -59,12 +62,19 @@ def fetch_fed_communications(
     )
     summary = summarize_observations(observations, record)
 
+    if not public_csv_path.exists() or public_csv_path.read_bytes() != raw_bytes:
+        public_csv_path.write_bytes(raw_bytes)
     write_json(derived_dir / "source_manifest.json", [asdict(record)])
     write_json(derived_dir / "dataset_record.json", dataset_record)
     write_json(derived_dir / "dataset_mapping.json", mapping_spec)
     write_json(derived_dir / "summary.json", summary)
     write_json(root / "artifacts" / "fed-fomc-communications" / "summary.json", summary)
     write_jsonl(observations_path, observations)
+    write_jsonl(public_observations_path, observations)
+    write_json(public_data_dir / "source_manifest.json", [asdict(record)])
+    write_json(public_data_dir / "dataset_record.json", dataset_record)
+    write_json(public_data_dir / "dataset_mapping.json", mapping_spec)
+    write_json(public_data_dir / "summary.json", summary)
 
     return {
         "schema_version": "marco.fed_communications_fetch.v1",
@@ -80,6 +90,9 @@ def fetch_fed_communications(
         "dataset_mapping_path": str((derived_dir / "dataset_mapping.json").relative_to(root)),
         "summary_path": str((derived_dir / "summary.json").relative_to(root)),
         "artifact_summary_path": "artifacts/fed-fomc-communications/summary.json",
+        "data_bundle_path": str(public_data_dir.relative_to(root)),
+        "public_csv_path": str(public_csv_path.relative_to(root)),
+        "public_observations_path": str(public_observations_path.relative_to(root)),
     }
 
 

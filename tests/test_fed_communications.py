@@ -42,4 +42,7 @@ def test_fetch_fed_communications_writes_dataset(tmp_path: Path) -> None:
     assert (tmp_path / result["observations_path"]).exists()
     assert (tmp_path / result["dataset_mapping_path"]).exists()
     assert (tmp_path / "artifacts" / "fed-fomc-communications" / "summary.json").exists()
+    assert (tmp_path / "data" / "fed-fomc-communications" / "communications.csv").exists()
+    assert (tmp_path / "data" / "fed-fomc-communications" / "observations.jsonl").exists()
+    assert (tmp_path / "data" / "fed-fomc-communications" / "summary.json").exists()
     assert len(load_fed_communications(tmp_path, communication_type="Minute")) == 3

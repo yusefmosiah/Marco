@@ -1,0 +1,23 @@
+{
+  "country": "US",
+  "dataset_id": "fed_fomc_communications-ae6eb2b8a49c",
+  "date_column": "event_date",
+  "frequency": "D",
+  "indicators": {
+    "text_length": "fed_communication.text_length",
+    "word_count": "fed_communication.word_count"
+  },
+  "mapping_id": "map-ae25ce4277154a5e",
+  "schema_version": "marco.dataset_mapping.v1",
+  "source_snapshot_id": "ae6eb2b8a49c6334b762f92f4d080529bcafe1b4f2c805e5956ba09fec3f05f7",
+  "transformations": {},
+  "units": {
+    "text_length": "characters",
+    "word_count": "words"
+  },
+  "value_columns": [
+    "word_count",
+    "text_length"
+  ],
+  "vintage_policy": "latest_revised_snapshot"
+}

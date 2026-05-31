@@ -33,6 +33,17 @@ Result:
 
 ## Files
 
+Repo-root shareable bundle:
+
+```text
+data/fed-fomc-communications/communications.csv
+data/fed-fomc-communications/observations.jsonl
+data/fed-fomc-communications/dataset_record.json
+data/fed-fomc-communications/dataset_mapping.json
+data/fed-fomc-communications/source_manifest.json
+data/fed-fomc-communications/summary.json
+```
+
 Raw cached source:
 
 ```text
