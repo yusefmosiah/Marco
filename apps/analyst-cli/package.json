@@ -1,0 +1,21 @@
+{
+  "name": "@marco/analyst-cli",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Agentic RAG CLI for the Marco Analyst agent using the OpenAI Codex SDK.",
+  "bin": {
+    "marco-analyst": "./bin/analyst-rag.js"
+  },
+  "scripts": {
+    "ask": "node ./bin/analyst-rag.js ask",
+    "ingest": "node ./bin/analyst-rag.js run-ingestion",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "@openai/codex-sdk": "^0.135.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
