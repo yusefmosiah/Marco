@@ -1,431 +1,576 @@
 <script>
-  const artifactUrl = './artifacts/fred-fx-rate-lab-summary.json';
-  const globalPanelUrl = './artifacts/global-macro-panel-summary.json';
-
-  let data = null;
-  let globalPanel = null;
-  let error = null;
-  let selectedPair = 'USD_CAD';
-  let selectedHorizon = 6;
-
-  const modelLabels = {
-    random_walk: 'Random walk',
-    no_change: 'No change',
-    rolling_mean_36m: 'Rolling mean',
-    carry_diff: 'Carry diff',
-    real_rate_diff: 'Real-rate diff',
-    ridge: 'Ridge'
+  const artifactSpecs = {
+    fred: {
+      label: 'FRED FX/rate lab',
+      path: './artifacts/fred-fx-rate-lab-summary.json'
+    },
+    global: {
+      label: 'Global macro panel',
+      path: './artifacts/global-macro-panel-summary.json'
+    },
+    news: {
+      label: 'Macro news haul',
+      path: './artifacts/macro-news-summary.json'
+    }
   };
 
-  const audienceLanes = [
+  const apiBase = import.meta.env.VITE_MARCO_AGENT_API ?? '';
+
+  let fred = null;
+  let globalPanel = null;
+  let news = null;
+  let loadError = null;
+  let activeThreadId = 'briefing';
+  let selectedReport = 'modeling';
+  let route = 'chat';
+  let promptText = '';
+  let sending = false;
+
+  const threads = [
     {
-      role: 'Investor',
-      title: 'Not an alpha claim yet',
-      body: 'The honest baselines still win nearly everywhere. The asset here is a clean research machine, not a cherry-picked strategy.'
+      id: 'briefing',
+      title: 'Hackathon briefing',
+      subtitle: 'Investor-ready synthesis',
+      status: 'Live',
+      unread: 0
     },
     {
-      role: 'Economist',
-      title: 'Rate differentials need stronger structure',
-      body: 'Simple nominal, real-rate, and carry-style signals are being tested against random-walk/no-change targets before more theory is layered in.'
+      id: 'economist',
+      title: 'Economist review',
+      subtitle: 'Data, labels, baselines',
+      status: 'Ready',
+      unread: 2
     },
     {
-      role: 'Neuroscientist',
-      title: 'Noise floor is visible',
-      body: 'The dashboard makes the benchmark failure mode obvious: weak directional signal can look plausible until RMSE is compared against inertia.'
+      id: 'news',
+      title: 'News-model run',
+      subtitle: 'Marginal macro information',
+      status: 'Queued',
+      unread: 1
     },
     {
-      role: 'Data Engineering',
-      title: 'Artifacts are inspectable',
-      body: 'Committed JSON summaries, CLI commands, API routes, hashes, source IDs, and vintage labels keep the research surface reproducible.'
+      id: 'analyst',
+      title: 'Analyst memo',
+      subtitle: 'Artifact-grounded answer',
+      status: 'Draft',
+      unread: 0
     }
   ];
 
-  fetch(artifactUrl)
-    .then((response) => {
-      if (!response.ok) throw new Error(`artifact fetch failed: ${response.status}`);
-      return response.json();
-    })
-    .then((payload) => {
-      data = payload;
-      selectedPair = payload.pairs.includes(selectedPair) ? selectedPair : payload.pairs[0];
-      selectedHorizon = payload.horizons.includes(selectedHorizon)
-        ? selectedHorizon
-        : payload.horizons[0];
-    })
-    .catch((err) => {
-      error = err.message;
-    });
+  const agents = [
+    {
+      id: 'economic-modeling-agent',
+      label: 'Modeling',
+      state: 'benchmarks ready',
+      accent: 'blue'
+    },
+    {
+      id: 'news-agent',
+      label: 'News',
+      state: 'feed snapshot ready',
+      accent: 'teal'
+    },
+    {
+      id: 'analyst-agent',
+      label: 'Analyst',
+      state: 'waiting on synthesis',
+      accent: 'amber'
+    }
+  ];
 
-  fetch(globalPanelUrl)
-    .then((response) => {
-      if (!response.ok) throw new Error(`global panel artifact fetch failed: ${response.status}`);
-      return response.json();
-    })
-    .then((payload) => {
-      globalPanel = payload;
-    })
-    .catch(() => {
-      globalPanel = null;
-    });
+  let messagesByThread = {
+    briefing: [
+      {
+        role: 'assistant',
+        eyebrow: 'Marco synthesis',
+        body:
+          'Marco is now framed as an agent workbench: economic modeling, news intake, and analyst synthesis publish artifacts that the chat layer can read and route against.',
+        context: ['docs/agents/chat-and-agent-interface-strategy.md', 'cmd/marco-agentd/main.go']
+      },
+      {
+        role: 'user',
+        body: 'What can we show a partner without overselling the alpha?'
+      },
+      {
+        role: 'assistant',
+        eyebrow: 'Grounded answer',
+        body:
+          'Show the research machine, not a trading claim. The committed FRED run says simple no-change style baselines still dominate most FX/rate contests, which is useful because the system exposes the noise floor before adding more complex models.',
+        context: ['./artifacts/fred-fx-rate-lab-summary.json']
+      }
+    ],
+    economist: [
+      {
+        role: 'assistant',
+        eyebrow: 'Economist context',
+        body:
+          'The current macro panel is a starter haul, not all global economic data. It has FRED FX/rate work plus ECB/World Bank starter coverage, and it labels latest-revised snapshots separately from vintage-safe evidence.',
+        context: ['./artifacts/global-macro-panel-summary.json']
+      }
+    ],
+    news: [
+      {
+        role: 'assistant',
+        eyebrow: 'News context',
+        body:
+          'The news agent should treat each fetch as a provenance-bearing update, then compress marginal information into model.md before it reaches the token limit.',
+        context: ['./artifacts/macro-news-summary.json']
+      }
+    ],
+    analyst: [
+      {
+        role: 'assistant',
+        eyebrow: 'Analyst context',
+        body:
+          'The analyst endpoint should answer from accumulated reports first, then call modeling or news agents only when the prompt requires fresh specialist work.',
+        context: ['docs/agents/api-and-cli.md']
+      }
+    ]
+  };
 
-  $: selectedRows = data
-    ? data.metrics
-        .filter((row) => row.pair === selectedPair && row.horizon_months === selectedHorizon)
-        .sort((a, b) => a.rmse - b.rmse)
-    : [];
+  Promise.all([
+    loadArtifact('fred'),
+    loadArtifact('global'),
+    loadArtifact('news')
+  ]).catch((error) => {
+    loadError = error.message;
+  });
 
-  $: maxRmse = selectedRows.length ? Math.max(...selectedRows.map((row) => row.rmse)) : 0;
-  $: minRmse = selectedRows.length ? Math.min(...selectedRows.map((row) => row.rmse)) : 0;
-  $: bestSelected = selectedRows[0] ?? null;
-  $: baselineSelected =
-    selectedRows.find((row) => row.model_id === 'random_walk') ??
-    selectedRows.find((row) => row.model_id === 'no_change') ??
-    null;
-  $: selectedLift = bestSelected && baselineSelected ? baselineSelected.rmse - bestSelected.rmse : 0;
+  async function loadArtifact(key) {
+    const response = await fetch(artifactSpecs[key].path);
+    if (!response.ok) {
+      throw new Error(`${artifactSpecs[key].label} failed to load: ${response.status}`);
+    }
 
-  $: heatmapRows = data
-    ? [...data.best_by_rmse].sort((a, b) =>
-        a.pair === b.pair ? a.horizon_months - b.horizon_months : a.pair.localeCompare(b.pair)
-      )
-    : [];
+    const payload = await response.json();
+    if (key === 'fred') fred = payload;
+    if (key === 'global') globalPanel = payload;
+    if (key === 'news') news = payload;
+  }
 
-  $: baselineWins = data
-    ? data.best_by_rmse.filter((row) => ['random_walk', 'no_change'].includes(row.best_model)).length
+  $: activeThread = threads.find((thread) => thread.id === activeThreadId) ?? threads[0];
+  $: activeMessages = messagesByThread[activeThreadId] ?? [];
+  $: baselineWins = fred
+    ? fred.best_by_rmse.filter((row) => ['random_walk', 'no_change'].includes(row.best_model)).length
     : 0;
-  $: totalContests = data ? data.best_by_rmse.length : 0;
-  $: modelWins = data ? modelWinRows(data.best_by_rmse) : [];
-  $: maxModelWins = modelWins.length ? Math.max(...modelWins.map((row) => row.count)) : 0;
-  $: bestNonBaseline = data
-    ? data.best_by_rmse
-        .filter((row) => !['random_walk', 'no_change'].includes(row.best_model))
-        .sort((a, b) => b.rmse_improvement_vs_random_walk - a.rmse_improvement_vs_random_walk)[0]
-    : null;
-  $: coverageFeatures = globalPanel ? globalPanel.features : [];
-  $: sourceRows = globalPanel ? globalPanel.sources.filter((row) => row.source_id === 'world_bank_indicators') : [];
+  $: contestCount = fred ? fred.best_by_rmse.length : 0;
+  $: modelWins = fred ? contestCount - baselineWins : 0;
+  $: latestVintage = fred?.vintage_policy?.replaceAll('_', ' ') ?? 'loading';
+  $: newsSources = news?.source_count ?? 0;
+  $: newsItems = news?.item_count ?? 0;
+  $: globalCountries = globalPanel?.country_count ?? 0;
+  $: sourceLeaders = news
+    ? Object.entries(news.source_counts ?? {})
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 6)
+    : [];
+  $: regionRows = news
+    ? Object.entries(news.region_counts ?? {}).sort((a, b) => b[1] - a[1])
+    : [];
+  $: verticalRows = news
+    ? Object.entries(news.vertical_counts ?? {})
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 8)
+    : [];
 
-  function modelWinRows(rows) {
-    const counts = new Map();
-    rows.forEach((row) => counts.set(row.best_model, (counts.get(row.best_model) ?? 0) + 1));
-    return Array.from(counts, ([model_id, count]) => ({ model_id, count })).sort((a, b) => b.count - a.count);
+  const reportTabs = [
+    { id: 'modeling', label: 'Modeling' },
+    { id: 'news', label: 'News' },
+    { id: 'data', label: 'Data' }
+  ];
+
+  const promptRoutes = [
+    { id: 'chat', label: 'Chat' },
+    { id: 'economic-modeling-agent', label: 'Modeling' },
+    { id: 'news-agent', label: 'News' },
+    { id: 'analyst-agent', label: 'Analyst' }
+  ];
+
+  function activateThread(id) {
+    activeThreadId = id;
   }
 
-  function pct(value) {
+  function startThread() {
+    const id = `thread-${Date.now()}`;
+    threads.unshift({
+      id,
+      title: 'New investigation',
+      subtitle: 'Prompt the Marco agents',
+      status: 'New',
+      unread: 0
+    });
+    messagesByThread = {
+      ...messagesByThread,
+      [id]: [
+        {
+          role: 'assistant',
+          eyebrow: 'New thread',
+          body:
+            'Ask a question about the macro artifacts, news snapshot, or model results. With VITE_MARCO_AGENT_API set, this panel can call the deployed agent API.',
+          context: []
+        }
+      ]
+    };
+    activeThreadId = id;
+  }
+
+  async function sendPrompt() {
+    const text = promptText.trim();
+    if (!text || sending) return;
+
+    appendMessage(activeThreadId, { role: 'user', body: text });
+    promptText = '';
+    sending = true;
+
+    try {
+      const answer = apiBase ? await callAgentApi(text) : localAnswer(text);
+      appendMessage(activeThreadId, answer);
+    } catch (error) {
+      appendMessage(activeThreadId, {
+        role: 'assistant',
+        eyebrow: 'Local fallback',
+        body: `${localAnswer(text).body} The live agent API was unavailable: ${error.message}`,
+        context: ['./artifacts/fred-fx-rate-lab-summary.json', './artifacts/macro-news-summary.json']
+      });
+    } finally {
+      sending = false;
+    }
+  }
+
+  async function callAgentApi(text) {
+    const endpoint = route === 'chat' ? '/v1/chat' : `/v1/agents/${route}/prompt`;
+    const response = await fetch(`${apiBase}${endpoint}`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ prompt: text })
+    });
+
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const payload = await response.json();
+    return {
+      role: 'assistant',
+      eyebrow: route === 'chat' ? 'Chat agent' : labelForRoute(route),
+      body: payload.response ?? payload.answer ?? payload.text ?? JSON.stringify(payload, null, 2),
+      context: payload.artifacts ?? payload.context ?? []
+    };
+  }
+
+  function localAnswer(text) {
+    const lower = text.toLowerCase();
+    if (lower.includes('news') || route === 'news-agent') {
+      return {
+        role: 'assistant',
+        eyebrow: 'News agent preview',
+        body: `Current committed snapshot has ${formatNumber(newsItems)} macro/news records from ${newsSources} sources. The next agent job is to record each fetch, summarize only marginal information, and update model.md with pruning at the token threshold.`,
+        context: ['./artifacts/macro-news-summary.json']
+      };
+    }
+
+    if (lower.includes('model') || lower.includes('backtest') || route === 'economic-modeling-agent') {
+      return {
+        role: 'assistant',
+        eyebrow: 'Modeling agent preview',
+        body: `The latest FRED FX/rate lab has ${formatNumber(fred?.headline?.prediction_rows)} predictions across ${fred?.pairs?.length ?? 0} pairs and ${fred?.horizons?.length ?? 0} horizons. Baselines win ${baselineWins}/${contestCount} RMSE contests, so the honest claim is benchmark discipline plus extensible data plumbing.`,
+        context: ['./artifacts/fred-fx-rate-lab-summary.json']
+      };
+    }
+
+    if (lower.includes('data') || lower.includes('coverage')) {
+      return {
+        role: 'assistant',
+        eyebrow: 'Data coverage',
+        body: `The global macro panel currently covers ${globalCountries} countries and ${globalPanel?.feature_count ?? 0} normalized features. It is useful as a schema and ingestion proof, not a complete global macro warehouse yet.`,
+        context: ['./artifacts/global-macro-panel-summary.json']
+      };
+    }
+
+    return {
+      role: 'assistant',
+      eyebrow: 'Chat agent preview',
+      body:
+        'The strongest demo story is a four-agent Marco workbench: three specialist agents publish auditable reports, and the chat agent uses those artifacts as context while routing specialist prompts back to the worker APIs.',
+      context: [
+        './artifacts/fred-fx-rate-lab-summary.json',
+        './artifacts/macro-news-summary.json',
+        './artifacts/global-macro-panel-summary.json'
+      ]
+    };
+  }
+
+  function appendMessage(threadId, message) {
+    messagesByThread = {
+      ...messagesByThread,
+      [threadId]: [...(messagesByThread[threadId] ?? []), message]
+    };
+  }
+
+  function labelForRoute(id) {
+    return promptRoutes.find((item) => item.id === id)?.label ?? id;
+  }
+
+  function formatNumber(value) {
     if (value === null || value === undefined || Number.isNaN(value)) return 'n/a';
-    return `${(value * 100).toFixed(1)}%`;
+    return Number(value).toLocaleString();
   }
 
-  function num(value) {
-    if (value === null || value === undefined || Number.isNaN(value)) return 'n/a';
-    return value.toFixed(5);
-  }
-
-  function signedNum(value) {
-    if (value === null || value === undefined || Number.isNaN(value)) return 'n/a';
-    const sign = value > 0 ? '+' : '';
-    return `${sign}${value.toFixed(5)}`;
-  }
-
-  function compactFeature(value) {
-    return value.replaceAll('_', ' ');
-  }
-
-  function improvementClass(value) {
-    if (value > 0.0001) return 'good';
-    if (value < -0.0001) return 'bad';
-    return 'flat';
-  }
-
-  function heatClass(row) {
-    if (['random_walk', 'no_change'].includes(row.best_model)) return 'baseline';
-    if (row.rmse_improvement_vs_random_walk > 0.0001) return 'model';
-    return 'flat';
+  function handleComposerKeydown(event) {
+    if ((event.metaKey || event.ctrlKey) && event.key === 'Enter') {
+      event.preventDefault();
+      sendPrompt();
+    }
   }
 </script>
 
-{#if error}
-  <main class="shell">
-    <section class="notice">
-      <h1>Artifact Load Failed</h1>
-      <p>{error}</p>
-    </section>
-  </main>
-{:else if !data}
-  <main class="shell">
-    <section class="notice">
-      <h1>Loading Marco Macro Lab</h1>
-    </section>
-  </main>
-{:else}
-  <main class="shell">
-    <header class="hero">
-      <div class="hero-copy">
-        <p class="eyebrow">Marco Macro Lab</p>
-        <h1>Macro data foundation, backtesting discipline, and evidence quality in one view.</h1>
-        <p class="hero-text">
-          Current checkpoint: FX/rate differential baselines over FRED data plus an official
-          World Bank/ECB starter panel for global macro expansion.
-        </p>
+<main class="workbench" aria-label="Marco agent workbench">
+  <aside class="thread-rail" aria-label="Chat threads">
+    <div class="brand-block">
+      <div>
+        <p class="eyebrow">Marco</p>
+        <h1>Macro agent workbench</h1>
       </div>
-      <div class="hero-aside">
-        <div class="status-pill">{data.headline.status}</div>
-        <div class="signal-score">
-          <span>Baseline wins</span>
-          <strong>{baselineWins}/{totalContests}</strong>
-        </div>
-        <p>{data.vintage_policy.replaceAll('_', ' ')}</p>
+      <span class="live-dot">Node A ready</span>
+    </div>
+
+    <button class="new-thread" type="button" on:click={startThread}>New Thread</button>
+
+    <nav class="thread-list" aria-label="Available threads">
+      {#each threads as thread}
+        <button
+          class:active={thread.id === activeThreadId}
+          class="thread-button"
+          type="button"
+          on:click={() => activateThread(thread.id)}
+        >
+          <span>
+            <strong>{thread.title}</strong>
+            <small>{thread.subtitle}</small>
+          </span>
+          <em>{thread.unread ? thread.unread : thread.status}</em>
+        </button>
+      {/each}
+    </nav>
+
+    <div class="agent-stack" aria-label="Worker agents">
+      <p class="section-label">Worker APIs</p>
+      {#each agents as agent}
+        <button
+          class={`agent-row ${agent.accent}`}
+          type="button"
+          on:click={() => {
+            route = agent.id;
+            promptText = `Ask the ${agent.label.toLowerCase()} agent for a current status report.`;
+          }}
+        >
+          <span>{agent.label}</span>
+          <small>{agent.state}</small>
+        </button>
+      {/each}
+    </div>
+  </aside>
+
+  <section class="conversation-panel" aria-label="Open conversation">
+    <header class="conversation-header">
+      <div>
+        <p class="eyebrow">Open session</p>
+        <h2>{activeThread.title}</h2>
+        <p>{activeThread.subtitle}</p>
+      </div>
+      <div class="route-actions" aria-label="Quick agent routes">
+        {#each promptRoutes.slice(1) as item}
+          <button
+            type="button"
+            class:active={route === item.id}
+            on:click={() => (route = item.id)}
+          >
+            {item.label}
+          </button>
+        {/each}
       </div>
     </header>
 
-    <section class="kpi-band" aria-label="Research artifact summary">
+    <div class="metrics-strip" aria-label="Current artifact metrics">
       <div>
-        <span>FX pairs</span>
-        <strong>{data.pairs.length}</strong>
+        <span>News</span>
+        <strong>{formatNumber(newsItems)}</strong>
+        <small>{newsSources} sources</small>
       </div>
       <div>
-        <span>Predictions</span>
-        <strong>{data.headline.prediction_rows.toLocaleString()}</strong>
+        <span>Backtests</span>
+        <strong>{baselineWins}/{contestCount}</strong>
+        <small>baseline wins</small>
       </div>
       <div>
-        <span>Feature rows</span>
-        <strong>{data.headline.features_rows.toLocaleString()}</strong>
+        <span>Macro panel</span>
+        <strong>{globalCountries}</strong>
+        <small>countries</small>
       </div>
       <div>
-        <span>Global panel rows</span>
-        <strong>{globalPanel ? globalPanel.panel_rows.toLocaleString() : 'n/a'}</strong>
+        <span>Vintage</span>
+        <strong>{latestVintage}</strong>
+        <small>{fred?.lookahead_status?.replaceAll('_', ' ') ?? 'loading'}</small>
       </div>
-      <div>
-        <span>Source policy</span>
-        <strong>{data.lookahead_status.replaceAll('_', ' ')}</strong>
-      </div>
-    </section>
+    </div>
 
-    <section class="verdict-band">
-      <div>
-        <p class="section-kicker">Main read</p>
-        <h2>{data.headline.model_result}</h2>
-      </div>
-      <p>
-        Treat this as infrastructure evidence: the system can ingest, normalize, benchmark,
-        and publish comparable artifacts, while clearly labeling that this is not
-        real-time vintage-safe evidence.
-      </p>
-    </section>
+    {#if loadError}
+      <div class="load-error">{loadError}</div>
+    {/if}
 
-    <section class="audience-grid" aria-label="Audience interpretation">
-      {#each audienceLanes as lane}
-        <article class="audience-card">
-          <span>{lane.role}</span>
-          <h2>{lane.title}</h2>
-          <p>{lane.body}</p>
+    <div class="message-stream" aria-live="polite">
+      {#each activeMessages as message}
+        <article class={`message ${message.role}`}>
+          {#if message.eyebrow}
+            <p class="message-eyebrow">{message.eyebrow}</p>
+          {/if}
+          <p>{message.body}</p>
+          {#if message.context?.length}
+            <div class="context-row" aria-label="Evidence">
+              {#each message.context as item}
+                <span>{item}</span>
+              {/each}
+            </div>
+          {/if}
         </article>
       {/each}
-    </section>
+      {#if sending}
+        <article class="message assistant pending">
+          <p class="message-eyebrow">Working</p>
+          <p>Routing prompt to {labelForRoute(route)}...</p>
+        </article>
+      {/if}
+    </div>
 
-    {#if globalPanel}
-      <section class="section-block">
-        <div class="section-heading">
+    <form
+      class="composer"
+      on:submit|preventDefault={sendPrompt}
+      aria-label="Prompt Marco agents"
+    >
+      <label>
+        <span>Route</span>
+        <select bind:value={route}>
+          {#each promptRoutes as item}
+            <option value={item.id}>{item.label}</option>
+          {/each}
+        </select>
+      </label>
+      <textarea
+        bind:value={promptText}
+        rows="2"
+        placeholder="Ask what changed in the macro news, request a model status, or draft an investor explanation..."
+        on:keydown={handleComposerKeydown}
+      />
+      <button type="submit" disabled={!promptText.trim() || sending}>Send</button>
+    </form>
+  </section>
+
+  <aside class="artifact-panel" aria-label="Reports and artifacts">
+    <header>
+      <div>
+        <p class="eyebrow">Evidence</p>
+        <h2>Reports & artifacts</h2>
+      </div>
+      <span>{apiBase ? 'API connected' : 'static preview'}</span>
+    </header>
+
+    <div class="tab-row" role="tablist" aria-label="Report sections">
+      {#each reportTabs as tab}
+        <button
+          type="button"
+          role="tab"
+          aria-selected={selectedReport === tab.id}
+          class:active={selectedReport === tab.id}
+          on:click={() => (selectedReport = tab.id)}
+        >
+          {tab.label}
+        </button>
+      {/each}
+    </div>
+
+    {#if selectedReport === 'modeling'}
+      <section class="report-block">
+        <p class="section-label">FRED FX/rate lab</p>
+        <h3>{fred?.headline?.status ?? 'loading'} benchmark checkpoint</h3>
+        <p>{fred?.headline?.model_result ?? 'Loading modeling artifact...'}</p>
+        <dl class="compact-dl">
           <div>
-            <p class="section-kicker">Official source coverage</p>
-            <h2>Global macro starter panel</h2>
+            <dt>Pairs</dt>
+            <dd>{fred?.pairs?.join(', ') ?? 'n/a'}</dd>
           </div>
-          <a class="text-link" href="./artifacts/global-macro-panel-summary.json">JSON artifact</a>
+          <div>
+            <dt>Horizons</dt>
+            <dd>{fred?.horizons?.map((item) => `${item}M`).join(', ') ?? 'n/a'}</dd>
+          </div>
+          <div>
+            <dt>Rows</dt>
+            <dd>{formatNumber(fred?.headline?.prediction_rows)} predictions</dd>
+          </div>
+          <div>
+            <dt>Non-baseline wins</dt>
+            <dd>{modelWins}</dd>
+          </div>
+        </dl>
+      </section>
+    {:else if selectedReport === 'news'}
+      <section class="report-block">
+        <p class="section-label">Macro news agent</p>
+        <h3>{formatNumber(newsItems)} committed records</h3>
+        <p>
+          Current news scope emphasizes central banks, financial stability, India,
+          Japan, Europe, the UK, and US policy material. The next runtime job is
+          marginal information compression into model.md.
+        </p>
+        <div class="rank-list">
+          {#each regionRows as [region, count]}
+            <div>
+              <span>{region}</span>
+              <strong>{count}</strong>
+            </div>
+          {/each}
         </div>
-
-        <div class="coverage-layout">
-          <div class="coverage-map" aria-label="Country feature coverage">
-            <div class="coverage-head country-label">Country</div>
-            {#each coverageFeatures as feature}
-              <div class="coverage-head">{compactFeature(feature)}</div>
-            {/each}
-            {#each globalPanel.countries as country}
-              <div class="country-label">{country}</div>
-              {#each coverageFeatures as feature}
-                <div class="coverage-cell" title={`${country} ${compactFeature(feature)}`}>
-                  <span></span>
-                </div>
-              {/each}
-            {/each}
-          </div>
-
-          <div class="source-panel">
-            <h2>Data haul</h2>
-            <dl>
-              <div>
-                <dt>Countries</dt>
-                <dd>{globalPanel.country_count}</dd>
-              </div>
-              <div>
-                <dt>Years</dt>
-                <dd>{globalPanel.years[0]}-{globalPanel.years[globalPanel.years.length - 1]}</dd>
-              </div>
-              <div>
-                <dt>World Bank obs</dt>
-                <dd>{globalPanel.world_bank_observations.toLocaleString()}</dd>
-              </div>
-              <div>
-                <dt>ECB smoke obs</dt>
-                <dd>{globalPanel.ecb_observations}</dd>
-              </div>
-            </dl>
-            <div class="source-list">
-              {#each sourceRows as row}
-                <span>{row.indicator_code}</span>
-              {/each}
-            </div>
-            <div class="artifact-links">
-              <span>CLI: emf-macro global-panel-summary</span>
-              <span>API: /v1/global-panel</span>
-            </div>
-          </div>
+        <div class="tag-cloud" aria-label="Top news verticals">
+          {#each verticalRows as [vertical, count]}
+            <span>{vertical.replaceAll('_', ' ')} · {count}</span>
+          {/each}
+        </div>
+      </section>
+    {:else}
+      <section class="report-block">
+        <p class="section-label">Global macro panel</p>
+        <h3>{globalCountries} countries, {globalPanel?.feature_count ?? 0} features</h3>
+        <p>
+          This is the normalized starter shape for official macro data expansion.
+          It proves source ingestion and mapping before coupling anything to
+          uploads or the experiment runner.
+        </p>
+        <div class="country-grid" aria-label="Countries in panel">
+          {#each globalPanel?.countries ?? [] as country}
+            <span>{country}</span>
+          {/each}
+        </div>
+        <div class="tag-cloud" aria-label="Panel features">
+          {#each globalPanel?.features ?? [] as feature}
+            <span>{feature.replaceAll('_', ' ')}</span>
+          {/each}
         </div>
       </section>
     {/if}
 
-    <section class="section-block">
-      <div class="section-heading">
-        <div>
-          <p class="section-kicker">Backtest result shape</p>
-          <h2>Baseline dominance by pair and horizon</h2>
-        </div>
-        {#if bestNonBaseline}
-          <span class="annotation">
-            Best non-baseline: {bestNonBaseline.pair} {bestNonBaseline.horizon_months}M,
-            {modelLabels[bestNonBaseline.best_model] ?? bestNonBaseline.best_model}
-          </span>
-        {/if}
-      </div>
+    <section class="artifact-links">
+      <p class="section-label">Committed JSON</p>
+      {#each Object.values(artifactSpecs) as artifact}
+        <a href={artifact.path}>{artifact.label}</a>
+      {/each}
+    </section>
 
-      <div class="matrix">
-        {#each heatmapRows as row}
-          <button
-            class={`matrix-cell ${heatClass(row)}`}
-            type="button"
-            on:click={() => {
-              selectedPair = row.pair;
-              selectedHorizon = row.horizon_months;
-            }}
-          >
-            <span>{row.pair} {row.horizon_months}M</span>
-            <strong>{modelLabels[row.best_model] ?? row.best_model}</strong>
-            <em>{signedNum(row.rmse_improvement_vs_random_walk)}</em>
-          </button>
+    {#if sourceLeaders.length}
+      <section class="report-block source-block">
+        <p class="section-label">Largest news sources</p>
+        {#each sourceLeaders as [source, count]}
+          <div class="source-row">
+            <span>{source}</span>
+            <strong>{count}</strong>
+          </div>
         {/each}
-      </div>
-    </section>
-
-    <section class="analysis-layout">
-      <div class="section-block">
-        <div class="section-heading compact">
-          <div>
-            <p class="section-kicker">Interactive slice</p>
-            <h2>{selectedPair} at {selectedHorizon}M</h2>
-          </div>
-          <div class="controls">
-            <label>
-              Pair
-              <select bind:value={selectedPair}>
-                {#each data.pairs as pair}
-                  <option value={pair}>{pair}</option>
-                {/each}
-              </select>
-            </label>
-            <label>
-              Horizon
-              <select bind:value={selectedHorizon}>
-                {#each data.horizons as horizon}
-                  <option value={horizon}>{horizon}M</option>
-                {/each}
-              </select>
-            </label>
-          </div>
-        </div>
-
-        <div class="chart-summary">
-          <div>
-            <span>Best model</span>
-            <strong>{bestSelected ? modelLabels[bestSelected.model_id] ?? bestSelected.model_id : 'n/a'}</strong>
-          </div>
-          <div>
-            <span>RMSE lift vs random walk</span>
-            <strong class={improvementClass(selectedLift)}>{signedNum(selectedLift)}</strong>
-          </div>
-        </div>
-
-        <div class="bars">
-          {#each selectedRows as row}
-            <div class="bar-row">
-              <div class="bar-label">{modelLabels[row.model_id] ?? row.model_id}</div>
-              <div class="bar-track">
-                <div
-                  class:selected={row.rmse === minRmse}
-                  class="bar"
-                  style={`width: ${(row.rmse / maxRmse) * 100}%`}
-                ></div>
-              </div>
-              <div class="bar-value">{num(row.rmse)}</div>
-            </div>
-          {/each}
-        </div>
-      </div>
-
-      <div class="section-block">
-        <div class="section-heading compact">
-          <div>
-            <p class="section-kicker">Model scoreboard</p>
-            <h2>Wins by RMSE</h2>
-          </div>
-        </div>
-        <div class="win-bars">
-          {#each modelWins as row}
-            <div>
-              <span>{modelLabels[row.model_id] ?? row.model_id}</span>
-              <strong>{row.count}</strong>
-              <div class="mini-track">
-                <i style={`width: ${(row.count / maxModelWins) * 100}%`}></i>
-              </div>
-            </div>
-          {/each}
-        </div>
-      </div>
-    </section>
-
-    <section class="section-block">
-      <div class="section-heading">
-        <div>
-          <p class="section-kicker">Audit table</p>
-          <h2>Selected model metrics</h2>
-        </div>
-        <span class="annotation">{selectedPair}, {selectedHorizon}M</span>
-      </div>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Model</th>
-              <th>MAE</th>
-              <th>RMSE</th>
-              <th>Direction</th>
-              <th>N</th>
-            </tr>
-          </thead>
-          <tbody>
-            {#each selectedRows as row}
-              <tr>
-                <td>{modelLabels[row.model_id] ?? row.model_id}</td>
-                <td>{num(row.mae)}</td>
-                <td>{num(row.rmse)}</td>
-                <td>{pct(row.directional_accuracy)}</td>
-                <td>{row.n}</td>
-              </tr>
-            {/each}
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <footer>
-      <span>Run {data.run_id}</span>
-      <a href="https://github.com/yusefmosiah/Marco">GitHub</a>
-    </footer>
-  </main>
-{/if}
+      </section>
+    {/if}
+  </aside>
+</main>
