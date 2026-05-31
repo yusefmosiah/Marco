@@ -6,7 +6,7 @@ Repo: `/Users/wiz/emf`
 
 Mission name: `fred-md-fx-rate-macro-lab`
 
-Status: planned checkpoint, not executed
+Status: foundation checkpoint executed
 
 ## Goal String
 
@@ -467,27 +467,36 @@ ALFRED runs, or advanced models in the first foundation mission.
 ## Run Checkpoint & Resumption State
 
 ```text
-status: checkpoint_incomplete
-last checkpoint: mission document rewritten around FX/rate-differential modeling;
-  no implementation run started
+status: complete
+last checkpoint: 2026-05-31 foundation run `20260531-161930-fx-rate-diff`
+  completed with validation status `passed`
 current artifact state: /Users/wiz/emf contains proposal artifacts and this
-  FX/rate macro mission
-what shipped: docs only
-what was proven: mission shape researched and scoped; no code executed
-unproven or partial claims: exact FRED series basket, data availability, feature
-  alignment, baseline performance, model usefulness
+  FX/rate macro mission, plus a Python package and CLI for the first FRED
+  FX/rate lab
+what shipped: FRED/FRED-MD downloader, source hashing, normalized macro facts,
+  monthly panel builder, feature engineering, baseline/ridge walk-forward
+  backtests, tests, generated run artifacts, checkpoint report
+what was proven: selected FRED/FRED-MD sources downloaded and hashed; panel and
+  features built; five FX pairs evaluated; required baselines present; unit
+  tests passed; generated validation report passed
+unproven or partial claims: real-time vintage safety, trading profitability,
+  transaction costs, robustness beyond selected pairs, India/EM data availability
 belief-state changes: macro value is source-linked panels plus backtested
   economic models; first concrete wedge is interest-rate differential / FX-rate
-  pressure, not broad generic macro dashboards
+  pressure, not broad generic macro dashboards; first run shows random-walk /
+  no-change baselines remain hard to beat on RMSE
 remaining error field: vintage-safe backtesting, FX direction conventions,
   target leakage, baseline integrity, overfit risk
 highest-impact remaining uncertainty: whether a simple carry/real-rate model
-  beats random-walk/no-change baselines on selected FRED-accessible pairs
-next executable probe: identify and inspect candidate FRED series IDs for FX,
-  rates, inflation, and yields; lock the minimal pair basket
+  beats random-walk/no-change baselines under vintage-safe evaluation and richer
+  risk controls
+next executable probe: add ALFRED/vintage-aware pulls for selected series and
+  re-run one pair/horizon with true as-of data cuts
 suggested resume goal string: use the Goal String at top of document
-evidence artifact refs: this mission doc
-rollback refs: git history once committed
+evidence artifact refs: docs/runs/20260531-fred-fx-rate-lab-checkpoint.md;
+  generated run dir backtests/runs/20260531-161930-fx-rate-diff;
+  generated derived dir data/derived/fred_fx_rates
+rollback refs: git history
 ```
 
 ## Sources
