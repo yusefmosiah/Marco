@@ -89,7 +89,7 @@ describe("validateAnalystPayload", () => {
 });
 
 describe("buildSummaryReport", () => {
-  it("builds a one-page report with an audit section", () => {
+  it("builds a human-review report with narrative and audit sections", () => {
     const report = buildSummaryReport(
       {
         agent_id: "financial-news-ingestion-v1",
@@ -98,12 +98,34 @@ describe("buildSummaryReport", () => {
         window_end: "2026-05-31T23:59:59Z",
         article_count: 0,
         retrieval_errors: [{ source: "reuters.com", reason: "no_results", http_status: null }],
-        articles: [],
+        articles: [
+          {
+            article_id: "d8f5b2c97d1f9bd1",
+            event_cluster_id: "0de86143ac271c2b",
+            domain: "equities",
+            source_name: "Associated Press",
+            source_url: "https://apnews.com/example",
+            syndication_origin: null,
+            published_at: "2026-05-31T00:00:00Z",
+            retrieved_at: "2026-05-31T00:01:00Z",
+            retrieval_status: "success",
+            headline: "Stocks rise as investors review earnings",
+            summary: "U.S. stocks rose while investors reviewed quarterly earnings and economic data.",
+            body_excerpt: "U.S. stocks rose while investors reviewed quarterly earnings and economic data.",
+            tickers_mentioned: ["SPY"],
+            assets_mentioned: ["S&P 500"],
+            named_entities: { organizations: [], people: [], geographies: ["U.S."] },
+            is_primary_source: false,
+          },
+        ],
       },
       { contextChunks: [{ path: "agents/analyst.toml", index: 0 }] },
     );
 
     assert.match(report, /# Analyst Ingestion Summary/);
+    assert.match(report, /## Narrative Overview/);
+    assert.match(report, /Equities: Associated Press/);
+    assert.match(report, /Stocks rise as investors review earnings/);
     assert.match(report, /## Audit/);
     assert.match(report, /reuters\.com:no_results 1/);
     assert.match(report, /agents\/analyst\.toml#chunk-0/);

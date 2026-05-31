@@ -7,7 +7,8 @@ The CLI retrieves relevant local Marco context, injects the
 `agents/analyst.toml` instructions, and starts a Codex SDK thread from the repo
 root. `run-ingestion` asks Codex for the Analyst JSON payload using a structured
 output schema, runs local validation for approved domains, stable IDs, and
-excerpt length, and writes a one-page summary report with an audit section.
+excerpt length, and writes a human-review report with a narrative overview of
+the retrieved article content plus an audit section.
 
 ## Install
 
@@ -44,7 +45,9 @@ node ./bin/analyst-rag.js run-ingestion \
 ```
 
 When `--output` is provided, the CLI also writes a Markdown report next to the
-JSON using the `.summary.md` suffix. Override that path with
+JSON using the `.summary.md` suffix. The report is suitable for rendering to PDF
+and includes a senior-analyst-style factual narrative overview of all retrieved
+articles. Override that path with
 `--report-output path/to/report.md`.
 
 Useful options:

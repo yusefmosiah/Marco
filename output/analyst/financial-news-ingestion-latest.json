@@ -1,0 +1,478 @@
+{
+  "agent_id": "financial-news-ingestion-v1",
+  "generated_at": "2026-05-31T22:26:20Z",
+  "window_start": "2026-05-17T00:00:00Z",
+  "window_end": "2026-05-31T23:59:59Z",
+  "article_count": 16,
+  "retrieval_errors": [
+    {
+      "source": "reuters.com",
+      "reason": "no_results",
+      "http_status": null
+    },
+    {
+      "source": "bloomberg.com",
+      "reason": "no_results",
+      "http_status": null
+    },
+    {
+      "source": "wsj.com",
+      "reason": "no_results",
+      "http_status": null
+    },
+    {
+      "source": "ft.com",
+      "reason": "no_results",
+      "http_status": null
+    },
+    {
+      "source": "fred.stlouisfed.org",
+      "reason": "no_results",
+      "http_status": null
+    },
+    {
+      "source": "seekingalpha.com",
+      "reason": "unparseable_date",
+      "http_status": null
+    }
+  ],
+  "articles": [
+    {
+      "article_id": "519687063e8d2e63",
+      "event_cluster_id": "91d9f0f560d27b7f",
+      "domain": "equities",
+      "source_name": "Associated Press",
+      "source_url": "https://apnews.com/article/559e1f1e5269976ea21bb551e916c941",
+      "syndication_origin": null,
+      "published_at": "2026-05-28T03:23:35Z",
+      "retrieved_at": "2026-05-31T22:26:20Z",
+      "retrieval_status": "success",
+      "headline": "Wall Street pushes to more records as profits keep piling up for US companies",
+      "summary": null,
+      "body_excerpt": "NEW YORK (AP) - The U.S. stock market pushed to more records Thursday as profits keep piling up for companies like Dollar Tree, Snowflake and Hormel Foods. A tentative deal to extend the ceasefire in the war with Iran by 60 days also helped lift the market and rein in oil prices.",
+      "tickers_mentioned": [],
+      "assets_mentioned": [
+        "WTI Crude"
+      ],
+      "named_entities": {
+        "organizations": [],
+        "people": [],
+        "geographies": [
+          "US"
+        ]
+      },
+      "is_primary_source": false
+    },
+    {
+      "article_id": "a34b9e4f59d27027",
+      "event_cluster_id": "e199a83d0c3a6697",
+      "domain": "equities",
+      "source_name": "Associated Press",
+      "source_url": "https://apnews.com/article/8191917f4f1d7ebc54584dd3c3265032",
+      "syndication_origin": null,
+      "published_at": "2026-05-27T03:31:24Z",
+      "retrieved_at": "2026-05-31T22:26:20Z",
+      "retrieval_status": "success",
+      "headline": "US stocks inch to more records after oil prices drop",
+      "summary": null,
+      "body_excerpt": "NEW YORK (AP) - U.S. stocks inched to more records Wednesday after oil prices fell and eased the pressure on households and businesses worldwide.",
+      "tickers_mentioned": [],
+      "assets_mentioned": [
+        "Brent Crude",
+        "WTI Crude"
+      ],
+      "named_entities": {
+        "organizations": [],
+        "people": [],
+        "geographies": [
+          "US"
+        ]
+      },
+      "is_primary_source": false
+    },
+    {
+      "article_id": "d3109ba39c29e32f",
+      "event_cluster_id": "3e286a3ca9cb9a2e",
+      "domain": "commodities_forex",
+      "source_name": "Associated Press",
+      "source_url": "https://apnews.com/article/stocks-markets-iran-trump-oil-0b569925695e498e6fd7ece7b183e085",
+      "syndication_origin": null,
+      "published_at": "2026-05-25T02:35:35Z",
+      "retrieved_at": "2026-05-31T22:26:20Z",
+      "retrieval_status": "success",
+      "headline": "Global shares gain and oil prices fall after Trump says talks on ending the war are proceeding",
+      "summary": null,
+      "body_excerpt": "TOKYO (AP) — Global shares mostly rose Monday and oil prices sank more than $4 after U.S. President Donald Trump said talks on ending the war with Iran are progressing.",
+      "tickers_mentioned": [],
+      "assets_mentioned": [
+        "WTI Crude",
+        "Brent Crude",
+        "USD/JPY",
+        "EUR/USD"
+      ],
+      "named_entities": {
+        "organizations": [],
+        "people": [
+          "Trump"
+        ],
+        "geographies": [
+          "Iran"
+        ]
+      },
+      "is_primary_source": false
+    },
+    {
+      "article_id": "0a11b9a10eba2d69",
+      "event_cluster_id": "576d5e7ad12f8c74",
+      "domain": "macro_fed",
+      "source_name": "Associated Press",
+      "source_url": "https://apnews.com/article/d87285399582840f585bc4e24dd4f10f",
+      "syndication_origin": null,
+      "published_at": "2026-05-22T17:22:50Z",
+      "retrieved_at": "2026-05-31T22:26:20Z",
+      "retrieval_status": "success",
+      "headline": "Warsh is sworn in as the Fed chair after Trump's bid for greater control over the independent bank",
+      "summary": null,
+      "body_excerpt": "WASHINGTON (AP) - President Donald Trump on Friday oversaw the White House swearing-in of the new Federal Reserve chair and said he would like Kevin Warsh's help in stimulating the economy even as he tried to emphasize that the nation's central bank would remain independent.",
+      "tickers_mentioned": [],
+      "assets_mentioned": [],
+      "named_entities": {
+        "organizations": [
+          "Fed"
+        ],
+        "people": [
+          "Warsh",
+          "Trump"
+        ],
+        "geographies": []
+      },
+      "is_primary_source": false
+    },
+    {
+      "article_id": "94080a607bd11e08",
+      "event_cluster_id": "a99f4ac1e327ba21",
+      "domain": "macro_fed",
+      "source_name": "Federal Reserve News & Events",
+      "source_url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20260520a.htm",
+      "syndication_origin": null,
+      "published_at": "2026-05-20T18:00:00Z",
+      "retrieved_at": "2026-05-31T22:26:20Z",
+      "retrieval_status": "success",
+      "headline": "Minutes of the Federal Open Market Committee, April 28-29, 2026",
+      "summary": "The Federal Reserve on Wednesday released the minutes of the Federal Open Market Committee meeting that was held on April 28–29, 2026.",
+      "body_excerpt": "The Federal Reserve on Wednesday released the minutes of the Federal Open Market Committee meeting that was held on April 28–29, 2026. The minutes for each regularly scheduled meeting of the Committee are generally published three weeks after the day of the policy decision.",
+      "tickers_mentioned": [],
+      "assets_mentioned": [],
+      "named_entities": {
+        "organizations": [
+          "Federal Reserve",
+          "Federal Open Market Committee"
+        ],
+        "people": [],
+        "geographies": []
+      },
+      "is_primary_source": true
+    },
+    {
+      "article_id": "7cf5717fcb328da9",
+      "event_cluster_id": "3ef52a6bde3c23aa",
+      "domain": "macro_fed",
+      "source_name": "Federal Reserve News & Events",
+      "source_url": "https://www.federalreserve.gov/newsevents/pressreleases/other20260520a.htm",
+      "syndication_origin": null,
+      "published_at": "2026-05-20T20:00:00Z",
+      "retrieved_at": "2026-05-31T22:26:20Z",
+      "retrieval_status": "success",
+      "headline": "Federal Reserve Board requests public comment on a proposal to establish a \"payment account,\" which legally eligible financial institutions could use for the specific purpose of clearing and settling their payments",
+      "summary": "Following earlier public input, the Federal Reserve Board on Wednesday requested public comment on a proposal to establish a \"payment account,\" which legally eligible financial institutions could use for the specific purpose of clearing and settling their payments.",
+      "body_excerpt": "Following earlier public input, the Federal Reserve Board on Wednesday requested public comment on a proposal to establish a \"payment account,\" which legally eligible financial institutions could use for the specific purpose of clearing and settling their payments.",
+      "tickers_mentioned": [],
+      "assets_mentioned": [],
+      "named_entities": {
+        "organizations": [
+          "Federal Reserve Board"
+        ],
+        "people": [],
+        "geographies": []
+      },
+      "is_primary_source": true
+    },
+    {
+      "article_id": "630495d275f677c7",
+      "event_cluster_id": "0bf18d7725dc499e",
+      "domain": "macro_fed",
+      "source_name": "Federal Reserve News & Events",
+      "source_url": "https://www.federalreserve.gov/newsevents/pressreleases/other20260522a.htm",
+      "syndication_origin": null,
+      "published_at": "2026-05-22T20:15:00Z",
+      "retrieved_at": "2026-05-31T22:26:20Z",
+      "retrieval_status": "success",
+      "headline": "Kevin Warsh takes oath of office as chairman and a member of the Board of Governors of the Federal Reserve System, and the Federal Open Market Committee unanimously selects Warsh as its chairman",
+      "summary": "Kevin Warsh on Friday took the oath of office as chairman and a member of the Board of Governors of the Federal Reserve System.",
+      "body_excerpt": "Kevin Warsh on Friday took the oath of office as chairman and a member of the Board of Governors of the Federal Reserve System. Also on Friday, the Federal Open Market Committee unanimously selected Warsh as its chairman.",
+      "tickers_mentioned": [],
+      "assets_mentioned": [],
+      "named_entities": {
+        "organizations": [
+          "Board of Governors of the Federal Reserve System",
+          "Federal Open Market Committee"
+        ],
+        "people": [
+          "Kevin Warsh"
+        ],
+        "geographies": []
+      },
+      "is_primary_source": true
+    },
+    {
+      "article_id": "5f4f51040948b17b",
+      "event_cluster_id": "bd6faeead25f44e1",
+      "domain": "macro_fed",
+      "source_name": "Federal Reserve News & Events",
+      "source_url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20260526a.htm",
+      "syndication_origin": null,
+      "published_at": "2026-05-26T18:00:00Z",
+      "retrieved_at": "2026-05-31T22:26:20Z",
+      "retrieval_status": "success",
+      "headline": "Minutes of the Board's discount rate meeting on April 20 and 29, 2026",
+      "summary": "The Federal Reserve Board on Tuesday released the minutes from its recent meetings to review and determine the discount rates provided to depository institutions through the discount window.",
+      "body_excerpt": "The Federal Reserve Board on Tuesday released the minutes from its recent meetings to review and determine the discount rates provided to depository institutions through the discount window. Today's minutes cover the Board meetings that occurred on April 20 and 29, 2026.",
+      "tickers_mentioned": [],
+      "assets_mentioned": [],
+      "named_entities": {
+        "organizations": [],
+        "people": [],
+        "geographies": []
+      },
+      "is_primary_source": true
+    },
+    {
+      "article_id": "c428ff179b0791ec",
+      "event_cluster_id": "7004e27174b24167",
+      "domain": "equities",
+      "source_name": "SEC EDGAR",
+      "source_url": "https://www.sec.gov/newsroom/press-releases/2026-46-sec-proposes-transformative-reforms-help-public-companies-conduct-registered-offerings-simplify",
+      "syndication_origin": null,
+      "published_at": "2026-05-19T00:00:00Z",
+      "retrieved_at": "2026-05-31T22:26:20Z",
+      "retrieval_status": "success",
+      "headline": "SEC Proposes Transformative Reforms to Help Public Companies Conduct Registered Offerings and Simplify Reporting Requirements",
+      "summary": "The Securities and Exchange Commission today proposed amendments to its rules and forms governing registered offerings that are designed to increase efficiency, flexibility, and cost savings for public companies while maintaining robust investor protections.",
+      "body_excerpt": "The Securities and Exchange Commission today proposed amendments to its rules and forms governing registered offerings that are designed to increase efficiency, flexibility, and cost savings for public companies while maintaining robust investor protections. The Commission also proposed rule amendments to simplify its public company reporting framework and better calibrate disclosure obligations with a company's size and maturity.",
+      "tickers_mentioned": [],
+      "assets_mentioned": [],
+      "named_entities": {
+        "organizations": [
+          "SEC"
+        ],
+        "people": [],
+        "geographies": []
+      },
+      "is_primary_source": true
+    },
+    {
+      "article_id": "be5644feae8b1089",
+      "event_cluster_id": "d263bf8ef9bc248d",
+      "domain": "equities",
+      "source_name": "SEC EDGAR",
+      "source_url": "https://www.sec.gov/newsroom/press-releases/2026-47-sec-nfa-announce-memorandum-understanding-further-harmonize-regulatory-coordination",
+      "syndication_origin": null,
+      "published_at": "2026-05-21T00:00:00Z",
+      "retrieved_at": "2026-05-31T22:26:20Z",
+      "retrieval_status": "success",
+      "headline": "SEC and NFA Announce Memorandum of Understanding to Further Harmonize Regulatory Coordination",
+      "summary": "The Securities and Exchange Commission and National Futures Association (NFA) today announced that they have entered into a Memorandum of Understanding (MOU) to enhance their cooperation, coordination, and information sharing in areas of common regulatory interest.",
+      "body_excerpt": "The Securities and Exchange Commission and National Futures Association (NFA) today announced that they have entered into a Memorandum of Understanding (MOU) to enhance their cooperation, coordination, and information sharing in areas of common regulatory interest.",
+      "tickers_mentioned": [],
+      "assets_mentioned": [],
+      "named_entities": {
+        "organizations": [
+          "SEC",
+          "NFA"
+        ],
+        "people": [],
+        "geographies": []
+      },
+      "is_primary_source": true
+    },
+    {
+      "article_id": "d8112c22f46d3919",
+      "event_cluster_id": "7393d3f3dc913204",
+      "domain": "equities",
+      "source_name": "SEC EDGAR",
+      "source_url": "https://www.sec.gov/newsroom/press-releases/2026-49-sec-proposes-rescission-climate-related-disclosure-rules",
+      "syndication_origin": null,
+      "published_at": "2026-05-29T00:00:00Z",
+      "retrieved_at": "2026-05-31T22:26:20Z",
+      "retrieval_status": "success",
+      "headline": "SEC Proposes Rescission of Climate-Related Disclosure Rules",
+      "summary": "The Securities and Exchange Commission today proposed the rescission of overly burdensome and costly rules that require companies to provide certain climate-related information in their registration statements and annual reports.",
+      "body_excerpt": "The Securities and Exchange Commission today proposed the rescission of overly burdensome and costly rules that require companies to provide certain climate-related information in their registration statements and annual reports. The Commission’s proposal focuses on returning the agency to its core mandate – in line with its legal authority – and restoring a materiality-focused approach to securities regulation.",
+      "tickers_mentioned": [],
+      "assets_mentioned": [],
+      "named_entities": {
+        "organizations": [
+          "SEC"
+        ],
+        "people": [],
+        "geographies": []
+      },
+      "is_primary_source": true
+    },
+    {
+      "article_id": "cab2b43d9a5399e6",
+      "event_cluster_id": "e9e8ed2dbf55d8e6",
+      "domain": "crypto",
+      "source_name": "Benzinga",
+      "source_url": "https://www.benzinga.com/crypto/cryptocurrency/26/05/52771615/bitcoin-stuck-at-77000-ethereum-xrp-dogecoin-trade-sideways",
+      "syndication_origin": null,
+      "published_at": "2026-05-26T10:54:00Z",
+      "retrieved_at": "2026-05-31T22:26:20Z",
+      "retrieval_status": "success",
+      "headline": "Bitcoin Stuck At $77,000, Ethereum, XRP, Dogecoin Trade Sideways Without Peace Deal News",
+      "summary": "Bitcoin trades around $77,000 as rising Middle East tensions weigh on sentiment.",
+      "body_excerpt": "Bitcoin trades around $77,000 as rising Middle East tensions weigh on sentiment. Bitcoin ETFs saw $105.2 million in net outflows on Friday, while Ethereum ETFs reported $6.7 million in net outflows. Meme coin market capitalization is trading 0.7% lower to $34.4 billion over the past 24 hours.",
+      "tickers_mentioned": [],
+      "assets_mentioned": [
+        "BTC",
+        "ETH",
+        "XRP",
+        "DOGE",
+        "SOL"
+      ],
+      "named_entities": {
+        "organizations": [],
+        "people": [],
+        "geographies": [
+          "Middle East"
+        ]
+      },
+      "is_primary_source": false
+    },
+    {
+      "article_id": "32bc898b9397ca56",
+      "event_cluster_id": "9116dc105784e421",
+      "domain": "crypto",
+      "source_name": "Benzinga",
+      "source_url": "https://cdn2.benzinga.com/crypto/cryptocurrency/26/05/52768208/bitcoin-ethereum-xrp-dogecoin-drop-us-strikes-iran-btc-rally",
+      "syndication_origin": null,
+      "published_at": "2026-05-26T01:59:00Z",
+      "retrieved_at": "2026-05-31T22:26:20Z",
+      "retrieval_status": "success",
+      "headline": "Bitcoin, Ethereum Flat, While XRP, Dogecoin Drops After US Strikes Iran: Analyst Says 'Difficult' For BTC To Sustain A 'Durable Rally'",
+      "summary": "Leading cryptocurrencies fell sharply overnight on Monday after the military said it carried out “defensive” strikes in southern Iran.",
+      "body_excerpt": "Leading cryptocurrencies fell sharply overnight on Monday after the military said it carried out “defensive” strikes in southern Iran. Bitcoin dived sharply to $76.500 overnight, triggering similar declines in Ethereum and the broader cryptocurrency market.",
+      "tickers_mentioned": [],
+      "assets_mentioned": [
+        "BTC",
+        "ETH",
+        "XRP",
+        "SOL",
+        "DOGE"
+      ],
+      "named_entities": {
+        "organizations": [],
+        "people": [],
+        "geographies": [
+          "US",
+          "Iran"
+        ]
+      },
+      "is_primary_source": false
+    },
+    {
+      "article_id": "80e5a283265d636b",
+      "event_cluster_id": "2b49a0cba6e146cd",
+      "domain": "equities",
+      "source_name": "Benzinga",
+      "source_url": "https://www.benzinga.com/markets/equities/26/05/52818706/dow-record-high-chip-stocks-tumble-oil-slides-iran-deal-whiplash-markets-wednesday",
+      "syndication_origin": null,
+      "published_at": "2026-05-27T17:29:00Z",
+      "retrieved_at": "2026-05-31T22:26:20Z",
+      "retrieval_status": "success",
+      "headline": "Dow Jones Hit Records Above 50,600 As Oil Sinks Below $90: Stock Market Today",
+      "summary": "Wall Street split decisively at midday Wednesday as the Dow Jones Industrial Average punched to a fresh all-time high while the Nasdaq 100 retreated.",
+      "body_excerpt": "Wall Street split decisively at midday Wednesday as the Dow Jones Industrial Average punched to a fresh all-time high while the Nasdaq 100 retreated. The Nasdaq 100 dropped 0.7% to 29,801, pressured by chip producers and AI hyperscalers retreating from record highs.",
+      "tickers_mentioned": [
+        "NVDA",
+        "MU"
+      ],
+      "assets_mentioned": [
+        "WTI Crude",
+        "Brent Crude"
+      ],
+      "named_entities": {
+        "organizations": [
+          "Dow Jones Industrial Average",
+          "Nasdaq 100"
+        ],
+        "people": [],
+        "geographies": []
+      },
+      "is_primary_source": false
+    },
+    {
+      "article_id": "6edb96f86772147f",
+      "event_cluster_id": "9dbbb69945a80f93",
+      "domain": "commodities_forex",
+      "source_name": "Benzinga",
+      "source_url": "https://www.benzinga.com/markets/market-summary/26/05/52751742/crude-oil-edges-higher-us-consumer-sentiment-falls-in-may",
+      "syndication_origin": null,
+      "published_at": "2026-05-22T17:04:00Z",
+      "retrieved_at": "2026-05-31T22:26:20Z",
+      "retrieval_status": "success",
+      "headline": "Crude Oil Edges Higher; US Consumer Sentiment Falls In May",
+      "summary": "U.S. stocks traded higher midway through trading, with the Dow Jones index gaining more than 400 points on Friday.",
+      "body_excerpt": "U.S. stocks traded higher midway through trading, with the Dow Jones index gaining more than 400 points on Friday. The Dow traded up 0.87% to 50,721.45 while the NASDAQ gained 0.60% to 26,450.18. The S&P 500 also rose, gaining, 0.66% to 7,494.96.",
+      "tickers_mentioned": [
+        "AKTX",
+        "ASMB",
+        "FUTU",
+        "GMM",
+        "IMRX",
+        "NGEN"
+      ],
+      "assets_mentioned": [
+        "WTI Crude",
+        "Gold",
+        "Silver",
+        "Copper"
+      ],
+      "named_entities": {
+        "organizations": [],
+        "people": [],
+        "geographies": [
+          "US"
+        ]
+      },
+      "is_primary_source": false
+    },
+    {
+      "article_id": "95485bb1c44ba55e",
+      "event_cluster_id": "1c70099e70242619",
+      "domain": "commodities_forex",
+      "source_name": "Benzinga",
+      "source_url": "https://www.benzinga.com/Opinion/26/05/52775569/gold-rises-but-the-rally-may-not-last-as-iran-deal-could-cut-both-ways",
+      "syndication_origin": null,
+      "published_at": "2026-05-26T13:12:00Z",
+      "retrieved_at": "2026-05-31T22:26:20Z",
+      "retrieval_status": "success",
+      "headline": "Gold Rises, But The Rally May Not Last, As Iran Deal Could Cut Both Ways",
+      "summary": "Spot gold climbed to $4,559.07 per ounce early Monday, according to Reuters.",
+      "body_excerpt": "Spot gold climbed to $4,559.07 per ounce early Monday, according to Reuters. U.S. gold futures for June delivery rose 0.8% to $4,559.80. However, the rally sits on fragile ground, and investors should understand exactly why.",
+      "tickers_mentioned": [],
+      "assets_mentioned": [
+        "Gold",
+        "U.S. gold futures"
+      ],
+      "named_entities": {
+        "organizations": [],
+        "people": [],
+        "geographies": [
+          "Iran"
+        ]
+      },
+      "is_primary_source": false
+    }
+  ]
+}
