@@ -230,7 +230,20 @@ data/macro-news/fetches.jsonl
 data/macro-news/news_items.jsonl
 data/macro-news/dataset_record.json
 data/macro-news/summary.json
+data/macro-news/model.md
+data/macro-news/model_state.json
+data/macro-news/fetch-journal/
 ```
+
+Run the deterministic news model agent:
+
+```sh
+emf-macro news-agent-run --root .
+```
+
+It fetches the feeds, writes a per-fetch journal, updates
+`data/macro-news/model.md` with new marginal information, and prunes old update
+sections when the model approaches the configured token budget.
 
 The compact committed summary lives at:
 

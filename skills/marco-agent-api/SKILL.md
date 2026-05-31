@@ -78,6 +78,7 @@ For macro news source-ledger reads:
 PYTHONPATH=src python3 -m emf_macro.cli news-summary --root . --compact
 PYTHONPATH=src python3 -m emf_macro.cli news-items --root . --limit 10 --compact
 PYTHONPATH=src python3 -m emf_macro.cli news-fetches --root . --limit 10 --compact
+PYTHONPATH=src python3 -m emf_macro.cli news-agent-run --root . --compact
 ```
 
 ## Decision Rules
@@ -101,6 +102,10 @@ When answering from Marco artifacts, include:
 
 When answering from news artifacts, include source IDs, publication timestamps,
 and exact `news_item.id` values.
+
+Use `data/macro-news/model.md` as the news agent's bounded working model. It is
+updated by `news-agent-run` and should contain marginal updates rather than a
+full restatement of every item.
 
 Do not overstate small RMSE deltas. For example, if ridge beats random walk on
 `USD_CAD` at `6M`, say it is a slight improvement in this latest-revised

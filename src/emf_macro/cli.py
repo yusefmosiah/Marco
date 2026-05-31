@@ -13,6 +13,7 @@ from .fed_communications import fetch_fed_communications, load_fed_communication
 from .global_panel import build_global_macro_panel, load_global_macro_summary
 from .model_registry import list_model_specs
 from .news import fetch_news, list_news_sources, load_news_fetches, load_news_items, load_news_summary
+from .news_agent import run_news_model_agent
 from .runner import RunnerConfig, run_experiment_plan
 from .source_hauls import list_source_hauls, run_source_haul
 from .sources import MacroSourceCatalog
@@ -171,6 +172,15 @@ def main() -> None:
     news_summary = sub.add_parser("news-summary", help="show the macro news source-ledger summary")
     news_summary.add_argument("--root", default=".", help="repo root")
     news_summary.add_argument("--compact", action="store_true", help="emit compact JSON")
+
+    news_agent = sub.add_parser("news-agent-run", help="fetch news, journal the run, and update data/macro-news/model.md")
+    news_agent.add_argument("--root", default=".", help="repo root")
+    news_agent.add_argument("--source-id", action="append", dest="source_ids", help="source id to fetch; repeat for multiple")
+    news_agent.add_argument("--no-fetch", action="store_true", help="update model from existing local ledger without fetching")
+    news_agent.add_argument("--max-model-tokens", type=int, default=80000)
+    news_agent.add_argument("--prune-target-tokens", type=int, default=50000)
+    news_agent.add_argument("--max-items-in-update", type=int, default=80)
+    news_agent.add_argument("--compact", action="store_true", help="emit compact JSON")
 
     hypotheses = sub.add_parser("suggest-hypotheses", help="suggest next testable macro/backtest hypotheses")
     hypotheses.add_argument("--root", default=".", help="repo root")
@@ -379,6 +389,18 @@ def main() -> None:
         )
     elif args.command == "news-summary":
         print_json(load_news_summary(Path(args.root).resolve()), compact=args.compact)
+    elif args.command == "news-agent-run":
+        print_json(
+            run_news_model_agent(
+                Path(args.root).resolve(),
+                source_ids=args.source_ids,
+                do_fetch=not args.no_fetch,
+                max_model_tokens=args.max_model_tokens,
+                prune_target_tokens=args.prune_target_tokens,
+                max_items_in_update=args.max_items_in_update,
+            ),
+            compact=args.compact,
+        )
     elif args.command == "suggest-hypotheses":
         print_json(suggest_hypotheses(Path(args.root).resolve(), args.run_id), compact=args.compact)
     elif args.command == "plan-experiments":

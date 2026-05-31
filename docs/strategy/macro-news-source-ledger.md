@@ -131,7 +131,28 @@ source_policy
 .venv/bin/emf-macro news-summary --root . --compact
 .venv/bin/emf-macro news-items --root . --limit 10 --compact
 .venv/bin/emf-macro news-fetches --root . --limit 10 --compact
+.venv/bin/emf-macro news-agent-run --root . --compact
 ```
+
+`news-agent-run` is the current deterministic news model agent. It:
+
+1. runs `news-fetch`;
+2. diffs item IDs against `data/macro-news/model_state.json`;
+3. writes a per-fetch journal under `data/macro-news/fetch-journal/`;
+4. prepends only the marginal update to `data/macro-news/model.md`;
+5. prunes old update sections when `model.md` reaches the configured token
+   budget.
+
+Default pruning policy:
+
+```text
+max_model_tokens = 80000
+prune_target_tokens = 50000
+```
+
+The token count is an approximate character-based budget. The agent is
+deliberately deterministic and does not call an LLM yet; the future synthesis
+agent can read `model.md` plus exact `news_item.id` citations.
 
 ## Committed Bundle
 
@@ -145,6 +166,9 @@ data/macro-news/
   news_items.jsonl
   dataset_record.json
   summary.json
+  model.md
+  model_state.json
+  fetch-journal/
 ```
 
 The dashboard-facing summary is copied to:

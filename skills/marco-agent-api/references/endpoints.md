@@ -28,6 +28,7 @@ news-sources
 news-summary
 news-items --limit 10
 news-fetches --limit 10
+news-agent-run
 ```
 
 Installed command equivalent:
@@ -144,6 +145,14 @@ published_at
 source_snapshot_id
 raw_path
 vintage_policy
+```
+
+News model agent artifacts:
+
+```text
+data/macro-news/model.md
+data/macro-news/model_state.json
+data/macro-news/fetch-journal/*.md
 ```
 
 ## Current Public Run

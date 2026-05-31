@@ -132,10 +132,13 @@ emf-macro news-fetch --root .
 emf-macro news-summary --root .
 emf-macro news-items --root . --limit 10
 emf-macro news-fetches --root . --limit 10
+emf-macro news-agent-run --root .
 ```
 
 The news CLI is the first interface for the future news agent. It should cite
 exact `news_item.id` values from `news-items`, not inferred recent feed rows.
+`news-agent-run` maintains `data/macro-news/model.md`, `model_state.json`, and
+per-fetch journals under `data/macro-news/fetch-journal/`.
 
 Macro news API:
 
