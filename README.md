@@ -332,9 +332,28 @@ Run the FRED FX/rate differential lab:
 .venv/bin/emf-macro run-fx-rate-lab --root . --evaluation-start 2006-01 --horizons 1,3,6
 ```
 
-Generated source data and backtest runs live under ignored `data/` and
-`backtests/runs/` paths. Commit checkpoint summaries under `docs/runs/`, not
-large generated data files.
+Run the macro forecast lab and emit the economic modeling agent handoff:
+
+```sh
+.venv/bin/emf-macro run-macro-forecast-lab --root .
+.venv/bin/emf-macro economic-model-agent --root .
+```
+
+Current committed forecast artifacts live under:
+
+```text
+data/backtests/macro-forecast-lab/
+data/agents/latest/economic_modeling_agent.md
+```
+
+The current macro forecast lab uses latest-revised FRED-MD data, not real-time
+ALFRED vintages. It forecasts `interest_rate`, `inflation_yoy`, and
+`growth_proxy_yoy` at a 6-month horizon with no-change, rolling-mean, VAR, and
+linear top-factor baselines.
+
+The older FX/rate lab still writes larger generated runs under ignored
+`backtests/runs/` paths. Commit checkpoint summaries under `docs/runs/` unless
+an artifact is intentionally part of the agent handoff surface.
 
 Export compact GitHub-shareable artifacts from a generated run:
 
@@ -376,6 +395,7 @@ Agents can use the read-only artifact surface instead of scraping the UI:
 emf-macro list-runs --root .
 emf-macro metrics --root . --run-id latest --pair USD_CAD --horizon 6
 emf-macro agent-context --root . --run-id latest
+emf-macro economic-model-agent --root .
 emf-macro serve-agent-api --root . --host 127.0.0.1 --port 8765
 ```
 

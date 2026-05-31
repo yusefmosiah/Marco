@@ -150,6 +150,7 @@ GET /v1/news
 GET /v1/news/sources
 GET /v1/news/items?source_id=ecb_press&limit=10
 GET /v1/news/fetches?limit=10
+GET /v1/economic-model-agent?target=interest_rate&model_id=var
 GET /v1/agent-context
 ```
 
@@ -190,12 +191,36 @@ exact `news_item.id` values from `news-items`, not inferred recent feed rows.
 `news-agent-run` maintains `data/macro-news/model.md`, `model_state.json`, and
 per-fetch journals under `data/macro-news/fetch-journal/`.
 
+Economic modeling commands:
+
+```sh
+emf-macro run-macro-forecast-lab --root .
+emf-macro economic-model-agent --root .
+emf-macro economic-model-agent --root . --target interest_rate --model-id var
+```
+
+`run-macro-forecast-lab` writes forecast artifacts under
+`data/backtests/macro-forecast-lab/`. `economic-model-agent` reads those
+artifacts and writes the shared multiagent handoff at
+`data/agents/latest/economic_modeling_agent.md`, plus immutable run files under
+`data/agents/runs/economic_modeling_agent/`.
+
 Macro news API:
 
 ```sh
 curl -s 'http://127.0.0.1:8765/v1/news' | jq
 curl -s 'http://127.0.0.1:8765/v1/news/items?limit=5' | jq
 ```
+
+Economic modeling API:
+
+```sh
+curl -s 'http://127.0.0.1:8765/v1/economic-model-agent?target=interest_rate&model_id=var' | jq
+```
+
+The API is read-only by default. Use the CLI when updating committed handoff
+files; pass `write_handoff=true` only for controlled local runs that should
+replace `data/agents/latest/economic_modeling_agent.md`.
 
 ## LLM Gateway
 

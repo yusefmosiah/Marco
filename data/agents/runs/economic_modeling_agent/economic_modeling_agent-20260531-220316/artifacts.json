@@ -1,0 +1,11 @@
+{
+  "agent_id": "economic_modeling_agent",
+  "refs": [
+    "data/backtests/macro-forecast-lab",
+    "data/backtests/macro-forecast-lab/summary.json",
+    "data/backtests/macro-forecast-lab/metrics.json",
+    "data/backtests/macro-forecast-lab/predictions.jsonl"
+  ],
+  "run_id": "economic_modeling_agent-20260531-220316",
+  "schema_version": "marco.agent_run_artifacts.v1"
+}

@@ -8,9 +8,11 @@ from .agent_api import run_server
 from .agent_store import ArtifactStore
 from .datasets import DatasetRegistry
 from .ecb import fetch_ecb_series, load_ecb_observations
+from .economic_model_agent import run_economic_model_agent
 from .experiments import build_experiment_plan, suggest_hypotheses
 from .fed_communications import fetch_fed_communications, load_fed_communications
 from .global_panel import build_global_macro_panel, load_global_macro_summary
+from .macro_forecast import MacroForecastConfig, run_macro_forecast_lab
 from .model_registry import list_model_specs
 from .news import fetch_news, list_news_sources, load_news_fetches, load_news_items, load_news_summary
 from .news_agent import run_news_model_agent
@@ -181,6 +183,25 @@ def main() -> None:
     news_agent.add_argument("--prune-target-tokens", type=int, default=50000)
     news_agent.add_argument("--max-items-in-update", type=int, default=80)
     news_agent.add_argument("--compact", action="store_true", help="emit compact JSON")
+
+    macro_forecast = sub.add_parser("run-macro-forecast-lab", help="forecast FRED-MD interest, inflation, and growth proxy targets")
+    macro_forecast.add_argument("--root", default=".", help="repo root")
+    macro_forecast.add_argument("--fred-md", help="path to raw FRED-MD CSV")
+    macro_forecast.add_argument("--output-dir", help="optional output directory")
+    macro_forecast.add_argument("--evaluation-start", default="2006-01")
+    macro_forecast.add_argument("--horizon", type=int, default=6, help="forecast horizon in months")
+    macro_forecast.add_argument("--train-min-months", type=int, default=120)
+    macro_forecast.add_argument("--var-lags", type=int, default=6)
+    macro_forecast.add_argument("--include-chronos2", action="store_true", help="try Chronos-2 zero-shot if AutoGluon is installed")
+    macro_forecast.add_argument("--compact", action="store_true", help="emit compact JSON")
+
+    economic_agent = sub.add_parser("economic-model-agent", help="emit structured macro model forecasts for other agents")
+    economic_agent.add_argument("--root", default=".", help="repo root")
+    economic_agent.add_argument("--horizon", type=int, default=6, help="forecast horizon in months")
+    economic_agent.add_argument("--target", choices=["interest_rate", "inflation_yoy", "growth_proxy_yoy"])
+    economic_agent.add_argument("--model-id")
+    economic_agent.add_argument("--refresh", action="store_true", help="rerun the macro forecast lab before emitting the packet")
+    economic_agent.add_argument("--compact", action="store_true", help="emit compact JSON")
 
     hypotheses = sub.add_parser("suggest-hypotheses", help="suggest next testable macro/backtest hypotheses")
     hypotheses.add_argument("--root", default=".", help="repo root")
@@ -398,6 +419,33 @@ def main() -> None:
                 max_model_tokens=args.max_model_tokens,
                 prune_target_tokens=args.prune_target_tokens,
                 max_items_in_update=args.max_items_in_update,
+            ),
+            compact=args.compact,
+        )
+    elif args.command == "run-macro-forecast-lab":
+        print_json(
+            run_macro_forecast_lab(
+                MacroForecastConfig(
+                    root=Path(args.root).resolve(),
+                    fred_md_path=Path(args.fred_md).resolve() if args.fred_md else None,
+                    output_dir=Path(args.output_dir).resolve() if args.output_dir else None,
+                    evaluation_start=args.evaluation_start,
+                    horizon_months=args.horizon,
+                    train_min_months=args.train_min_months,
+                    var_lags=args.var_lags,
+                    include_chronos2=args.include_chronos2,
+                )
+            ),
+            compact=args.compact,
+        )
+    elif args.command == "economic-model-agent":
+        print_json(
+            run_economic_model_agent(
+                Path(args.root).resolve(),
+                horizon_months=args.horizon,
+                target=args.target,
+                model_id=args.model_id,
+                refresh=args.refresh,
             ),
             compact=args.compact,
         )

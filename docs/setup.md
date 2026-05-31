@@ -36,8 +36,7 @@ tools/bootstrap.sh
 Equivalent manual setup:
 
 ```sh
-uv venv .venv
-uv pip install --python .venv/bin/python -e '.[dev]'
+uv sync --extra dev
 
 cd apps/web
 npm ci
@@ -90,6 +89,13 @@ Plan a parallel backtest matrix:
 
 ```sh
 .venv/bin/emf-macro plan-experiments --root . --pair USD_CAD --horizon 6
+```
+
+Run the macro forecast lab and update the economic modeling agent handoff:
+
+```sh
+.venv/bin/emf-macro run-macro-forecast-lab --root .
+.venv/bin/emf-macro economic-model-agent --root .
 ```
 
 Serve the read-only local agent API:

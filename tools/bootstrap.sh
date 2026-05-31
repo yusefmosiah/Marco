@@ -16,8 +16,7 @@ need npm
 
 cd "$ROOT"
 
-uv venv .venv
-uv pip install --python .venv/bin/python -e '.[dev]'
+uv sync --extra dev
 
 cd "$ROOT/apps/web"
 npm ci
