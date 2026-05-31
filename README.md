@@ -23,6 +23,7 @@ Current artifact:
 - [FRED-MD Macro Lab foundation mission](docs/missions/fred-md-macro-lab-foundation.md)
 - [FRED FX/rate lab checkpoint](docs/runs/20260531-fred-fx-rate-lab-checkpoint.md)
 - [FinRobot/MikeOSS platform evaluation](docs/strategy/finrobot-mikeoss-platform-evaluation.md)
+- [Node A static preview deployment](docs/deployment/node-a-static-preview.md)
 - [Shareable FRED FX/rate artifacts](artifacts/fred-fx-rate-lab/20260531-161930-fx-rate-diff/)
 - [Svelte visualization app](apps/web/)
 - [Historical MikeOSS proposal](docs/proposals/mission-proposal.md)
