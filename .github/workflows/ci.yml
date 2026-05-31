@@ -1,0 +1,60 @@
+name: CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Python tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install package
+        run: python -m pip install -e '.[dev]'
+
+      - name: Run tests
+        run: pytest -q
+
+      - name: Smoke CLI
+        run: |
+          emf-macro list-runs --root . --compact
+          emf-macro best --root . --run-id latest --pair USD_CAD --horizon 6 --compact
+
+  web:
+    name: Web build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+          cache-dependency-path: apps/web/package-lock.json
+
+      - name: Install frontend dependencies
+        working-directory: apps/web
+        run: npm ci
+
+      - name: Build frontend
+        working-directory: apps/web
+        run: npm run build
+
+      - name: Upload frontend dist
+        uses: actions/upload-artifact@v4
+        with:
+          name: marco-web-dist
+          path: apps/web/dist

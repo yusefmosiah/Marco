@@ -1,0 +1,74 @@
+name: Deploy Node A Static Preview
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+    paths:
+      - "apps/web/**"
+      - "artifacts/**"
+      - "tools/deploy_node_a_static.sh"
+      - ".github/workflows/deploy-node-a.yml"
+
+jobs:
+  deploy:
+    name: Deploy to Node A
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check deploy secrets
+        id: secrets
+        env:
+          NODE_A_HOST: ${{ secrets.NODE_A_HOST }}
+          NODE_A_USER: ${{ secrets.NODE_A_USER }}
+          NODE_A_SSH_PRIVATE_KEY: ${{ secrets.NODE_A_SSH_PRIVATE_KEY }}
+        run: |
+          if [ -z "$NODE_A_HOST" ] || [ -z "$NODE_A_USER" ] || [ -z "$NODE_A_SSH_PRIVATE_KEY" ]; then
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo "Node A deploy secrets are not configured; skipping deploy."
+          else
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Check out repo
+        if: steps.secrets.outputs.ready == 'true'
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        if: steps.secrets.outputs.ready == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+          cache-dependency-path: apps/web/package-lock.json
+
+      - name: Install frontend dependencies
+        if: steps.secrets.outputs.ready == 'true'
+        working-directory: apps/web
+        run: npm ci
+
+      - name: Configure SSH
+        if: steps.secrets.outputs.ready == 'true'
+        env:
+          NODE_A_HOST: ${{ secrets.NODE_A_HOST }}
+          NODE_A_USER: ${{ secrets.NODE_A_USER }}
+          NODE_A_SSH_PRIVATE_KEY: ${{ secrets.NODE_A_SSH_PRIVATE_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          printf '%s\n' "$NODE_A_SSH_PRIVATE_KEY" > ~/.ssh/node_a_deploy_key
+          chmod 600 ~/.ssh/node_a_deploy_key
+          ssh-keyscan -H "$NODE_A_HOST" >> ~/.ssh/known_hosts
+          {
+            echo "Host node-a-ci"
+            echo "  HostName $NODE_A_HOST"
+            echo "  User $NODE_A_USER"
+            echo "  IdentityFile ~/.ssh/node_a_deploy_key"
+            echo "  IdentitiesOnly yes"
+            echo "  StrictHostKeyChecking yes"
+          } >> ~/.ssh/config
+
+      - name: Deploy static preview
+        if: steps.secrets.outputs.ready == 'true'
+        env:
+          SSH_ALIAS: node-a-ci
+        run: tools/deploy_node_a_static.sh
