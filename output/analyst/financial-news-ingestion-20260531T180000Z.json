@@ -1,0 +1,264 @@
+{
+  "agent_id": "financial-news-ingestion-v1",
+  "generated_at": "2026-05-31T18:00:00Z",
+  "window_start": "2026-05-17T00:00:00Z",
+  "window_end": "2026-05-31T23:59:59Z",
+  "article_count": 8,
+  "retrieval_errors": [
+    {
+      "source": "reuters.com",
+      "reason": "no_results",
+      "http_status": null
+    },
+    {
+      "source": "wsj.com",
+      "reason": "no_results",
+      "http_status": null
+    },
+    {
+      "source": "ft.com",
+      "reason": "no_results",
+      "http_status": null
+    },
+    {
+      "source": "fred.stlouisfed.org",
+      "reason": "no_results",
+      "http_status": null
+    },
+    {
+      "source": "seekingalpha.com",
+      "reason": "http_error",
+      "http_status": null
+    }
+  ],
+  "articles": [
+    {
+      "article_id": "cab2b43d9a5399e6",
+      "event_cluster_id": "e9e8ed2dbf55d8e6",
+      "domain": "crypto",
+      "source_name": "Benzinga",
+      "source_url": "https://www.benzinga.com/crypto/cryptocurrency/26/05/52771615/bitcoin-stuck-at-77000-ethereum-xrp-dogecoin-trade-sideways",
+      "syndication_origin": null,
+      "published_at": "2026-05-26T10:54:00Z",
+      "retrieved_at": "2026-05-31T18:00:00Z",
+      "retrieval_status": "success",
+      "headline": "Bitcoin Stuck At $77,000, Ethereum, XRP, Dogecoin Trade Sideways Without Peace Deal News",
+      "summary": "Bitcoin trades around $77,000 as rising Middle East tensions weigh on sentiment.",
+      "body_excerpt": "Bitcoin trades around $77,000 as rising Middle East tensions weigh on sentiment. Bitcoin ETFs saw $105.2 million in net outflows on Friday, while Ethereum ETFs reported $6.7 million in net outflows. Meme coin market capitalization is trading 0.7% lower to $34.4 billion over the past 24 hours. Trader Commentary: Crypto chart analyst Ali Martinez said Bitcoin network activity has cooled sharply, with active addresses falling nearly 40% over the past two weeks.",
+      "tickers_mentioned": [],
+      "assets_mentioned": [
+        "BTC",
+        "ETH",
+        "SOL",
+        "XRP",
+        "DOGE",
+        "SHIB",
+        "Bitcoin",
+        "Ethereum",
+        "Solana",
+        "Dogecoin",
+        "Shiba Inu"
+      ],
+      "named_entities": {
+        "organizations": [],
+        "people": [],
+        "geographies": [
+          "Middle East"
+        ]
+      },
+      "is_primary_source": false
+    },
+    {
+      "article_id": "55f1e15663437d78",
+      "event_cluster_id": "c3292f789c6c5950",
+      "domain": "equities",
+      "source_name": "Benzinga",
+      "source_url": "https://www.benzinga.com/markets/prediction-markets/26/05/52830689/sp500-may-28-open-up-or-down-polymarket-pce-inflation-ai-stocks",
+      "syndication_origin": null,
+      "published_at": "2026-05-28T08:22:00Z",
+      "retrieved_at": "2026-05-31T18:00:00Z",
+      "retrieval_status": "success",
+      "headline": "Stock Market: Will S&P 500 Open Up Or Down Today?",
+      "summary": "The S&P 500 eked out another record close on Wednesday as easing oil prices offset weakness in parts of the semiconductor trade, but Polymarket traders are leaning slightly bearish ahead of a crucial inflation reading due Thursday.",
+      "body_excerpt": "The S&P 500 eked out another record close on Wednesday as easing oil prices offset weakness in parts of the semiconductor trade, but Polymarket traders are leaning slightly bearish ahead of a crucial inflation reading due Thursday. The S&P 500 rose 0.02% to close at a fresh record of 7,520.36. The May 28 Polymarket contract implied a 55% probability that the benchmark index would open lower on Thursday, compared with a 45% chance of an upward open.",
+      "tickers_mentioned": [
+        "DLTR",
+        "KSS"
+      ],
+      "assets_mentioned": [
+        "S&P 500"
+      ],
+      "named_entities": {
+        "organizations": [
+          "S&P 500",
+          "Polymarket"
+        ],
+        "people": [],
+        "geographies": []
+      },
+      "is_primary_source": false
+    },
+    {
+      "article_id": "0ddade894bba0a90",
+      "event_cluster_id": "e2b010af6148614b",
+      "domain": "commodities_forex",
+      "source_name": "Benzinga",
+      "source_url": "https://www.benzinga.com/Opinion/26/05/52881450/gold-is-the-correction-finally-over",
+      "syndication_origin": null,
+      "published_at": "2026-05-29T17:25:00Z",
+      "retrieved_at": "2026-05-31T18:00:00Z",
+      "retrieval_status": "success",
+      "headline": "Gold: Is The Correction Finally Over?",
+      "summary": "Gold has been one of the most talked-about markets in 2026 – and for good reason.",
+      "body_excerpt": "Gold has been one of the most talked-about markets in 2026 – and for good reason. After reaching an all-time high of $5,600 per ounce in late January, gold futures entered a deep correction that has lasted more than three months. Here is what the latest data suggests about where gold is headed next. Price Action: What the Charts Are Saying That second drop was notable for its speed.",
+      "tickers_mentioned": [
+        "CL",
+        "UUP"
+      ],
+      "assets_mentioned": [
+        "Gold",
+        "DXY",
+        "WTI Crude"
+      ],
+      "named_entities": {
+        "organizations": [],
+        "people": [],
+        "geographies": []
+      },
+      "is_primary_source": false
+    },
+    {
+      "article_id": "d3109ba39c29e32f",
+      "event_cluster_id": "3e286a3ca9cb9a2e",
+      "domain": "commodities_forex",
+      "source_name": "Associated Press",
+      "source_url": "https://apnews.com/article/stocks-markets-iran-trump-oil-0b569925695e498e6fd7ece7b183e085",
+      "syndication_origin": null,
+      "published_at": "2026-05-25T02:35:35Z",
+      "retrieved_at": "2026-05-31T18:00:00Z",
+      "retrieval_status": "success",
+      "headline": "Global shares gain and oil prices fall after Trump says talks on ending the war are proceeding",
+      "summary": "Global shares mostly rose Monday and oil prices sank more than $4 after U.S. President Donald Trump said talks on ending the war with Iran are progressing.",
+      "body_excerpt": "TOKYO (AP) — Global shares mostly rose Monday and oil prices sank more than $4 after U.S. President Donald Trump said talks on ending the war with Iran are progressing. France’s CAC 40 edged up 1.1% to 8,203.32, while the German DAX rose 1.0% to 25,148.39. Britain’s FTSE 100 added 0.2% to 10,466.26. Trading will be closed in the U.S. for the Memorial Day holiday.",
+      "tickers_mentioned": [],
+      "assets_mentioned": [
+        "U.S. crude oil",
+        "Brent crude",
+        "USD/JPY",
+        "EUR/USD"
+      ],
+      "named_entities": {
+        "organizations": [],
+        "people": [
+          "Donald Trump"
+        ],
+        "geographies": [
+          "U.S.",
+          "Iran"
+        ]
+      },
+      "is_primary_source": false
+    },
+    {
+      "article_id": "7cf5717fcb328da9",
+      "event_cluster_id": "3ef52a6bde3c23aa",
+      "domain": "macro_fed",
+      "source_name": "Federal Reserve News & Events",
+      "source_url": "https://www.federalreserve.gov/newsevents/pressreleases/other20260520a.htm",
+      "syndication_origin": null,
+      "published_at": "2026-05-20T20:00:00Z",
+      "retrieved_at": "2026-05-31T18:00:00Z",
+      "retrieval_status": "success",
+      "headline": "Federal Reserve Board requests public comment on a proposal to establish a \"payment account,\" which legally eligible financial institutions could use for the specific purpose of clearing and settling their payments",
+      "summary": "Following earlier public input, the Federal Reserve Board on Wednesday requested public comment on a proposal to establish a \"payment account,\" which legally eligible financial institutions could use for the specific purpose of clearing and settling their payments.",
+      "body_excerpt": "Following earlier public input, the Federal Reserve Board on Wednesday requested public comment on a proposal to establish a \"payment account,\" which legally eligible financial institutions could use for the specific purpose of clearing and settling their payments. As the payments landscape rapidly evolves, financial institutions with an increasingly wide range of business models have sought direct access to the Federal Reserve's payment services to reduce costs and increase payment speed.",
+      "tickers_mentioned": [],
+      "assets_mentioned": [],
+      "named_entities": {
+        "organizations": [
+          "Federal Reserve Board"
+        ],
+        "people": [],
+        "geographies": []
+      },
+      "is_primary_source": true
+    },
+    {
+      "article_id": "d8112c22f46d3919",
+      "event_cluster_id": "7393d3f3dc913204",
+      "domain": "equities",
+      "source_name": "SEC EDGAR",
+      "source_url": "https://www.sec.gov/newsroom/press-releases/2026-49-sec-proposes-rescission-climate-related-disclosure-rules",
+      "syndication_origin": null,
+      "published_at": "2026-05-29T00:00:00Z",
+      "retrieved_at": "2026-05-31T18:00:00Z",
+      "retrieval_status": "success",
+      "headline": "SEC Proposes Rescission of Climate-Related Disclosure Rules",
+      "summary": "The Securities and Exchange Commission today proposed the rescission of overly burdensome and costly rules that require companies to provide certain climate-related information in their registration statements and annual reports.",
+      "body_excerpt": "The Securities and Exchange Commission today proposed the rescission of overly burdensome and costly rules that require companies to provide certain climate-related information in their registration statements and annual reports. The Commission’s proposal focuses on returning the agency to its core mandate – in line with its legal authority – and restoring a materiality-focused approach to securities regulation.",
+      "tickers_mentioned": [],
+      "assets_mentioned": [],
+      "named_entities": {
+        "organizations": [
+          "SEC",
+          "Securities and Exchange Commission"
+        ],
+        "people": [],
+        "geographies": []
+      },
+      "is_primary_source": true
+    },
+    {
+      "article_id": "be5644feae8b1089",
+      "event_cluster_id": "d263bf8ef9bc248d",
+      "domain": "equities",
+      "source_name": "SEC EDGAR",
+      "source_url": "https://www.sec.gov/newsroom/press-releases/2026-47-sec-nfa-announce-memorandum-understanding-further-harmonize-regulatory-coordination",
+      "syndication_origin": null,
+      "published_at": "2026-05-21T00:00:00Z",
+      "retrieved_at": "2026-05-31T18:00:00Z",
+      "retrieval_status": "success",
+      "headline": "SEC and NFA Announce Memorandum of Understanding to Further Harmonize Regulatory Coordination",
+      "summary": "The Securities and Exchange Commission and National Futures Association (NFA) today announced that they have entered into a Memorandum of Understanding (MOU) to enhance their cooperation, coordination, and information sharing in areas of common regulatory interest.",
+      "body_excerpt": "The Securities and Exchange Commission and National Futures Association (NFA) today announced that they have entered into a Memorandum of Understanding (MOU) to enhance their cooperation, coordination, and information sharing in areas of common regulatory interest. The MOU will enhance SEC and NFA staff’s ability to share information on matters of mutual regulatory interest such as emerging risks, examination planning, and financial markets’ conditions.",
+      "tickers_mentioned": [],
+      "assets_mentioned": [],
+      "named_entities": {
+        "organizations": [
+          "SEC",
+          "NFA",
+          "Securities and Exchange Commission",
+          "National Futures Association"
+        ],
+        "people": [],
+        "geographies": []
+      },
+      "is_primary_source": true
+    },
+    {
+      "article_id": "c428ff179b0791ec",
+      "event_cluster_id": "7004e27174b24167",
+      "domain": "equities",
+      "source_name": "SEC EDGAR",
+      "source_url": "https://www.sec.gov/newsroom/press-releases/2026-46-sec-proposes-transformative-reforms-help-public-companies-conduct-registered-offerings-simplify",
+      "syndication_origin": null,
+      "published_at": "2026-05-19T00:00:00Z",
+      "retrieved_at": "2026-05-31T18:00:00Z",
+      "retrieval_status": "success",
+      "headline": "SEC Proposes Transformative Reforms to Help Public Companies Conduct Registered Offerings and Simplify Reporting Requirements",
+      "summary": "The Securities and Exchange Commission today proposed amendments to its rules and forms governing registered offerings that are designed to increase efficiency, flexibility, and cost savings for public companies while maintaining robust investor protections.",
+      "body_excerpt": "The Securities and Exchange Commission today proposed amendments to its rules and forms governing registered offerings that are designed to increase efficiency, flexibility, and cost savings for public companies while maintaining robust investor protections. The Commission also proposed rule amendments to simplify its public company reporting framework and better calibrate disclosure obligations with a company's size and maturity.",
+      "tickers_mentioned": [],
+      "assets_mentioned": [],
+      "named_entities": {
+        "organizations": [
+          "SEC",
+          "Securities and Exchange Commission"
+        ],
+        "people": [],
+        "geographies": []
+      },
+      "is_primary_source": true
+    }
+  ]
+}

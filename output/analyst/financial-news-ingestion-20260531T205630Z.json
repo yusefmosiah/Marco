@@ -1,0 +1,292 @@
+{
+  "agent_id": "financial-news-ingestion-v1",
+  "generated_at": "2026-05-31T20:56:30Z",
+  "window_start": "2026-05-17T00:00:00Z",
+  "window_end": "2026-05-31T23:59:59Z",
+  "article_count": 9,
+  "retrieval_errors": [
+    {
+      "source": "reuters.com",
+      "reason": "no_results",
+      "http_status": null
+    },
+    {
+      "source": "bloomberg.com",
+      "reason": "no_results",
+      "http_status": null
+    },
+    {
+      "source": "wsj.com",
+      "reason": "no_results",
+      "http_status": null
+    },
+    {
+      "source": "ft.com",
+      "reason": "no_results",
+      "http_status": null
+    },
+    {
+      "source": "fred.stlouisfed.org",
+      "reason": "no_results",
+      "http_status": null
+    },
+    {
+      "source": "seekingalpha.com",
+      "reason": "no_results",
+      "http_status": null
+    }
+  ],
+  "articles": [
+    {
+      "article_id": "e6c4f07eacc33b2b",
+      "event_cluster_id": "47da4d1b029192a8",
+      "domain": "equities",
+      "source_name": "SEC EDGAR",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1571996/000157199626000021/exhibit991earnings8kq1fy27.htm",
+      "syndication_origin": null,
+      "published_at": "2026-05-28T00:00:00Z",
+      "retrieved_at": "2026-05-31T20:56:30Z",
+      "retrieval_status": "success",
+      "headline": "Dell Technologies Delivers First Quarter Fiscal 2027 Financial Results",
+      "summary": null,
+      "body_excerpt": "ROUND ROCK, Texas — May 28, 2026 — Dell Technologies (NYSE: DELL) announces financial results",
+      "tickers_mentioned": [
+        "DELL"
+      ],
+      "assets_mentioned": [],
+      "named_entities": {
+        "organizations": [
+          "Dell Technologies"
+        ],
+        "people": [],
+        "geographies": []
+      },
+      "is_primary_source": true
+    },
+    {
+      "article_id": "710cf2ffc80bfa99",
+      "event_cluster_id": "a59e746e7204b5eb",
+      "domain": "equities",
+      "source_name": "Associated Press",
+      "source_url": "https://apnews.com/article/wall-street-stocks-dow-nasdaq-82c0b13a9b0bec79cc907cc122cac328",
+      "syndication_origin": null,
+      "published_at": "2026-05-29T20:14:41Z",
+      "retrieved_at": "2026-05-31T20:56:30Z",
+      "retrieval_status": "success",
+      "headline": "How major US stock indexes fared Friday 5/29/2026",
+      "summary": null,
+      "body_excerpt": "Stock indexes closed higher on Wall Street, adding to the all-time highs they set a day earlier.",
+      "tickers_mentioned": [],
+      "assets_mentioned": [
+        "Brent crude"
+      ],
+      "named_entities": {
+        "organizations": [],
+        "people": [],
+        "geographies": [
+          "US"
+        ]
+      },
+      "is_primary_source": false
+    },
+    {
+      "article_id": "78fbfdd336ebfba8",
+      "event_cluster_id": "0863d0bc63c7ba22",
+      "domain": "equities",
+      "source_name": "Associated Press",
+      "source_url": "https://apnews.com/article/stocks-markets-oil-iran-trump-68f9166e428621a5b3349d2d2aea34b5",
+      "syndication_origin": null,
+      "published_at": "2026-05-29T03:16:24Z",
+      "retrieved_at": "2026-05-31T20:56:30Z",
+      "retrieval_status": "success",
+      "headline": "US stocks gain ground, adding to their records, as Dell soars",
+      "summary": null,
+      "body_excerpt": "Wall Street pushed further into the record books Friday, as the major stock indexes extended the market’s recent winning streak",
+      "tickers_mentioned": [],
+      "assets_mentioned": [],
+      "named_entities": {
+        "organizations": [
+          "Dell"
+        ],
+        "people": [],
+        "geographies": [
+          "US"
+        ]
+      },
+      "is_primary_source": false
+    },
+    {
+      "article_id": "94080a607bd11e08",
+      "event_cluster_id": "a99f4ac1e327ba21",
+      "domain": "macro_fed",
+      "source_name": "Federal Reserve",
+      "source_url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20260520a.htm",
+      "syndication_origin": null,
+      "published_at": "2026-05-20T18:00:00Z",
+      "retrieved_at": "2026-05-31T20:56:30Z",
+      "retrieval_status": "success",
+      "headline": "Minutes of the Federal Open Market Committee, April 28-29, 2026",
+      "summary": null,
+      "body_excerpt": "The Federal Reserve on Wednesday released the minutes of the Federal Open Market Committee meeting that was held on April 28–29, 2026.",
+      "tickers_mentioned": [],
+      "assets_mentioned": [],
+      "named_entities": {
+        "organizations": [
+          "Federal Open Market Committee"
+        ],
+        "people": [],
+        "geographies": []
+      },
+      "is_primary_source": true
+    },
+    {
+      "article_id": "3aedb77955654f75",
+      "event_cluster_id": "fd88686b58373c05",
+      "domain": "macro_fed",
+      "source_name": "Benzinga",
+      "source_url": "https://www.benzinga.com/markets/macro-economic-events/26/05/52835775/us-pce-inflation-report-april-2026",
+      "syndication_origin": null,
+      "published_at": "2026-05-28T13:18:00Z",
+      "retrieved_at": "2026-05-31T20:56:30Z",
+      "retrieval_status": "success",
+      "headline": "Fed's Favorite Inflation Gauge Hits 3.8%, Highest Since May 2023 (UPDATED)",
+      "summary": null,
+      "body_excerpt": "The Federal Reserve’s preferred inflation gauge rose further in April as the Strait of Hormuz energy shock continued",
+      "tickers_mentioned": [
+        "DIA",
+        "GLD"
+      ],
+      "assets_mentioned": [
+        "U.S. Dollar Index",
+        "Gold",
+        "WTI crude oil"
+      ],
+      "named_entities": {
+        "organizations": [
+          "Fed"
+        ],
+        "people": [],
+        "geographies": []
+      },
+      "is_primary_source": false
+    },
+    {
+      "article_id": "803af90b289ea688",
+      "event_cluster_id": "f1d54e760df0e1fc",
+      "domain": "crypto",
+      "source_name": "Benzinga",
+      "source_url": "https://www.benzinga.com/crypto/26/05/52893188/bitcoin-etfs-just-had-the-worst-month-of-the-year-are-investors-rotating-to-stocks",
+      "syndication_origin": null,
+      "published_at": "2026-05-30T16:11:00Z",
+      "retrieved_at": "2026-05-31T20:56:30Z",
+      "retrieval_status": "success",
+      "headline": "Bitcoin ETFs Just Had The Worst Month Of The Year: Are Investors Rotating to Stocks?",
+      "summary": null,
+      "body_excerpt": "American investors are dumping their Bitcoin (CRYPTO: BTC) exchange-traded funds (ETFs)",
+      "tickers_mentioned": [
+        "IBIT"
+      ],
+      "assets_mentioned": [
+        "BTC",
+        "Bitcoin"
+      ],
+      "named_entities": {
+        "organizations": [],
+        "people": [],
+        "geographies": []
+      },
+      "is_primary_source": false
+    },
+    {
+      "article_id": "883a1c978bf08ff2",
+      "event_cluster_id": "4625ea71cb9e9740",
+      "domain": "crypto",
+      "source_name": "Benzinga",
+      "source_url": "https://www.benzinga.com/crypto/cryptocurrency/26/05/52884265/bitcoin-reclaims-74000-while-ethereum-xrp-dogecoin-go-sideways-amid-iran-peace-hopes",
+      "syndication_origin": null,
+      "published_at": "2026-05-29T18:25:00Z",
+      "retrieved_at": "2026-05-31T20:56:30Z",
+      "retrieval_status": "success",
+      "headline": "Bitcoin Reclaims $74,000 While Ethereum, XRP, Dogecoin Go Sideways Amid Iran Peace Hopes",
+      "summary": null,
+      "body_excerpt": "Bitcoin traded around $74,000 on Friday as improving regulatory sentiment helped stabilize crypto markets.",
+      "tickers_mentioned": [],
+      "assets_mentioned": [
+        "BTC",
+        "ETH",
+        "XRP",
+        "DOGE",
+        "SOL",
+        "SHIB"
+      ],
+      "named_entities": {
+        "organizations": [],
+        "people": [],
+        "geographies": [
+          "Iran"
+        ]
+      },
+      "is_primary_source": false
+    },
+    {
+      "article_id": "ef80260d6f3958d1",
+      "event_cluster_id": "e199a83d0c3a6697",
+      "domain": "commodities_forex",
+      "source_name": "Associated Press",
+      "source_url": "https://apnews.com/article/stocks-markets-ai-iran-trump-8191917f4f1d7ebc54584dd3c3265032",
+      "syndication_origin": null,
+      "published_at": "2026-05-27T03:31:24Z",
+      "retrieved_at": "2026-05-31T20:56:30Z",
+      "retrieval_status": "success",
+      "headline": "US stocks inch to more records after oil prices drop",
+      "summary": null,
+      "body_excerpt": "NEW YORK (AP) — U.S. stocks inched to more records Wednesday after oil prices fell",
+      "tickers_mentioned": [],
+      "assets_mentioned": [
+        "Brent crude oil",
+        "U.S. crude"
+      ],
+      "named_entities": {
+        "organizations": [],
+        "people": [],
+        "geographies": [
+          "US"
+        ]
+      },
+      "is_primary_source": false
+    },
+    {
+      "article_id": "cc16136a53e2adf8",
+      "event_cluster_id": "3a08c0dd26160831",
+      "domain": "commodities_forex",
+      "source_name": "Benzinga",
+      "source_url": "https://www.benzinga.com/etfs/specialty-etfs/26/05/52832564/gold-falls-to-two-month-low-as-iran-war-fears-send-oil-prices-dollar-climbing",
+      "syndication_origin": null,
+      "published_at": "2026-05-28T10:47:00Z",
+      "retrieved_at": "2026-05-31T20:56:30Z",
+      "retrieval_status": "success",
+      "headline": "Gold Falls To Two-Month Low As Iran War Fears Send Oil Prices, Dollar Climbing",
+      "summary": null,
+      "body_excerpt": "Gold prices fell to a two-month low as uncertainty over the war in Iran resurfaced",
+      "tickers_mentioned": [
+        "GLD",
+        "IAU",
+        "GLDM",
+        "SGOL"
+      ],
+      "assets_mentioned": [
+        "Gold",
+        "WTI Crude",
+        "ICE U.S. Dollar Index"
+      ],
+      "named_entities": {
+        "organizations": [],
+        "people": [],
+        "geographies": [
+          "Iran"
+        ]
+      },
+      "is_primary_source": false
+    }
+  ]
+}
