@@ -1,0 +1,4 @@
+interface:
+  display_name: "Marco Agent API"
+  short_description: "Query Marco macro artifacts through the agent CLI and API."
+  default_prompt: "Use the Marco agent API and CLI to inspect runs, metrics, reports, and agent-context artifacts."
